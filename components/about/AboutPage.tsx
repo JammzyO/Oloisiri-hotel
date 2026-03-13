@@ -6,8 +6,8 @@ import Link from 'next/link'
 import styles from './AboutPage.module.css'
 
 /* ─── useInView ──────────────────────────────────────────── */
-function useInView<T extends HTMLElement = HTMLElement>(threshold = 0.12) {
-  const ref = useRef<T>(null)
+function useInView(threshold = 0.12) {
+  const ref = useRef<HTMLElement>(null)
   const [inView, setInView] = useState(false)
   useEffect(() => {
     const el = ref.current
@@ -32,10 +32,10 @@ function AnimatedStat({ value, suffix = '', label }: { value: number; suffix?: s
     const obs = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return
       obs.disconnect()
-      const dur = 2000
+      const duration = 1800
       const start = Date.now()
       const tick = () => {
-        const p = Math.min((Date.now() - start) / dur, 1)
+        const p = Math.min((Date.now() - start) / duration, 1)
         const eased = 1 - Math.pow(1 - p, 3)
         setCount(Math.round(eased * value))
         if (p < 1) requestAnimationFrame(tick)
@@ -53,296 +53,144 @@ function AnimatedStat({ value, suffix = '', label }: { value: number; suffix?: s
   )
 }
 
-/* ─── Data ───────────────────────────────────────────────── */
-const MARQUEE = [
-  'A Sanctuary at the Edge of Two Nations',
-  'Namanga',
-  'Kenya · Tanzania',
-  'Where Kilimanjaro Watches',
-  'Safari Luxury',
-  '24 Suites',
-  'The Land Was Here First',
-  'Est. 2024',
-]
-
-const pillars = [
+const PILLARS = [
   {
     num: '01',
-    title: 'Safari Luxury',
-    body: 'Every detail at Oloisiri is drawn from the land — stone floors, linen drapes, the scent of cedar on morning air. Luxury here is not a distance from nature. It is a deeper entry into it.',
+    title: 'The craft is in the room',
+    body: 'Stone floors. Proper mattresses. Curtains that block the morning light when you want them to. Linen sourced from Kenya. A bathroom with space to breathe. We spent a long time on the rooms because that is where you will spend most of your time — and it shows.',
   },
   {
     num: '02',
-    title: 'Cultural Reverence',
-    body: 'We sit at the threshold of Kenya and Tanzania, on land that has been walked by the Maasai for generations. Their craft, their colour, and their philosophy of stewardship run through every room.',
+    title: 'The people here know this land',
+    body: 'Our staff are from Namanga and the surrounding communities. They know where to find the good viewpoint at sunset. They know which mornings Kilimanjaro is clear and which mornings it is not. They are not performing hospitality — they live here.',
   },
   {
     num: '03',
-    title: 'Land Stewardship',
-    body: 'Oloisiri was built with the conviction that beauty must be earned. Solar energy, locally sourced materials, and active partnerships with neighbouring communities are not afterthoughts — they are the foundation.',
+    title: 'We are careful about how we build',
+    body: 'Solar power. Locally sourced materials where possible. Active relationships with Maasai landowners and community groups in the area. Not because it makes good marketing. Because we are going to be here a long time and the land matters more than the hotel.',
   },
-]
-
-const gallery = [
-  { src: '/about-room-1.jpg', label: 'Savannah Suite' },
-  { src: '/about-story.jpg',  label: 'Heritage Room' },
-  { src: '/about-room-2.jpg', label: 'Garden Terrace' },
-  { src: '/about-room-3.jpg', label: 'Kilimanjaro View' },
-  { src: '/about-room-4.jpg', label: 'Private Pool' },
-  { src: '/about-room-5.jpg', label: 'Bush Villa' },
 ]
 
 /* ─── Page ───────────────────────────────────────────────── */
 export default function AboutPage() {
-  const heroImgRef = useRef<HTMLDivElement>(null)
   const [loaded, setLoaded] = useState(false)
-  const galleryRef = useRef<HTMLDivElement>(null)
-  const [dragging, setDragging] = useState(false)
-  const dragStart = useRef({ x: 0, scrollLeft: 0 })
 
-  const story      = useInView<HTMLElement>(0.1)
-  const statement  = useInView<HTMLElement>(0.15)
-  const numbers    = useInView<HTMLElement>(0.08)
-  const commitment = useInView<HTMLElement>(0.06)
-  const detail     = useInView<HTMLElement>(0.1)
-  const cta        = useInView<HTMLElement>(0.18)
+  const story   = useInView(0.1)
+  const stats   = useInView(0.12)
+  const pillars = useInView(0.08)
+  const detail  = useInView(0.1)
+  const cta     = useInView(0.15)
 
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 80)
     return () => clearTimeout(t)
   }, [])
 
-  // Parallax — translateY only, container already oversized
-  useEffect(() => {
-    const img = heroImgRef.current
-    if (!img) return
-    const onScroll = () => {
-      img.style.transform = `translateY(${window.scrollY * 0.22}px)`
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    const el = galleryRef.current
-    if (!el) return
-    setDragging(true)
-    dragStart.current = { x: e.pageX, scrollLeft: el.scrollLeft }
-  }
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!dragging || !galleryRef.current) return
-    e.preventDefault()
-    galleryRef.current.scrollLeft = dragStart.current.scrollLeft - (e.pageX - dragStart.current.x) * 1.5
-  }
-  const onMouseUp = () => setDragging(false)
-
-  const heroWords = ['A', 'sanctuary', 'at', 'the', 'edge', 'of', 'two', 'nations.']
-
   return (
     <div className={styles.page}>
 
-      {/* ── Hero ─────────────────────────────────────────── */}
+      {/* ── S1: Cinematic opener ─────────────────────────── */}
       <section className={styles.hero}>
-        <div className={styles.heroImageWrap}>
-          <div ref={heroImgRef} className={styles.heroParallax}>
-            <Image
-              src="/suite-kilimanjaro-a.jpg"
-              alt="Doorway framing Kilimanjaro at Oloisiri"
-              fill priority
-              sizes="100vw"
-              style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
-            />
-          </div>
-        </div>
 
-        {/* Film grain overlay */}
-        <div className={styles.heroGrain} aria-hidden="true" />
-        <div className={styles.heroOverlay} />
-
-        {/* Top label strip */}
-        <div className={`${styles.heroTopBar} ${loaded ? styles.loaded : ''}`}>
+        {/* Top bar — eyebrow left, coords right */}
+        <div className={`${styles.heroTopBar} ${loaded ? styles.barIn : ''}`}>
+          <span className={styles.heroEyebrow}>Namanga, Kenya — Est. 2024</span>
           <span className={styles.heroCoords}>1°34′S · 36°47′E</span>
-          <span className={styles.heroTag}>Kenya — Tanzania Border</span>
         </div>
 
-        <div className={styles.heroContent}>
-          <h1 className={styles.heroHeading}>
-            {heroWords.map((word, i) => (
-              <span
-                key={i}
-                className={`${styles.heroWord} ${loaded ? styles.heroWordIn : ''}`}
-                style={{ animationDelay: `${0.2 + i * 0.08}s` }}
-              >
-                {word}{' '}
-              </span>
-            ))}
+        {/* Gold sweep line */}
+        <div
+          className={`${styles.heroSweep} ${loaded ? styles.sweepIn : ''}`}
+          aria-hidden="true"
+        />
+
+        {/* Headline — bottom left */}
+        <div className={styles.heroBottom}>
+          <h1 className={`${styles.heroHeading} ${loaded ? styles.headingIn : ''}`}>
+            <span className={styles.heroL1}>We built a hotel</span>
+            <span className={styles.heroL2}>at a border crossing.</span>
           </h1>
-          <p className={`${styles.heroSub} ${loaded ? styles.heroSubIn : ''}`}>
-            Where Kilimanjaro watches over every dawn, and the land asks only that you slow down.
-          </p>
         </div>
 
-        <div className={styles.scrollCue} aria-hidden="true">
-          <span className={styles.scrollLine} />
-        </div>
       </section>
 
-      {/* ── Marquee ──────────────────────────────────────── */}
-      <div className={styles.marquee} aria-hidden="true">
-        <div className={styles.marqueeTrack}>
-          {[...MARQUEE, ...MARQUEE].map((item, i) => (
-            <span key={i} className={styles.marqueeItem}>
-              {item}
-              <span className={styles.marqueeDot}>·</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Story ────────────────────────────────────────── */}
+      {/* ── S2: Story ────────────────────────────────────── */}
       <section
         ref={story.ref}
         className={`${styles.story} ${story.inView ? styles.inView : ''}`}
       >
         <div className={styles.storyInner}>
+
           <div className={styles.storyLeft}>
             <span className={styles.eyebrow}>Our Story</span>
             <h2 className={styles.storyHeading}>
-              Built for those who travel to <em>feel</em>,<br/>not merely to stay.
+              Built at a crossing. Designed to make you stop.
             </h2>
-            <div className={styles.storyRule} />
             <p className={styles.storyBody}>
-              Oloisiri Namanga Hotel stands at a singular address — a point where Kenya meets Tanzania,
-              where the plains open to a sky too vast to photograph, and where Kilimanjaro rises above
-              the morning mist without announcement or apology.
+              Oloisiri sits in Namanga — a town that literally straddles the Kenya–Tanzania border,
+              positioned between Kajiado County and Longido District. We are 163km from Nairobi on
+              the A104, 110km from Arusha, and on one of the few stretches of highway in East Africa
+              where the drive is actually smooth.
             </p>
             <p className={styles.storyBody}>
-              Twenty-four suites, each handcrafted from materials drawn from the earth: stone, timber,
-              linen. Each room a quiet argument that true luxury is not distance from the world, but a
-              deeper, more attentive relationship with it.
+              Twenty-four suites, each finished by hand — stone underfoot, timber overhead, linen
+              that moves with the breeze off the plains. We are not a lodge in the bush. We are not
+              a business hotel on a highway. We are something in between — a proper place to stay
+              that happens to sit at one of East Africa's most quietly extraordinary addresses, with
+              Kilimanjaro on the southern horizon and Amboseli an hour to the north. We opened because
+              there was nowhere good to stay here. That is the whole story.
             </p>
           </div>
 
           <div className={styles.storyRight}>
-            <div className={styles.storyGhost} aria-hidden="true">Place</div>
-            <div className={styles.storyArch}>
+            <div className={styles.storyImageWrap}>
               <Image
                 src="/about-story.jpg"
-                alt="Oloisiri suite interior"
-                fill sizes="(max-width: 1000px) 90vw, 460px"
+                alt="Oloisiri — suite interior"
+                fill
+                sizes="(max-width: 900px) 100vw, 40vw"
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
               />
             </div>
-            <p className={styles.storyCaption}>
-              — Vibrant African portraiture adorns every suite
-            </p>
           </div>
-        </div>
 
-        <div className={styles.pullQuote}>
-          <div className={styles.pullLine} />
-          <blockquote className={styles.pullText}>
-            "The finest luxury is the one that leaves no trace — except in memory."
-          </blockquote>
-          <div className={styles.pullLine} />
         </div>
       </section>
 
-      {/* ── Statement (typographic bomb) ─────────────────── */}
+      {/* ── S3: Stats strip ──────────────────────────────── */}
+      <section ref={stats.ref} className={styles.statsSection}>
+        <div className={styles.statsInner}>
+          <AnimatedStat value={24}  label="Handcrafted suites" />
+          <div className={styles.statDivider} aria-hidden="true" />
+          <AnimatedStat value={3}  suffix="+" label="Dining experiences" />
+          <div className={styles.statDivider} aria-hidden="true" />
+          <AnimatedStat value={2}   label="Nations at your doorstep" />
+          <div className={styles.statDivider} aria-hidden="true" />
+          <AnimatedStat value={5}  suffix="★" label="Guest rating" />
+        </div>
+      </section>
+
+      {/* ── S4: Three pillars ────────────────────────────── */}
       <section
-        ref={statement.ref}
-        className={`${styles.statement} ${statement.inView ? styles.statementIn : ''}`}
+        ref={pillars.ref}
+        className={`${styles.pillarsSection} ${pillars.inView ? styles.inView : ''}`}
       >
-        <div className={styles.statementInner}>
-          <div className={styles.statementLeft}>
-            <span className={styles.statementEyebrow}>Oloisiri · Namanga</span>
-          </div>
-          <p className={styles.statementText}>
-            The land<br />was here<br /><em>first.</em>
-          </p>
-        </div>
-        <div className={styles.statementGhost} aria-hidden="true">Land</div>
-      </section>
-
-      {/* ── Numbers ──────────────────────────────────────── */}
-      <section
-        ref={numbers.ref}
-        className={`${styles.numbers} ${numbers.inView ? styles.inView : ''}`}
-      >
-        <div className={styles.numbersInner}>
-          <div className={styles.numbersHeader}>
-            <span className={styles.eyebrowLight}>By the Numbers</span>
-            <div className={styles.numbersRule} />
-          </div>
-          <div className={styles.statsGrid}>
-            <AnimatedStat value={24}  label="Handcrafted suites" />
-            <AnimatedStat value={3}   suffix="+" label="Dining experiences" />
-            <AnimatedStat value={2}   label="Nations at your doorstep" />
-            <AnimatedStat value={5}   suffix="★" label="Guest rating" />
-          </div>
-        </div>
-        <div className={styles.numbersGrain} aria-hidden="true" />
-      </section>
-
-      {/* ── Gallery strip ────────────────────────────────── */}
-      <section className={styles.gallerySection}>
-        <div className={styles.galleryHeader}>
-          <span className={styles.eyebrow}>The Rooms</span>
-          <span className={styles.galleryHint}>drag to explore →</span>
-        </div>
-        <div
-          ref={galleryRef}
-          className={`${styles.galleryStrip} ${dragging ? styles.grabbing : ''}`}
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
-        >
-          {gallery.map((item, i) => (
-            <div
-              key={i}
-              className={styles.galleryItem}
-              style={{
-                height: [480, 380, 440, 500, 420, 460][i],
-                minWidth: Math.round([480, 380, 440, 500, 420, 460][i] * 0.72),
-              }}
-            >
-              <Image
-                src={item.src} alt={item.label} fill
-                sizes="500px" draggable={false}
-                style={{ objectFit: 'cover' }}
-              />
-              <div className={styles.galleryItemOverlay}>
-                <span className={styles.galleryItemLabel}>{item.label}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Commitment ───────────────────────────────────── */}
-      <section
-        ref={commitment.ref}
-        className={`${styles.commitment} ${commitment.inView ? styles.inView : ''}`}
-      >
-        <div className={styles.commitmentInner}>
-          <div className={styles.commitmentHeader}>
-            <span className={styles.eyebrowLight}>What We Stand For</span>
-            <h2 className={styles.commitmentHeading}>
-              Three commitments.<br />One unwavering <em>address.</em>
+        <div className={styles.pillarsInner}>
+          <div className={styles.pillarsHeader}>
+            <span className={styles.eyebrowLight}>What We Believe</span>
+            <h2 className={styles.pillarsHeading}>
+              Three things we will not compromise on.
             </h2>
           </div>
 
-          <div className={styles.pillars}>
-            {pillars.map((p, i) => (
+          <div className={styles.pillarsGrid}>
+            {PILLARS.map((p, i) => (
               <div
                 key={p.num}
                 className={styles.pillar}
-                style={{ transitionDelay: `${i * 0.16}s` }}
+                style={{ transitionDelay: `${i * 150}ms` }}
               >
                 <div className={styles.pillarGhost} aria-hidden="true">{p.num}</div>
-                <div className={styles.pillarNum}>{p.num}</div>
-                <div className={styles.pillarLine} />
                 <h3 className={styles.pillarTitle}>{p.title}</h3>
                 <p className={styles.pillarBody}>{p.body}</p>
               </div>
@@ -351,66 +199,43 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Detail split ─────────────────────────────────── */}
+      {/* ── S5: The Detail ───────────────────────────────── */}
       <section
         ref={detail.ref}
         className={`${styles.detailSection} ${detail.inView ? styles.inView : ''}`}
       >
-        <div className={styles.detailLeft}>
-          <div className={styles.detailImgWrap}>
-            <Image
-              src="/about-detail.jpg"
-              alt="Oloisiri branded bathroom amenities"
-              fill sizes="(max-width: 900px) 100vw, 55vw"
-              style={{ objectFit: 'cover', objectPosition: 'center' }}
-            />
+        <div className={styles.detailInner}>
+
+          <div className={styles.detailLeft}>
+            <span className={styles.eyebrow}>The Detail</span>
+            <h2 className={styles.detailHeading}>Nothing here is an accident.</h2>
+            <p className={styles.detailBody}>
+              The soap in your room carries the Oloisiri mark. The art on the wall was made by
+              someone whose name we know. The coffee at breakfast is Kenyan — single origin, from
+              the highlands. The thread count of the linen is not a number we advertise, but it
+              is a number we argued about.
+            </p>
           </div>
-          <div className={styles.detailVertLabel} aria-hidden="true">
-            The Detail Lies in Everything
+
+          <div className={styles.detailRight}>
+            <p className={styles.detailQuote}>
+              Attention to detail is not about perfection. It is about not being lazy.
+            </p>
           </div>
-        </div>
-        <div className={styles.detailRight}>
-          <span className={styles.eyebrow}>The Details</span>
-          <h2 className={styles.detailHeading}>
-            Nothing here<br />is accidental.
-          </h2>
-          <div className={styles.detailRule} />
-          <p className={styles.detailBody}>
-            From the branded soap cradled in a hand-woven basket to the thread count of the linen
-            — every object in an Oloisiri room has been considered. Because attention to detail
-            is not about perfection. It is about care.
-          </p>
-          <p className={styles.detailBody}>
-            Our in-house toiletries carry the Oloisiri mark. Our towels are folded with intention.
-            The light through sheer curtains at 7am is, we believe, a designed experience.
-          </p>
+
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────── */}
+      {/* ── S6: CTA ──────────────────────────────────────── */}
       <section
         ref={cta.ref}
-        className={`${styles.cta} ${cta.inView ? styles.inView : ''}`}
+        className={`${styles.ctaSection} ${cta.inView ? styles.inView : ''}`}
       >
-        <div className={styles.ctaBg}>
-          <Image
-            src="/about-room-3.jpg"
-            alt=""
-            fill sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
-          />
-          <div className={styles.ctaOverlay} />
-        </div>
         <div className={styles.ctaInner}>
-          <span className={styles.eyebrowLight}>We Are Ready For You</span>
-          <h2 className={styles.ctaHeading}>
-            Your journey begins<br />with a <em>conversation.</em>
-          </h2>
+          <h2 className={styles.ctaHeading}>Come and see it for yourself.</h2>
+          <p className={styles.ctaSubtext}>Reservations open. No minimum stay.</p>
           <Link href="/contact" className={styles.ctaBtn}>
             Begin Planning Your Visit
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
           </Link>
         </div>
       </section>
