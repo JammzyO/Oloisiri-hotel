@@ -94,7 +94,7 @@
   display: block;
   opacity: 0;
   transform: translateY(18px);
-  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 0.20s forwards;
+  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 0.80s forwards;
 }
 
 .line2 {
@@ -102,7 +102,7 @@
   font-style: italic;
   opacity: 0;
   transform: translateY(18px);
-  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 0.34s forwards;
+  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 0.94s forwards;
 }
 
 /* ─── Subheadline ────────────────────────────────────────── */
@@ -117,7 +117,7 @@
   text-align: center;
   opacity: 0;
   transform: translateY(18px);
-  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 0.54s forwards;
+  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 1.0s forwards;
 }
 
 /* ─── CTA ────────────────────────────────────────────────── */
@@ -134,7 +134,7 @@
   padding: 15px 36px;
   opacity: 0;
   transform: translateY(18px);
-  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 0.74s forwards;
+  animation: fadeUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) 1.2s forwards;
   transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 

@@ -71,15 +71,16 @@
   flex-shrink: 0;
   cursor: pointer;
   text-decoration: none;
-  transition: opacity 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: filter 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+  filter: brightness(1);
 }
 
 .cardActive {
-  opacity: 1;
+  filter: brightness(1);
 }
 
 .cardDim {
-  opacity: 0.4;
+  filter: brightness(0.65);
 }
 
 /* ─── Card image ─────────────────────────────────────────── */

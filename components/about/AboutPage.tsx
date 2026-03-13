@@ -223,7 +223,7 @@ export default function AboutPage() {
 
           <div className={styles.detailRight}>
             <p className={styles.detailQuote}>
-              Attention to detail is not about perfection. It is about not being lazy.
+              The light through the curtains at seven in the morning is, we believe, a designed experience.
             </p>
           </div>
 

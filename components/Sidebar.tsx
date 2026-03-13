@@ -17,6 +17,12 @@ const NAV_LINKS = [
 export default function Sidebar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
 
   // Close sidebar on navigation
   useEffect(() => {
@@ -58,7 +64,7 @@ export default function Sidebar() {
       {/* ── Sidebar ───────────────────────────────────── */}
       <aside
         id="sidebar"
-        className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`}
+        className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''} ${mounted ? styles.sidebarMounted : ''}`}
         aria-label="Site navigation"
       >
         {/* Logo */}
@@ -75,8 +81,6 @@ export default function Sidebar() {
             />
           </Link>
         </div>
-
-        <div className={styles.divider} />
 
         {/* Navigation */}
         <nav className={styles.nav} aria-label="Primary">

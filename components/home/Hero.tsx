@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './Hero.module.css'
@@ -38,6 +38,18 @@ const slides = [
 export default function Hero() {
   const [current, setCurrent] = useState(0)
   const [animKey, setAnimKey] = useState(0)
+  const parallaxRef = useRef<HTMLDivElement>(null)
+
+  // Parallax: background moves at 0.4× scroll speed
+  useEffect(() => {
+    const onScroll = () => {
+      if (parallaxRef.current) {
+        parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const goTo = useCallback((index: number) => {
     setCurrent(index)
@@ -73,25 +85,29 @@ export default function Hero() {
   return (
     <section className={styles.hero} aria-label="Hero">
 
-      {/* ── Slide backgrounds — real photos, crossfade ── */}
-      {slides.map((s, i) => (
-        <div
-          key={s.id}
-          className={`${styles.slideBg} ${i === current ? styles.slideBgActive : ''}`}
-          aria-hidden="true"
-        >
-          <Image
-            src={s.src}
-            alt={s.alt}
-            fill
-            priority={i === 0}
-            sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: s.objectPosition }}
-          />
-          {/* Dark teal overlay for text legibility */}
-          <div className={styles.slideOverlay} />
-        </div>
-      ))}
+      {/* ── Slide backgrounds — parallax wrapper ── */}
+      <div
+        ref={parallaxRef}
+        style={{ position: 'absolute', top: '-20%', left: 0, right: 0, bottom: '-20%', willChange: 'transform' }}
+        aria-hidden="true"
+      >
+        {slides.map((s, i) => (
+          <div
+            key={s.id}
+            className={`${styles.slideBg} ${i === current ? styles.slideBgActive : ''}`}
+          >
+            <Image
+              src={s.src}
+              alt={s.alt}
+              fill
+              priority={i === 0}
+              sizes="100vw"
+              style={{ objectFit: 'cover', objectPosition: s.objectPosition }}
+            />
+            <div className={styles.slideOverlay} />
+          </div>
+        ))}
+      </div>
 
       {/* ── Frosted glass arch card — centred ── */}
       <div className={styles.cardWrap}>

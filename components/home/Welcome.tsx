@@ -43,10 +43,8 @@ export default function Welcome() {
           <span className={styles.eyebrow}>Welcome to Oloisiri</span>
 
           <h2 className={styles.heading}>
-            Exceptional Hospitality and
-            <br />
-            Unmatched{' '}
-            <em className={styles.headingItalic}>Relaxation.</em>
+            Perched at the meeting point of two{' '}
+            <em className={styles.headingGold}>nations.</em>
           </h2>
 
           <div className={styles.rating}>
@@ -57,13 +55,10 @@ export default function Welcome() {
           </div>
 
           <p className={styles.body}>
-            Perched at the meeting point of Kenya and Tanzania, Oloisiri Namanga
-            Hotel is not merely a place to rest. It is a place to feel the land
-            beneath you, to watch Kilimanjaro emerge from the morning mist, and
-            to rediscover the pleasure of unhurried time. Each of our twenty-four
-            suites has been handcrafted with materials drawn from the earth —
-            stone, timber, linen — and furnished with the restraint that true
-            luxury demands.
+            Oloisiri Namanga Hotel is not merely a place to rest. It is a place
+            to feel the land beneath you — to watch Kilimanjaro emerge from the
+            morning mist, and rediscover the pleasure of unhurried time.
+            Twenty-four suites, each handcrafted from materials drawn from the earth.
           </p>
         </div>
 

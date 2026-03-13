@@ -105,6 +105,12 @@
   font-weight: 300;
 }
 
+.headingGold {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--color-gold);
+}
+
 /* ─── Rating ─────────────────────────────────────────────── */
 .rating {
   display: flex;
