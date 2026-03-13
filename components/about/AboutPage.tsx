@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './AboutPage.module.css'
+import BeamsCanvas from './BeamsCanvas'
 
 /* ─── useInView ──────────────────────────────────────────── */
 function useInView(threshold = 0.12) {
@@ -91,6 +92,9 @@ export default function AboutPage() {
 
       {/* ── S1: Cinematic opener ─────────────────────────── */}
       <section className={styles.hero}>
+
+        {/* Animated beams background */}
+        <BeamsCanvas />
 
         {/* Top bar — eyebrow left, coords right */}
         <div className={`${styles.heroTopBar} ${loaded ? styles.barIn : ''}`}>
