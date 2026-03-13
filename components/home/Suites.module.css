@@ -223,9 +223,47 @@
 }
 
 @media (max-width: 600px) {
+  .section {
+    padding: 64px 20px;
+  }
+
+  .heading {
+    font-size: 34px;
+  }
+
+  /* Horizontal scroll — one card snaps at a time */
+  .carousel {
+    flex-direction: row;
+    align-items: stretch;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start;
+    gap: 16px;
+    padding-bottom: 8px;
+    width: 100%;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+
   .card {
-    width: 160px;
-    height: 260px;
-    border-radius: 80px 80px 0 0;
+    width: 75vw;
+    max-width: 280px;
+    height: 380px;
+    border-radius: 140px 140px 0 0;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+  }
+
+  .cardDim {
+    opacity: 0.6;
+  }
+
+  .cardOverlay {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

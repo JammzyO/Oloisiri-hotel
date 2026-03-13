@@ -155,16 +155,47 @@
 /* ─── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .bar {
-    padding: 0 16px;
+    height: auto;
+    flex-wrap: wrap;
+    padding: 14px 16px;
     gap: 0;
+    overflow-x: visible;
   }
 
   .barLabel {
     display: none;
   }
 
+  /* Row 1: dates */
+  .field {
+    padding: 6px 12px;
+    flex: 1 1 40%;
+  }
+
+  /* Row 2: guest counters */
+  .counter {
+    padding: 6px 12px;
+    flex: 1 1 40%;
+  }
+
+  /* Separators between rows become invisible */
+  .separator {
+    display: none;
+  }
+
+  /* Button spans full width on its own row */
+  .checkBtn {
+    margin-left: 0;
+    width: 100%;
+    padding: 14px 20px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
   .field,
   .counter {
-    padding: 0 14px;
+    flex: 1 1 100%;
+    padding: 6px 0;
   }
 }

@@ -156,6 +156,20 @@
   }
 }
 
+@media (max-width: 900px) {
+  .archLeft,
+  .archRight {
+    width: 260px;
+    height: 320px;
+    border-radius: 130px 130px 0 0;
+  }
+
+  .archLeft::after,
+  .archRight::after {
+    border-radius: 122px 122px 0 0;
+  }
+}
+
 @media (max-width: 768px) {
   .section {
     padding: 64px 24px;
@@ -163,11 +177,23 @@
 
   .inner {
     flex-direction: column;
-    align-items: center;
-    gap: 40px;
+    align-items: flex-start;
+    gap: 36px;
   }
 
-  .archLeft,
+  /* Show one arch image centred above the text, hide the other */
+  .archLeft {
+    width: 100%;
+    max-width: 320px;
+    height: 280px;
+    border-radius: 160px 160px 0 0;
+    align-self: center;
+  }
+
+  .archLeft::after {
+    border-radius: 152px 152px 0 0;
+  }
+
   .archRight {
     display: none;
   }
@@ -178,5 +204,11 @@
 
   .body {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .heading {
+    font-size: 30px;
   }
 }

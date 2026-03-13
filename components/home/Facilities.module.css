@@ -123,7 +123,33 @@
     grid-template-columns: 1fr;
   }
 
+  .card {
+    min-height: 360px;
+  }
+
+  .heading {
+    font-size: 30px;
+  }
+
+  .statBanner {
+    padding: 20px 24px 24px;
+  }
+
   .statNumber {
     font-size: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding: 64px 20px;
+  }
+
+  .card {
+    min-height: 300px;
+  }
+
+  .statNumber {
+    font-size: 40px;
   }
 }

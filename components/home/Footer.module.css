@@ -179,3 +179,17 @@
     padding: 24px 40px;
   }
 }
+
+@media (max-width: 600px) {
+  .columns {
+    padding: 48px 20px 40px;
+  }
+
+  .brandName {
+    font-size: 22px;
+  }
+
+  .copyright {
+    padding: 20px;
+  }
+}

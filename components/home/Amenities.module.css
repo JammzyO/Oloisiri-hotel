@@ -128,7 +128,20 @@
 }
 
 @media (max-width: 600px) {
+  .section {
+    padding: 64px 20px;
+  }
+
   .grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tile {
+    padding: 28px 24px;
+  }
+
+  .heading {
+    font-size: 28px;
   }
 }

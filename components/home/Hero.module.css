@@ -211,3 +211,22 @@
   .arrowPrev { left: 12px; }
   .arrowNext { right: 12px; }
 }
+
+@media (max-width: 400px) {
+  .archCard {
+    padding: 52px 28px 44px;
+    min-height: 400px;
+  }
+
+  .headline { font-size: 34px; }
+
+  .sub {
+    font-size: 13px;
+    max-width: 100%;
+  }
+
+  .arrow {
+    width: 38px;
+    height: 38px;
+  }
+}
