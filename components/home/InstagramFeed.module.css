@@ -1,0 +1,113 @@
+/* ─── Instagram Feed ─────────────────────────────────────── */
+.section {
+  background: var(--color-teal-dark);
+  padding: 80px 80px;
+}
+
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── Header ─────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  display: block;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 52px;
+  color: var(--color-white);
+  text-align: center;
+  margin-bottom: 56px;
+  letter-spacing: -0.5px;
+}
+
+/* ─── Strip ──────────────────────────────────────────────── */
+.strip {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ─── Post ───────────────────────────────────────────────── */
+.post {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.postBg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.post:hover .postBg {
+  transform: scale(1.06);
+}
+
+/* ─── Overlay (Instagram icon) ───────────────────────────── */
+.postOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 47, 44, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.post:hover .postOverlay {
+  opacity: 1;
+}
+
+/* ─── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .section {
+    padding: 64px 40px;
+  }
+
+  .heading {
+    font-size: 36px;
+  }
+
+  .strip {
+    gap: 4px;
+  }
+
+  .post {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .post {
+    width: 60px;
+    height: 60px;
+  }
+
+  .strip {
+    gap: 3px;
+  }
+}

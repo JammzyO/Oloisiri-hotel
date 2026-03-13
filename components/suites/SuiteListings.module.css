@@ -1,0 +1,345 @@
+/* ─── Section ────────────────────────────────────────────── */
+.section {
+  background: var(--color-cream);
+  padding: 100px 80px;
+}
+
+.inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ─── Suite row ──────────────────────────────────────────── */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  padding: 80px 0;
+  border-bottom: 1px solid rgba(8, 47, 44, 0.10);
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.65s var(--ease),
+    transform 0.65s var(--ease);
+}
+
+.row:first-child {
+  padding-top: 0;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.rowReversed {
+  flex-direction: row-reverse;
+}
+
+.row.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Arch image ─────────────────────────────────────────── */
+.archWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.archImage {
+  width: 440px;
+  height: 580px;
+  border-radius: 220px 220px 0 0;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.6s var(--ease);
+  /* Window frame — gold outer border */
+  box-shadow: 0 0 0 3px rgba(201, 162, 77, 0.55);
+}
+
+/* Window frame inner line */
+.archImage::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 212px 212px 0 0;
+  border: 1px solid rgba(201, 162, 77, 0.28);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.archWrap:hover .archImage {
+  transform: translateY(-6px);
+}
+
+.archShimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.archWrap:hover .archShimmer {
+  opacity: 1;
+}
+
+/* ─── Slideshow ──────────────────────────────────────────── */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease);
+}
+
+.slideActive {
+  opacity: 1;
+}
+
+.slideControls {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 5;
+}
+
+.slideArrow {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 47, 44, 0.55);
+  border: 1px solid rgba(201, 162, 77, 0.4);
+  color: rgba(232, 221, 199, 0.85);
+  cursor: pointer;
+  border-radius: 0;
+  flex-shrink: 0;
+  transition:
+    background 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.slideArrow:hover {
+  background: rgba(8, 47, 44, 0.85);
+  border-color: rgba(201, 162, 77, 0.8);
+}
+
+.slideDots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.slideDot {
+  width: 20px;
+  height: 2px;
+  background: rgba(232, 221, 199, 0.35);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), width 0.2s var(--ease);
+}
+
+.slideDotActive {
+  background: var(--color-gold);
+  width: 28px;
+}
+
+.suiteNumber {
+  position: absolute;
+  bottom: -14px;
+  left: 24px;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 80px;
+  line-height: 1;
+  color: rgba(8, 47, 44, 0.08);
+  letter-spacing: -2px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─── Text block ─────────────────────────────────────────── */
+.text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.category {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 16px;
+}
+
+.suiteName {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 1.05;
+  color: var(--color-teal-dark);
+  letter-spacing: -0.3px;
+  margin-bottom: 24px;
+}
+
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--color-gold);
+  opacity: 0.5;
+  margin-bottom: 24px;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--color-stone);
+  line-height: 1.85;
+  max-width: 480px;
+  margin-bottom: 36px;
+}
+
+/* ─── Meta ───────────────────────────────────────────────── */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--color-teal);
+  opacity: 0.7;
+}
+
+.metaDot {
+  color: var(--color-stone);
+  opacity: 0.4;
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.rate {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--color-teal-dark);
+  letter-spacing: -0.2px;
+}
+
+.rateNight {
+  font-style: italic;
+  font-size: 16px;
+  color: var(--color-stone);
+  opacity: 0.7;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-teal-dark);
+  border: 1px solid rgba(8, 47, 44, 0.3);
+  padding: 14px 28px;
+  transition:
+    background 0.2s var(--ease),
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.cta:hover {
+  background: var(--color-teal-dark);
+  color: var(--color-cream);
+  border-color: var(--color-teal-dark);
+}
+
+/* ─── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .section {
+    padding: 80px 40px;
+  }
+
+  .row,
+  .rowReversed {
+    flex-direction: column;
+    gap: 48px;
+    padding: 60px 0;
+  }
+
+  .archImage {
+    width: 340px;
+    height: 440px;
+    border-radius: 170px 170px 0 0;
+  }
+
+  .archImage::after {
+    border-radius: 162px 162px 0 0;
+  }
+
+  .suiteName {
+    font-size: 36px;
+  }
+
+  .description {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding: 64px 24px;
+  }
+
+  .archImage {
+    width: 100%;
+    max-width: 300px;
+    height: 340px;
+  }
+
+  .suiteName {
+    font-size: 30px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}

@@ -1,0 +1,170 @@
+/* ─── Reservation Bar ────────────────────────────────────── */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: var(--color-teal-dark);
+  border-bottom: 1px solid rgba(232, 221, 199, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 32px;
+  height: 72px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.bar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Label ──────────────────────────────────────────────── */
+.barLabel {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--color-gold);
+  white-space: nowrap;
+  padding-right: 24px;
+  flex-shrink: 0;
+}
+
+/* ─── Separator ──────────────────────────────────────────── */
+.separator {
+  width: 1px;
+  height: 28px;
+  background: rgba(232, 221, 199, 0.12);
+  flex-shrink: 0;
+}
+
+/* ─── Fields ─────────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.fieldLabel {
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(232, 221, 199, 0.4);
+}
+
+.dateInput {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(232, 221, 199, 0.15);
+  color: rgba(232, 221, 199, 0.85);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 300;
+  padding: 4px 0;
+  outline: none;
+  cursor: pointer;
+  color-scheme: dark;
+  transition: border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.dateInput:focus {
+  border-color: var(--color-gold);
+}
+
+/* ─── Counter ────────────────────────────────────────────── */
+.counter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.counterControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.counterBtn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(232, 221, 199, 0.2);
+  color: rgba(232, 221, 199, 0.7);
+  cursor: pointer;
+  transition:
+    border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.1s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.counterBtn:hover:not(:disabled) {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.counterBtn:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.counterBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.counterVal {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--color-cream);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ─── Check button ───────────────────────────────────────── */
+.checkBtn {
+  margin-left: auto;
+  flex-shrink: 0;
+  background: var(--color-gold);
+  color: var(--color-teal-dark);
+  font-family: var(--font-body);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  border: none;
+  padding: 14px 28px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.checkBtn:hover {
+  background: #b8912e;
+}
+
+/* ─── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .bar {
+    padding: 0 16px;
+    gap: 0;
+  }
+
+  .barLabel {
+    display: none;
+  }
+
+  .field,
+  .counter {
+    padding: 0 14px;
+  }
+}

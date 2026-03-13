@@ -1,0 +1,796 @@
+/* ─── Page wrapper ───────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-cream);
+}
+
+/* ─── Gallery ────────────────────────────────────────────── */
+.gallery {
+  position: relative;
+  width: 100%;
+  height: 68vh;
+  min-height: 480px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.gallerySlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.gallerySlideActive {
+  opacity: 1;
+}
+
+.galleryOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 16, 12, 0.1) 0%,
+    rgba(4, 16, 12, 0.05) 40%,
+    rgba(4, 16, 12, 0.65) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Gallery title — bottom left */
+.galleryTitle {
+  position: absolute;
+  bottom: 48px;
+  left: 64px;
+  z-index: 2;
+}
+
+.galleryCat {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 10px;
+}
+
+.galleryName {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 52px;
+  line-height: 1.1;
+  color: var(--color-white);
+  letter-spacing: -0.5px;
+}
+
+/* Navigation arrows */
+.galleryArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 47, 44, 0.45);
+  border: 1px solid rgba(232, 221, 199, 0.2);
+  color: rgba(232, 221, 199, 0.8);
+  cursor: pointer;
+  transition:
+    background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.galleryArrow:hover {
+  background: rgba(8, 47, 44, 0.75);
+  border-color: rgba(201, 162, 77, 0.5);
+  color: var(--color-gold);
+}
+
+.galleryArrowPrev { left: 24px; }
+.galleryArrowNext { right: 24px; }
+
+/* Dot indicators */
+.galleryCounter {
+  position: absolute;
+  bottom: 24px;
+  right: 64px;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.galleryDot {
+  width: 24px;
+  height: 2px;
+  background: rgba(232, 221, 199, 0.35);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), width 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.galleryDotActive {
+  background: var(--color-gold);
+  width: 36px;
+}
+
+/* ─── Body (content + reserve) ───────────────────────────── */
+.body {
+  background: var(--color-cream);
+  padding: 72px 64px 100px;
+}
+
+.bodyInner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 80px;
+  align-items: start;
+}
+
+/* ─── Content column ─────────────────────────────────────── */
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Meta row */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--color-teal);
+  opacity: 0.75;
+}
+
+.metaDot {
+  color: var(--color-stone);
+  opacity: 0.4;
+}
+
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--color-gold);
+  opacity: 0.5;
+  margin-bottom: 28px;
+}
+
+/* Description */
+.description {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--color-stone);
+  max-width: 680px;
+  margin-bottom: 56px;
+}
+
+/* Block title */
+.blockTitle {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 26px;
+  color: var(--color-teal-dark);
+  letter-spacing: -0.2px;
+  margin-bottom: 28px;
+}
+
+/* ─── Amenities ──────────────────────────────────────────── */
+.amenitiesBlock {
+  margin-bottom: 56px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(8, 47, 44, 0.1);
+}
+
+.amenitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 16px;
+}
+
+.amenityItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.amenityIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 47, 44, 0.05);
+  border: 1px solid rgba(8, 47, 44, 0.08);
+  color: var(--color-teal);
+  flex-shrink: 0;
+}
+
+.amenityLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-teal-dark);
+  letter-spacing: 0.3px;
+}
+
+/* ─── Features ───────────────────────────────────────────── */
+.featuresBlock {
+  margin-bottom: 56px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(8, 47, 44, 0.1);
+}
+
+.featuresList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--color-stone);
+  line-height: 1.6;
+}
+
+.featureItem svg {
+  color: var(--color-gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.featureItem strong {
+  font-weight: 500;
+  color: var(--color-teal-dark);
+}
+
+/* ─── Times ──────────────────────────────────────────────── */
+.timesBlock {
+  margin-bottom: 56px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(8, 47, 44, 0.1);
+}
+
+.timesRow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(8, 47, 44, 0.1);
+}
+
+.timeItem {
+  flex: 1;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeDivider {
+  width: 1px;
+  height: 64px;
+  background: rgba(8, 47, 44, 0.1);
+}
+
+.timeLabel {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.timeValue {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--color-teal-dark);
+  letter-spacing: -0.3px;
+}
+
+/* ─── Calendar ───────────────────────────────────────────── */
+.calBlock {
+  padding-top: 40px;
+  border-top: 1px solid rgba(8, 47, 44, 0.1);
+}
+
+.calendar {
+  border: 1px solid rgba(8, 47, 44, 0.1);
+  padding: 28px;
+}
+
+.calNav {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.calArrow {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(8, 47, 44, 0.15);
+  color: var(--color-teal);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 4px;
+  transition:
+    border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.calArrow:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.calMonths {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  flex: 1;
+}
+
+.calMonth {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.calMonthName {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--color-teal-dark);
+  letter-spacing: -0.1px;
+}
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calDow {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  text-align: center;
+  padding: 4px 0;
+}
+
+.calDay,
+.calDayPast,
+.calDaySelected,
+.calDayRange,
+.calEmpty {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+  padding: 7px 0;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--color-teal-dark);
+  transition: background 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.calDay:hover {
+  background: rgba(8, 47, 44, 0.06);
+}
+
+.calDayPast {
+  color: rgba(8, 47, 44, 0.22);
+  cursor: default;
+}
+
+.calDaySelected {
+  background: var(--color-teal-dark);
+  color: var(--color-cream);
+}
+
+.calDayRange {
+  background: rgba(8, 47, 44, 0.08);
+  color: var(--color-teal-dark);
+}
+
+.calEmpty {
+  background: transparent;
+  cursor: default;
+}
+
+.calSelection {
+  display: flex;
+  gap: 32px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(8, 47, 44, 0.08);
+  margin-top: 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-stone);
+  font-weight: 300;
+}
+
+.calSelection strong {
+  color: var(--color-teal-dark);
+  font-weight: 500;
+}
+
+/* ─── Reserve box ────────────────────────────────────────── */
+.reserveCol {
+  position: sticky;
+  top: 48px;
+  align-self: start;
+}
+
+.reserveBox {
+  background: var(--color-teal-dark);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.reserveHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(232, 221, 199, 0.1);
+}
+
+.reserveCategory {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.reservePrice {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.reservePriceNum {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--color-white);
+  letter-spacing: -0.3px;
+}
+
+.reservePriceNight {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(232, 221, 199, 0.5);
+  font-style: italic;
+}
+
+.reserveFields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reserveRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.reserveField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reserveLabel {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(232, 221, 199, 0.45);
+}
+
+.reserveInput {
+  width: 100%;
+  background: rgba(232, 221, 199, 0.07);
+  border: 1px solid rgba(232, 221, 199, 0.15);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  color-scheme: dark;
+}
+
+.reserveInput:focus {
+  border-color: rgba(201, 162, 77, 0.6);
+}
+
+/* Counter */
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(232, 221, 199, 0.15);
+  background: rgba(232, 221, 199, 0.07);
+}
+
+.counterBtn {
+  width: 36px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: rgba(232, 221, 199, 0.6);
+  font-size: 18px;
+  cursor: pointer;
+  transition:
+    color 0.15s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.1s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.counterBtn:active {
+  transform: scale(0.88);
+}
+
+.counterBtn:hover {
+  color: var(--color-gold);
+}
+
+.counterVal {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-cream);
+}
+
+/* Reserve CTA */
+.reserveBtn {
+  display: block;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--color-teal-dark);
+  background: var(--color-gold);
+  text-decoration: none;
+  padding: 18px 24px;
+  transition:
+    background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.reserveBtn:hover {
+  background: var(--color-cream);
+  color: var(--color-teal-dark);
+}
+
+.reserveNote {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(232, 221, 199, 0.35);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ─── More Rooms ─────────────────────────────────────────── */
+.moreSection {
+  background: var(--color-teal-dark);
+  padding: 100px 64px;
+}
+
+.moreInner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.moreHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.moreEyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 16px;
+}
+
+.moreHeading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 40px;
+  color: var(--color-white);
+  letter-spacing: -0.3px;
+}
+
+.moreCards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.moreCard {
+  text-decoration: none;
+  display: block;
+}
+
+.moreArch {
+  position: relative;
+  width: 320px;
+  height: 440px;
+  border-radius: 160px 160px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(201, 162, 77, 0.4);
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.moreCard:hover .moreArch {
+  transform: translateY(-8px);
+}
+
+.moreCardOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 28px 24px;
+  background: linear-gradient(to top, rgba(4, 20, 18, 0.88) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.moreCardCategory {
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.moreCardName {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 22px;
+  color: var(--color-white);
+  line-height: 1.2;
+}
+
+.moreCardMeta {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(232, 221, 199, 0.6);
+}
+
+/* ─── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .bodyInner {
+    grid-template-columns: 1fr 320px;
+    gap: 56px;
+  }
+}
+
+@media (max-width: 900px) {
+  .galleryName {
+    font-size: 38px;
+  }
+
+  .galleryTitle {
+    left: 32px;
+    bottom: 36px;
+  }
+
+  .body {
+    padding: 56px 32px 80px;
+  }
+
+  .bodyInner {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .reserveCol {
+    position: static;
+    margin-top: 56px;
+  }
+
+  .moreSection {
+    padding: 80px 32px;
+  }
+
+  .amenitiesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .calMonths {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery {
+    height: 55vh;
+  }
+
+  .galleryName {
+    font-size: 30px;
+  }
+
+  .galleryTitle {
+    left: 24px;
+    bottom: 28px;
+  }
+
+  .body {
+    padding: 40px 24px 60px;
+  }
+
+  .moreArch {
+    width: 260px;
+    height: 360px;
+    border-radius: 130px 130px 0 0;
+  }
+}
