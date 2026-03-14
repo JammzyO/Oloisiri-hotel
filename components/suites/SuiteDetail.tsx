@@ -194,10 +194,56 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
     <div className={styles.reserveBox}>
       <div className={styles.reserveHeader}>
         <span className={styles.reserveCategory}>{suite.category}</span>
-        <div className={styles.reservePrice}>
-          <span className={styles.reservePriceNum}>{suite.rateDisplay}</span>
-          <span className={styles.reservePriceNight}> / night</span>
+
+        {/* Resident rates */}
+        <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingBottom: '16px', marginBottom: '2px' }}>
+          <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Resident Rates</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <span className={styles.reservePriceNight}>Single occupancy</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                KES 7,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+              </span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <span className={styles.reservePriceNight}>Double occupancy</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+              </span>
+            </div>
+          </div>
         </div>
+
+        {/* Non-resident rates */}
+        <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingTop: '14px', paddingBottom: '16px' }}>
+          <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Non-Resident Rates</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <span className={styles.reservePriceNight}>Single occupancy</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+              </span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <span className={styles.reservePriceNight}>Double occupancy</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                KES 11,000 <span className={styles.reservePriceNight}>B&amp;B</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Opening rate notice */}
+        <div style={{ background: '#e8ddc7', borderLeft: '3px solid #c9a24d', padding: '10px 14px', marginTop: '4px' }}>
+          <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '11px', color: '#082f2c', display: 'block', letterSpacing: '0.02em', lineHeight: 1.6 }}>
+            Special opening rate — available for a limited time.
+          </span>
+        </div>
+
+        {/* Buffet note */}
+        <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '10px', color: '#857f77', margin: '0', lineHeight: 1.7, letterSpacing: '0.01em' }}>
+          Buffet meals available on arrangement — KES 2,500 per head, includes one soft drink.
+        </p>
       </div>
 
       <div className={styles.reserveFields}>

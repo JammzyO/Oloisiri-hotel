@@ -6,10 +6,12 @@ import Image from 'next/image'
 import styles from './ContactPage.module.css'
 
 const SUITES = [
-  { value: '',                label: 'Not Yet Decided' },
-  { value: 'savannah-suite',  label: 'Savannah Suite — Garden Level' },
-  { value: 'kilimanjaro-suite', label: 'Kilimanjaro Suite — View Suite' },
-  { value: 'bush-villa',      label: 'Bush Villa — Private Villa' },
+  { value: '',                   label: 'Not Yet Decided' },
+  { value: 'luxury-room',        label: 'Luxury Room — Top Floor' },
+  { value: 'standard-king',      label: 'Standard King — Garden Level' },
+  { value: 'twin-room',          label: 'Twin Room — Garden Level' },
+  { value: 'family-room',        label: 'Family Room — Garden Level' },
+  { value: 'interleading-suite', label: 'Interleading Suite — Garden Level' },
 ]
 
 /* ─── Form (uses useSearchParams — needs Suspense wrapper) ── */
@@ -196,10 +198,20 @@ function ContactForm() {
   )
 }
 
+/* ─── Rate row helper ────────────────────────────────────── */
+function RateRow({ label, rate }: { label: string; rate: string }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '10px 0', borderBottom: '1px solid rgba(201,162,77,0.15)' }}>
+      <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '13px', color: '#5a5a52', letterSpacing: '0.02em' }}>{label}</span>
+      <span style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: '18px', color: '#082f2c', letterSpacing: '-0.2px' }}>{rate}</span>
+    </div>
+  )
+}
+
 /* ─── Page ───────────────────────────────────────────────── */
 export default function ContactPage() {
   return (
-    <div className={styles.page}>
+    <><div className={styles.page}>
 
       {/* Left info panel */}
       <div className={styles.panel}>
@@ -240,7 +252,7 @@ export default function ContactPage() {
                 strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1.1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.96a16 16 0 0 0 6.02 6.02l1.32-1.26a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 15.92z"/>
               </svg>
-              <span>+254 700 000 000</span>
+              <span>+254 718 068 417</span>
             </div>
             <div className={styles.infoItem}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -262,5 +274,50 @@ export default function ContactPage() {
       </div>
 
     </div>
+
+    {/* ── Rates reference section ───────────────────────── */}
+    <section style={{ background: '#e8ddc7', padding: '80px 72px' }}>
+      <div style={{ maxWidth: '640px' }}>
+
+        <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '9px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: '18px' }}>
+          Current Rates
+        </span>
+
+        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#082f2c', lineHeight: 1.05, letterSpacing: '-0.01em', margin: '0 0 40px' }}>
+          Simple, transparent pricing.
+        </h2>
+
+        {/* Resident rates */}
+        <div style={{ marginBottom: '32px' }}>
+          <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '9px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: '4px' }}>
+            Resident Rates
+          </span>
+          <RateRow label="Single occupancy" rate="KES 7,500  —  B&B" />
+          <RateRow label="Double occupancy" rate="KES 9,500  —  B&B" />
+        </div>
+
+        {/* Non-resident rates */}
+        <div style={{ marginBottom: '36px' }}>
+          <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '9px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: '4px' }}>
+            Non-Resident Rates
+          </span>
+          <RateRow label="Single occupancy" rate="KES 9,500  —  B&B" />
+          <RateRow label="Double occupancy" rate="KES 11,000  —  B&B" />
+        </div>
+
+        {/* Opening notice */}
+        <div style={{ borderLeft: '3px solid #c9a24d', paddingLeft: '16px', marginBottom: '24px' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '12px', color: '#082f2c', margin: '0', lineHeight: 1.75, letterSpacing: '0.01em' }}>
+            These are special opening rates, available for a limited period. All rates are per room per night, bed and breakfast basis. Buffet meals available on arrangement at KES 2,500 per head.
+          </p>
+        </div>
+
+        <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '12px', color: '#857f77', margin: '0', lineHeight: 1.75, letterSpacing: '0.01em' }}>
+          For group bookings or extended stays, contact us directly.
+        </p>
+
+      </div>
+    </section>
+    </>
   )
 }
