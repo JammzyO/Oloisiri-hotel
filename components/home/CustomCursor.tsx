@@ -39,8 +39,8 @@ export default function CustomCursor() {
     const onOut = () => { hovered = false }
 
     const tick = () => {
-      currentX += (targetX - currentX) * 0.2
-      currentY += (targetY - currentY) * 0.2
+      currentX = targetX
+      currentY = targetY
 
       const size = hovered ? 40 : 16
       const half = size / 2
