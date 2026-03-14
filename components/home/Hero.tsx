@@ -9,7 +9,7 @@ const slides = [
   {
     id: 0,
     src: '/hero-1.jpg',
-    alt: 'Oloisiri infinity pool overlooking the savannah at dusk',
+    alt: 'Oloisiri hotel overlooking the savannah at dusk',
     objectPosition: 'center',
     headline1: 'Where the Wild',
     headline2: 'Meets the Refined.',
@@ -22,7 +22,7 @@ const slides = [
     objectPosition: 'center',
     headline1: 'A Sanctuary',
     headline2: 'Above the Plains.',
-    sub: 'Twenty-four suites where stillness is the greatest indulgence.',
+    sub: 'Forty rooms where stillness is the greatest indulgence.',
   },
   {
     id: 2,

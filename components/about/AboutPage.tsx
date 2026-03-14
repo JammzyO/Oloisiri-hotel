@@ -63,7 +63,7 @@ const PILLARS = [
   {
     num: '02',
     title: 'The people here know this land',
-    body: 'Oloisiri is run by a small team from Namanga and the surrounding communities. We do not have an org chart to share. We have people who know this land and take care of it.',
+    body: 'Oloisiri is run by a small team from Namanga and the surrounding communities. We do not have an org chart to share. We have people who know this land, take care of it, and will remember your name when you return.',
   },
   {
     num: '03',
@@ -99,7 +99,10 @@ export default function AboutPage() {
         {/* Top bar — eyebrow left, coords right */}
         <div className={`${styles.heroTopBar} ${loaded ? styles.barIn : ''}`}>
           <span className={styles.heroEyebrow}>Namanga, Kenya — Est. 2024</span>
-          <span className={styles.heroCoords}>1°34′S · 36°47′E</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-end' }}>
+            <span className={styles.heroCoords}>1°34′S · 36°47′E</span>
+            <span className={styles.heroCoords}>Oloisiri &mdash; &ldquo;Blessings&rdquo; in the Maa language</span>
+          </div>
         </div>
 
         {/* Gold sweep line */}
@@ -132,12 +135,12 @@ export default function AboutPage() {
             </h2>
             <p className={styles.storyBody}>
               Oloisiri sits in Namanga — a town that literally straddles the Kenya–Tanzania border,
-              positioned between Kajiado County and Longido District. We are 163km from Nairobi on
-              the A104, 110km from Arusha, and on one of the few stretches of highway in East Africa
-              where the drive is actually smooth.
+              2km from the crossing, 163km from Nairobi on the traffic-free A104, 110km from Arusha,
+              and 50km from Amboseli National Park. The name comes from the Maa language.
+              It means Blessings.
             </p>
             <p className={styles.storyBody}>
-              Twenty-four suites, each finished by hand — stone underfoot, timber overhead, linen
+              Forty rooms, each finished by hand — stone underfoot, timber overhead, linen
               that moves with the breeze off the plains. We are not a lodge in the bush. We are not
               a business hotel on a highway. We are something in between — a proper place to stay
               that happens to sit at one of East Africa's most quietly extraordinary addresses, with
@@ -164,11 +167,11 @@ export default function AboutPage() {
       {/* ── S3: Stats strip ──────────────────────────────── */}
       <section ref={stats.ref} className={styles.statsSection}>
         <div className={styles.statsInner}>
-          <AnimatedStat value={24}  label="Handcrafted suites" />
+          <AnimatedStat value={40}  label="Rooms & suites" />
           <div className={styles.statDivider} aria-hidden="true" />
           <AnimatedStat value={3}  suffix="+" label="Dining experiences" />
           <div className={styles.statDivider} aria-hidden="true" />
-          <AnimatedStat value={2}   label="Nations at your doorstep" />
+          <AnimatedStat value={50}  suffix="km" label="From Amboseli National Park" />
           <div className={styles.statDivider} aria-hidden="true" />
           <AnimatedStat value={5}  suffix="★" label="Guest rating" />
         </div>

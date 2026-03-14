@@ -6,7 +6,7 @@ import BookingPrompt from '@/components/suites/BookingPrompt'
 export const metadata: Metadata = {
   title: 'Suites',
   description:
-    'Twenty-four handcrafted suites at Oloisiri Namanga Hotel — from garden-level Savannah Suites to the private Bush Villa, each designed for the discerning guest.',
+    'Forty rooms at Oloisiri Namanga Hotel — from garden-level standard rooms to the top-floor Luxury Room, each with a private balcony and views of Kilimanjaro or the surrounding hills.',
 }
 
 export default function SuitesPage() {

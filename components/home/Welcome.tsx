@@ -55,11 +55,10 @@ export default function Welcome() {
           </div>
 
           <p className={styles.body}>
-            Oloisiri Namanga Hotel sits two kilometres from the Kenya–Tanzania border on the
-            Nairobi–Namanga Highway — 163km from Nairobi, 110km from Arusha, on one of the
-            few stretches of East African highway that is genuinely traffic-free. Twenty-four
-            suites, each finished by hand. Kilimanjaro on the southern horizon. Amboseli an
-            hour north. We opened because there was nowhere good to stay here.
+            Oloisiri sits 2km from the Kenya–Tanzania border, 50km from Amboseli National
+            Park, and 163km from Nairobi on the traffic-free A104. The name comes from the
+            Maa language — it means Blessings. Forty rooms, each with a private balcony,
+            views of Kilimanjaro or the surrounding hills, and linen we spent too long choosing.
           </p>
         </div>
 

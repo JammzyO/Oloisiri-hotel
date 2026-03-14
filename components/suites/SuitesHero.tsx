@@ -16,8 +16,8 @@ export default function SuitesHero() {
       <div className={styles.content}>
         <span className={styles.eyebrow}>Our Suites</span>
         <h1 className={styles.heading}>
-          <span className={styles.hLine1}>Twenty-Four Sanctuaries,</span>
-          <em className={styles.hLine2}>Each One a World.</em>
+          <span className={styles.hLine1}>Forty Rooms.</span>
+          <em className={styles.hLine2}>One Address.</em>
         </h1>
       </div>
 

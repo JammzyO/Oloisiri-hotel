@@ -61,8 +61,8 @@ const amenities = [
     ),
   },
   {
-    title: 'Serenity Gardens',
-    description: 'Outdoor spaces designed for nothing in particular.',
+    title: 'Gardens & Outdoor Spaces',
+    description: 'Serenity gardens and manicured grounds — available for private celebrations, weddings, and outdoor events.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <path d="M14 22v-9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>

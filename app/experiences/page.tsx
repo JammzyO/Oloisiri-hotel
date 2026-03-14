@@ -54,6 +54,10 @@ const events = [
     name: 'Emaa Rooftop Conference Hall',
     body: 'Up to 250 guests. Full catering available. The best views of any meeting room in Kajiado County.',
   },
+  {
+    name: 'The Gardens',
+    body: 'Our grounds are available for weddings, private celebrations, and outdoor gatherings. Contact us to discuss your event.',
+  },
 ]
 
 export default function ExperiencesPage() {
