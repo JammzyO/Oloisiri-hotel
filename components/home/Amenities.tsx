@@ -5,8 +5,8 @@ import styles from './Amenities.module.css'
 
 const amenities = [
   {
-    title: 'Bush Restaurant',
-    description: 'Open-air dining overlooking the savannah — seasonal menus rooted in East African produce.',
+    title: 'Ormarrei Restaurant',
+    description: 'All-day dining rooted in East African produce, open to residents and visitors.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <path d="M7 4v6a5 5 0 0 0 10 0V4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -16,31 +16,31 @@ const amenities = [
     ),
   },
   {
-    title: 'Swimming Pool',
-    description: 'An infinity pool stretching toward the horizon — a still mirror in the afternoon heat.',
+    title: 'Olakira Sky Bar',
+    description: 'Sundowners above the plains. Cold drinks, warm light, Kilimanjaro on the horizon.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M4 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M4 22c2-2 4-2 6 0s4 2 6 0 4-2 6 0" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="20" cy="9" r="3" stroke="white" strokeWidth="1.5"/>
-        <path d="M14 15V9l3-3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8 6l2 8h8l2-8" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M10 14v8" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M18 14v8" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M8 22h12" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M6 6h16" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
       </svg>
     ),
   },
   {
-    title: 'Spa & Wellness',
-    description: 'Ancient rituals and botanical therapies, thoughtfully composed for the wandering soul.',
+    title: 'Madiba Sky Lounge',
+    description: 'Our rooftop centrepiece. The highest point at Oloisiri and worth every step.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M14 22c0 0-9-5-9-11a9 9 0 0 1 9-5 9 9 0 0 1 9 5c0 6-9 11-9 11z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M14 6v16" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-        <path d="M9 11c2 1 3 2 5 2s3-1 5-2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M4 22h20M5 22V12l9-8 9 8v10" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M11 22v-6h6v6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
   },
   {
     title: 'Safari Drives',
-    description: 'Guided game drives at first light — where the borderland reveals its quiet wonders.',
+    description: 'Guided game drives at first light, into the borderland\'s quiet wonders.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <circle cx="14" cy="14" r="9" stroke="white" strokeWidth="1.5"/>
@@ -50,24 +50,25 @@ const amenities = [
     ),
   },
   {
-    title: 'Cultural Tours',
-    description: 'Step into the living heritage of the Maasai — ceremonial, honest, and deeply human.',
+    title: 'Emanyatta Conference Room',
+    description: 'Intimate meetings in a setting that inspires clarity.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M4 20l5-8 3 5 3-3 5 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="20" cy="8" r="2.5" stroke="white" strokeWidth="1.5"/>
-        <path d="M6 22h16" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <rect x="4" y="8" width="20" height="14" rx="2" stroke="white" strokeWidth="1.5"/>
+        <path d="M9 8V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M9 15h10M9 19h6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
       </svg>
     ),
   },
   {
-    title: 'Laundry Service',
-    description: 'Discreet and meticulous — your clothing returned pressed, folded, and perfectly tended.',
+    title: 'Serenity Gardens',
+    description: 'Outdoor spaces designed for nothing in particular.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M8 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="white" strokeWidth="1.5"/>
-        <path d="M10 10c1.5-2 6.5-2 8 0" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-        <path d="M10 14h8M10 18h5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M14 22v-9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M14 13a5 5 0 0 0-5-5 5 5 0 0 0 5 5z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M14 13a5 5 0 0 1 5-5 5 5 0 0 1-5 5z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M6 22h16" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
       </svg>
     ),
   },

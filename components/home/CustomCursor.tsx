@@ -7,13 +7,11 @@ export default function CustomCursor() {
 
   useEffect(() => {
     // Only activate on pointer (mouse) devices
-    if (!window.matchMedia('(pointer: fine)').matches) return
+    const mq = window.matchMedia('(pointer: fine)')
+    if (!mq.matches) return
 
     const cursor = cursorRef.current
     if (!cursor) return
-
-    // Show cursor
-    cursor.style.opacity = '1'
 
     let currentX = -100
     let currentY = -100
@@ -23,8 +21,14 @@ export default function CustomCursor() {
     let rafId: number
 
     const onMove = (e: MouseEvent) => {
+      // Show on first move
+      if (currentX === -100) {
+        currentX = e.clientX
+        currentY = e.clientY
+      }
       targetX = e.clientX
       targetY = e.clientY
+      cursor.style.opacity = '1'
     }
 
     const onOver = (e: MouseEvent) => {
@@ -35,8 +39,8 @@ export default function CustomCursor() {
     const onOut = () => { hovered = false }
 
     const tick = () => {
-      currentX += (targetX - currentX) * 0.12
-      currentY += (targetY - currentY) * 0.12
+      currentX += (targetX - currentX) * 0.2
+      currentY += (targetY - currentY) * 0.2
 
       const size = hovered ? 40 : 16
       const half = size / 2
@@ -44,7 +48,7 @@ export default function CustomCursor() {
       cursor.style.width  = `${size}px`
       cursor.style.height = `${size}px`
       cursor.style.transform = `translate(${currentX - half}px, ${currentY - half}px)`
-      cursor.style.background = hovered ? 'rgba(201,162,77,0.1)' : 'transparent'
+      cursor.style.background = hovered ? 'rgba(201,162,77,0.15)' : 'transparent'
 
       rafId = requestAnimationFrame(tick)
     }
@@ -73,7 +77,7 @@ export default function CustomCursor() {
         width: 16,
         height: 16,
         borderRadius: '50%',
-        border: '1px solid #c9a24d',
+        border: '1.5px solid #c9a24d',
         background: 'transparent',
         pointerEvents: 'none',
         zIndex: 99999,

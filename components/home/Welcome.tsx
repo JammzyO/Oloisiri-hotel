@@ -48,17 +48,18 @@ export default function Welcome() {
           </h2>
 
           <div className={styles.rating}>
-            <span className={styles.stars} aria-label="Five gold stars">★★★★★</span>
+            <span className={styles.stars} aria-label="Four point eight gold stars">★★★★★</span>
             <span className={styles.ratingText}>
-              4.9 out of 5 &middot; Based on 1,200+ reviews
+              4.8 out of 5 &middot; Based on 340+ Google Reviews
             </span>
           </div>
 
           <p className={styles.body}>
-            Oloisiri Namanga Hotel is not merely a place to rest. It is a place
-            to feel the land beneath you — to watch Kilimanjaro emerge from the
-            morning mist, and rediscover the pleasure of unhurried time.
-            Twenty-four suites, each handcrafted from materials drawn from the earth.
+            Oloisiri Namanga Hotel sits two kilometres from the Kenya–Tanzania border on the
+            Nairobi–Namanga Highway — 163km from Nairobi, 110km from Arusha, on one of the
+            few stretches of East African highway that is genuinely traffic-free. Twenty-four
+            suites, each finished by hand. Kilimanjaro on the southern horizon. Amboseli an
+            hour north. We opened because there was nowhere good to stay here.
           </p>
         </div>
 

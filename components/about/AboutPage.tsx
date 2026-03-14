@@ -63,7 +63,7 @@ const PILLARS = [
   {
     num: '02',
     title: 'The people here know this land',
-    body: 'Our staff are from Namanga and the surrounding communities. They know where to find the good viewpoint at sunset. They know which mornings Kilimanjaro is clear and which mornings it is not. They are not performing hospitality — they live here.',
+    body: 'Oloisiri is run by a small team from Namanga and the surrounding communities. We do not have an org chart to share. We have people who know this land and take care of it.',
   },
   {
     num: '03',
