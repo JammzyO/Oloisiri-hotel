@@ -9,7 +9,7 @@ import styles from './Sidebar.module.css'
 const NAV_LINKS = [
   { label: 'Home',         href: '/'            },
   { label: 'Suites',       href: '/suites'      },
-  { label: 'Experiences',  href: '/experiences' },
+  { label: 'Discover',     href: '/experiences' },
   { label: 'About',        href: '/about'       },
   { label: 'Contact',      href: '/contact'     },
   { label: 'Policies',     href: '/policies'    },
