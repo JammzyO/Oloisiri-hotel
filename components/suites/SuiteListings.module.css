@@ -1,345 +1,443 @@
-/* ─── Section ────────────────────────────────────────────── */
-.section {
-  background: var(--color-cream);
-  padding: 100px 80px;
+/* ── Room counter — fixed right edge ───────────────────────── */
+.counter {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 200;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: rgba(201, 162, 77, 0.3);
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  white-space: nowrap;
 }
 
-.inner {
-  max-width: 1300px;
-  margin: 0 auto;
+.counterVisible {
+  opacity: 1;
+}
+
+/* ── Sticky selector section ───────────────────────────────── */
+.selectorSection {
   display: flex;
-  flex-direction: column;
-  gap: 0;
+  align-items: flex-start;
+  position: relative;
 }
 
-/* ─── Suite row ──────────────────────────────────────────── */
-.row {
+/* ── Left panel ─────────────────────────────────────────────── */
+.leftPanel {
+  flex: 0 0 40%;
+  background: #e8ddc7;
+}
+
+.roomSlot {
+  height: 100vh;
   display: flex;
   align-items: center;
-  gap: 80px;
-  padding: 80px 0;
-  border-bottom: 1px solid rgba(8, 47, 44, 0.10);
+  border-left: 3px solid transparent;
+  transition: border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.roomSlot:not(.roomSlotActive):hover {
+  border-color: rgba(201, 162, 77, 0.4);
+}
+
+.roomSlotActive {
+  border-left-color: var(--color-gold);
+}
+
+.roomInner {
+  padding: 0 56px 0 60px;
+  width: 100%;
+}
+
+.roomNum {
+  display: block;
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 200;
+  font-size: 0.62rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 14px;
+  opacity: 0.65;
+}
+
+.roomName {
+  font-family: var(--font-cormorant), serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 3.2vw, 3.6rem);
+  color: #082f2c;
+  line-height: 1.05;
+  margin: 0;
+  letter-spacing: -0.01em;
+  opacity: 0.35;
+  transition: opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.roomSlotActive .roomName {
+  opacity: 1;
+}
+
+.roomSlot:not(.roomSlotActive):hover .roomName {
+  opacity: 0.7;
+}
+
+/* Room details — always in DOM, fade in when active */
+.roomDetails {
+  margin-top: 22px;
   opacity: 0;
-  transform: translateY(32px);
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.roomDetailsActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.roomDesc {
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 300;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: #5a5a52;
+  margin: 0 0 18px;
+  max-width: 340px;
+}
+
+.roomMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 300;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #857f77;
+  margin-bottom: 22px;
+}
+
+.metaDot {
+  color: var(--color-gold);
+  opacity: 0.5;
+}
+
+.roomFooter {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.roomRate {
+  font-family: var(--font-cormorant), serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: #082f2c;
+  line-height: 1;
+}
+
+.rateNight {
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 300;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: #857f77;
+}
+
+/* "View Suite →" — text link, gold underline sweeps in from left */
+.roomLink {
+  position: relative;
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 300;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+.roomLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.roomLinkActive::after {
+  transform: scaleX(1);
+}
+
+/* ── Right panel — sticky image ─────────────────────────────── */
+.rightPanel {
+  flex: 0 0 60%;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.roomImage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.imageActive {
+  opacity: 1;
+}
+
+.imageGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(8, 47, 44, 0.28) 0%,
+    transparent 35%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Detail panels (below selector) ─────────────────────────── */
+.detailsSection {
+  background: #fff;
+}
+
+.detailPanel {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: 560px;
+  border-top: 1px solid rgba(201, 162, 77, 0.15);
+}
+
+.detailPanelReversed {
+  grid-template-columns: 45% 55%;
+}
+
+.detailPanelReversed .detailImageWrap {
+  order: 2;
+}
+
+.detailPanelReversed .detailTextWrap {
+  order: 1;
+}
+
+/* Image */
+.detailImageWrap {
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
   transition:
-    opacity 0.65s var(--ease),
-    transform 0.65s var(--ease);
+    opacity 600ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 600ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.row:first-child {
-  padding-top: 0;
-}
-
-.row:last-child {
-  border-bottom: none;
-}
-
-.rowReversed {
-  flex-direction: row-reverse;
-}
-
-.row.inView {
+.imgVisible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ─── Arch image ─────────────────────────────────────────── */
-.archWrap {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.archImage {
-  width: 440px;
-  height: 580px;
-  border-radius: 220px 220px 0 0;
+.detailImageLink {
+  display: block;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  position: relative;
-  transition: transform 0.6s var(--ease);
-  /* Window frame — gold outer border */
-  box-shadow: 0 0 0 3px rgba(201, 162, 77, 0.55);
 }
 
-/* Window frame inner line */
-.archImage::after {
-  content: '';
-  position: absolute;
-  inset: 8px;
-  border-radius: 212px 212px 0 0;
-  border: 1px solid rgba(201, 162, 77, 0.28);
-  pointer-events: none;
-  z-index: 4;
+.detailImageLink img {
+  transition: transform 600ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.archWrap:hover .archImage {
-  transform: translateY(-6px);
+.detailImageLink:hover img {
+  transform: scale(1.04);
 }
 
-.archShimmer {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.08) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
-}
-
-.archWrap:hover .archShimmer {
-  opacity: 1;
-}
-
-/* ─── Slideshow ──────────────────────────────────────────── */
-.slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.7s var(--ease);
-}
-
-.slideActive {
-  opacity: 1;
-}
-
-.slideControls {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  z-index: 5;
-}
-
-.slideArrow {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(8, 47, 44, 0.55);
-  border: 1px solid rgba(201, 162, 77, 0.4);
-  color: rgba(232, 221, 199, 0.85);
-  cursor: pointer;
-  border-radius: 0;
-  flex-shrink: 0;
-  transition:
-    background 0.2s var(--ease),
-    border-color 0.2s var(--ease);
-}
-
-.slideArrow:hover {
-  background: rgba(8, 47, 44, 0.85);
-  border-color: rgba(201, 162, 77, 0.8);
-}
-
-.slideDots {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.slideDot {
-  width: 20px;
-  height: 2px;
-  background: rgba(232, 221, 199, 0.35);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s var(--ease), width 0.2s var(--ease);
-}
-
-.slideDotActive {
-  background: var(--color-gold);
-  width: 28px;
-}
-
-.suiteNumber {
-  position: absolute;
-  bottom: -14px;
-  left: 24px;
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 80px;
-  line-height: 1;
-  color: rgba(8, 47, 44, 0.08);
-  letter-spacing: -2px;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* ─── Text block ─────────────────────────────────────────── */
-.text {
-  flex: 1;
+/* Text */
+.detailTextWrap {
+  padding: 72px 64px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 600ms cubic-bezier(0.25, 0.1, 0.25, 1) 150ms,
+    transform 600ms cubic-bezier(0.25, 0.1, 0.25, 1) 150ms;
 }
 
-.category {
+.textVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.detailCategory {
   display: block;
-  font-family: var(--font-body);
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 5px;
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 300;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--color-gold);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
-.suiteName {
-  font-family: var(--font-display);
+.detailName {
+  font-family: var(--font-cormorant), serif;
   font-weight: 300;
-  font-size: 48px;
+  font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+  color: #082f2c;
   line-height: 1.05;
-  color: var(--color-teal-dark);
-  letter-spacing: -0.3px;
-  margin-bottom: 24px;
+  margin: 0 0 22px;
+  letter-spacing: -0.01em;
 }
 
-.divider {
-  width: 40px;
+.detailRule {
+  width: 44px;
   height: 1px;
   background: var(--color-gold);
   opacity: 0.5;
   margin-bottom: 24px;
+  flex-shrink: 0;
 }
 
-.description {
-  font-family: var(--font-body);
-  font-size: 14px;
+.detailDesc {
+  font-family: var(--font-jost), sans-serif;
   font-weight: 300;
-  color: var(--color-stone);
-  line-height: 1.85;
-  max-width: 480px;
-  margin-bottom: 36px;
+  font-size: 0.9rem;
+  line-height: 1.82;
+  color: #5a5a52;
+  margin: 0 0 28px;
 }
 
-/* ─── Meta ───────────────────────────────────────────────── */
-.meta {
+.detailMeta {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 36px;
+  gap: 8px;
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 300;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: #857f77;
+  margin-bottom: 32px;
 }
 
-.metaItem {
+.detailDot {
+  color: var(--color-gold);
+  opacity: 0.5;
+}
+
+.detailFooter {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-body);
-  font-size: 12px;
+  align-items: baseline;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.detailRate {
+  font-family: var(--font-cormorant), serif;
+  font-size: 1.5rem;
   font-weight: 400;
-  letter-spacing: 0.5px;
-  color: var(--color-teal);
-  opacity: 0.7;
+  color: #082f2c;
 }
 
-.metaDot {
-  color: var(--color-stone);
-  opacity: 0.4;
-}
-
-/* ─── Footer ─────────────────────────────────────────────── */
-.footer {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-}
-
-.rate {
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 300;
-  color: var(--color-teal-dark);
-  letter-spacing: -0.2px;
-}
-
-.rateNight {
-  font-style: italic;
-  font-size: 16px;
-  color: var(--color-stone);
-  opacity: 0.7;
-}
-
-.cta {
+.detailCta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-body);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 4px;
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 300;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: #082f2c;
   text-decoration: none;
-  color: var(--color-teal-dark);
-  border: 1px solid rgba(8, 47, 44, 0.3);
-  padding: 14px 28px;
+  border-bottom: 1px solid rgba(8, 47, 44, 0.25);
+  padding-bottom: 2px;
   transition:
-    background 0.2s var(--ease),
-    color 0.2s var(--ease),
-    border-color 0.2s var(--ease);
+    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.cta:hover {
-  background: var(--color-teal-dark);
-  color: var(--color-cream);
-  border-color: var(--color-teal-dark);
+.detailCta:hover {
+  color: var(--color-gold);
+  border-color: var(--color-gold);
 }
 
-/* ─── Mobile ─────────────────────────────────────────────── */
+/* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 960px) {
-  .section {
-    padding: 80px 40px;
-  }
-
-  .row,
-  .rowReversed {
+  .selectorSection {
     flex-direction: column;
-    gap: 48px;
-    padding: 60px 0;
   }
 
-  .archImage {
-    width: 340px;
-    height: 440px;
-    border-radius: 170px 170px 0 0;
+  .leftPanel {
+    flex: none;
+    width: 100%;
   }
 
-  .archImage::after {
-    border-radius: 162px 162px 0 0;
+  .roomSlot {
+    height: auto;
+    min-height: 60vh;
+    padding: 48px 0;
   }
 
-  .suiteName {
-    font-size: 36px;
+  .roomInner {
+    padding: 0 28px;
   }
 
-  .description {
-    max-width: 100%;
+  .rightPanel {
+    display: none;
+  }
+
+  .counter {
+    display: none;
+  }
+
+  .detailPanel,
+  .detailPanelReversed {
+    grid-template-columns: 1fr;
+  }
+
+  .detailPanelReversed .detailImageWrap {
+    order: 0;
+  }
+
+  .detailPanelReversed .detailTextWrap {
+    order: 1;
+  }
+
+  .detailImageWrap {
+    height: 320px;
+  }
+
+  .detailTextWrap {
+    padding: 48px 28px;
   }
 }
 
 @media (max-width: 600px) {
-  .section {
-    padding: 64px 24px;
+  .roomName {
+    font-size: 2rem;
   }
 
-  .archImage {
-    width: 100%;
-    max-width: 300px;
-    height: 340px;
+  .detailImageWrap {
+    height: 260px;
   }
 
-  .suiteName {
-    font-size: 30px;
-  }
-
-  .footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+  .detailTextWrap {
+    padding: 40px 24px;
   }
 }

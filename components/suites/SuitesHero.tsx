@@ -1,46 +1,24 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import styles from './SuitesHero.module.css'
 
 export default function SuitesHero() {
-  const ref = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const t = setTimeout(() => el.classList.add(styles.loaded), 60)
-    return () => clearTimeout(t)
-  }, [])
-
   return (
-    <section ref={ref} className={styles.hero} aria-label="Suites hero">
+    <section className={styles.hero} aria-label="Suites hero">
 
-      {/* Background */}
-      <div className={styles.bg} aria-hidden="true">
-        <div className={styles.bgGrain} />
-        <div className={styles.bgOverlay} />
-      </div>
+      {/* Faint decorative numeral — right side, decorative only */}
+      <div className={styles.decorNum} aria-hidden="true">5</div>
 
-      {/* Decorative arch — right side */}
-      <div className={styles.archDeco} aria-hidden="true">
-        <div className={styles.archDecoInner} />
-      </div>
+      {/* Gold sweep line — animates left to right, 1.2s */}
+      <div className={styles.goldLine} aria-hidden="true" />
 
-      {/* Content */}
+      {/* Content — bottom left */}
       <div className={styles.content}>
         <span className={styles.eyebrow}>Our Suites</span>
         <h1 className={styles.heading}>
-          Twenty-Four Sanctuaries,
-          <br />
-          <em className={styles.headingItalic}>Each One a World.</em>
+          <span className={styles.hLine1}>Twenty-Four Sanctuaries,</span>
+          <em className={styles.hLine2}>Each One a World.</em>
         </h1>
-        <p className={styles.sub}>
-          Every suite at Oloisiri is handcrafted — shaped by the land,
-          finished in stone and timber, designed for those who understand
-          the difference between comfort and genuine luxury.
-        </p>
-        <div className={styles.rule} aria-hidden="true" />
       </div>
 
     </section>

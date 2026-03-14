@@ -1,233 +1,74 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './SuiteListings.module.css'
+import { allSuites } from '@/lib/suiteData'
+import type { Suite } from '@/lib/suiteData'
 
-const suites = [
-  {
-    id: 0,
-    name: 'Luxury Room',
-    category: 'Top Floor',
-    description:
-      'The best room in the house. On clear mornings Kilimanjaro fills the window before you are fully awake. Elevated finishes, the quietest floor, and a balcony that earns its name.',
-    guests: '2 Guests',
-    size: '45 m²',
-    rate: 'From KES 38,000',
-    images: [
-      { src: '/suite-kilimanjaro-a.jpg', position: 'center' },
-      { src: '/suite-kilimanjaro-b.jpg', position: 'center' },
-      { src: '/suite-kilimanjaro-c.jpg', position: 'center' },
-    ],
-    gradient: null,
-  },
-  {
-    id: 1,
-    name: 'Standard King',
-    category: 'Garden Level',
-    description:
-      'Clean, well-finished, and exactly what a good hotel room should be. A proper bed, a proper shower, a balcony with views of the Namanga Hills. Nothing missing.',
-    guests: '2 Guests',
-    size: '32 m²',
-    rate: 'From KES 18,000',
-    images: [
-      { src: '/suite-savannah-a.jpg', position: 'center' },
-      { src: '/suite-savannah-b.jpg', position: 'center' },
-      { src: '/suite-savannah-c.jpg', position: 'center' },
-    ],
-    gradient: null,
-  },
-  {
-    id: 2,
-    name: 'Twin Room',
-    category: 'Garden Level',
-    description:
-      'The same standard as our King — two beds instead of one. Ideal for colleagues travelling together or friends who value their own space.',
-    guests: '2 Guests',
-    size: '30 m²',
-    rate: 'From KES 16,000',
-    images: [
-      { src: '/suite-savannah-b.jpg', position: 'center' },
-      { src: '/suite-savannah-c.jpg', position: 'center' },
-    ],
-    gradient: null,
-  },
-  {
-    id: 3,
-    name: 'Family Room',
-    category: 'Garden Level',
-    description:
-      'Generous space for families. A layout that keeps everyone together without crowding anyone. Balcony, garden views, and enough room to actually unpack.',
-    guests: '4 Guests',
-    size: '55 m²',
-    rate: 'From KES 28,000',
-    images: [
-      { src: '/suite-bushvilla-a.jpg', position: 'center' },
-      { src: '/suite-bushvilla-b.jpg', position: 'center' },
-      { src: '/suite-bushvilla-c.jpg', position: 'center' },
-    ],
-    gradient: null,
-  },
-  {
-    id: 4,
-    name: 'Interleading Suite',
-    category: 'Garden Level',
-    description:
-      'Two rooms that connect. For families or groups who want space without separation — each room is fully self-contained, with a shared connecting door that can open or close as needed.',
-    guests: '4–6 Guests',
-    size: '72 m²',
-    rate: 'From KES 42,000',
-    images: [
-      { src: '/suite-bushvilla-b.jpg', position: 'center' },
-      { src: '/suite-bushvilla-c.jpg', position: 'center' },
-      { src: '/suite-bushvilla-d.jpg', position: 'center' },
-    ],
-    gradient: null,
-  },
-]
-
-function SuiteRow({ suite, index }: { suite: typeof suites[0]; index: number }) {
+/* ── Individual room detail panel (below the sticky selector) ── */
+function DetailPanel({ suite, index }: { suite: Suite; index: number }) {
   const ref = useRef<HTMLDivElement>(null)
-  const [inView, setInView] = useState(false)
-  const [imgIndex, setImgIndex] = useState(0)
+  const [revealed, setRevealed] = useState(false)
   const isReversed = index % 2 !== 0
-  const hasImages = suite.images.length > 0
-  const hasMultiple = suite.images.length > 1
-
-  const prev = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation()
-    setImgIndex(i => (i - 1 + suite.images.length) % suite.images.length)
-  }, [suite.images.length])
-
-  const next = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation()
-    setImgIndex(i => (i + 1) % suite.images.length)
-  }, [suite.images.length])
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const observer = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setInView(true)
-          observer.disconnect()
+          setRevealed(true)
+          obs.disconnect()
         }
       },
       { threshold: 0.12 }
     )
-    observer.observe(el)
-    return () => observer.disconnect()
+    obs.observe(el)
+    return () => obs.disconnect()
   }, [])
 
   return (
     <div
       ref={ref}
-      id={suite.name.toLowerCase().replace(/\s+/g, '-')}
-      className={`${styles.row} ${isReversed ? styles.rowReversed : ''} ${inView ? styles.inView : ''}`}
+      className={`${styles.detailPanel} ${isReversed ? styles.detailPanelReversed : ''}`}
     >
-      {/* Arch image */}
-      <div className={styles.archWrap}>
-        <div
-          className={styles.archImage}
-          style={!hasImages && suite.gradient ? { background: suite.gradient } : undefined}
-          aria-label={suite.name}
-        >
-          {/* Crossfade slides */}
-          {hasImages && suite.images.map((img, i) => (
-            <div
-              key={img.src}
-              className={`${styles.slide} ${i === imgIndex ? styles.slideActive : ''}`}
-            >
-              <Image
-                src={img.src}
-                alt={`${suite.name} — view ${i + 1}`}
-                fill
-                sizes="(max-width: 960px) 280px, 320px"
-                style={{ objectFit: 'cover', objectPosition: img.position }}
-                priority={i === 0}
-              />
-            </div>
-          ))}
-
-          {/* Shimmer for gradient placeholders */}
-          {!hasImages && <div className={styles.archShimmer} />}
-
-          {/* Slideshow arrows — only when multiple images */}
-          {hasMultiple && (
-            <div className={styles.slideControls}>
-              <button
-                className={styles.slideArrow}
-                onClick={prev}
-                aria-label="Previous image"
-              >
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M13 4L7 10L13 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-
-              <div className={styles.slideDots} aria-hidden="true">
-                {suite.images.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`${styles.slideDot} ${i === imgIndex ? styles.slideDotActive : ''}`}
-                    onClick={(e) => { e.stopPropagation(); setImgIndex(i) }}
-                    aria-label={`View image ${i + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                className={styles.slideArrow}
-                onClick={next}
-                aria-label="Next image"
-              >
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M7 4L13 10L7 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-            </div>
-          )}
-        </div>
-        <span className={styles.suiteNumber}>
-          {String(index + 1).padStart(2, '0')}
-        </span>
+      {/* Image — left on even, right on odd */}
+      <div className={`${styles.detailImageWrap} ${revealed ? styles.imgVisible : ''}`}>
+        <Link href={`/suites/${suite.slug}`} className={styles.detailImageLink}>
+          <Image
+            src={suite.images[0].src}
+            alt={suite.name}
+            fill
+            sizes="(max-width: 768px) 100vw, 55vw"
+            style={{ objectFit: 'cover', objectPosition: suite.images[0].position }}
+          />
+        </Link>
       </div>
 
-      {/* Text content */}
-      <div className={styles.text}>
-        <span className={styles.category}>{suite.category}</span>
-        <h2 className={styles.suiteName}>{suite.name}</h2>
-        <div className={styles.divider} aria-hidden="true" />
-        <p className={styles.description}>{suite.description}</p>
-
-        <div className={styles.meta}>
-          <span className={styles.metaItem}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-            {suite.guests}
-          </span>
-          <span className={styles.metaDot} aria-hidden="true">·</span>
-          <span className={styles.metaItem}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-              <path d="M3 9h18M9 21V9"/>
-            </svg>
-            {suite.size}
-          </span>
+      {/* Text */}
+      <div className={`${styles.detailTextWrap} ${revealed ? styles.textVisible : ''}`}>
+        <span className={styles.detailCategory}>{suite.category}</span>
+        <h3 className={styles.detailName}>{suite.name}</h3>
+        <div className={styles.detailRule} aria-hidden="true" />
+        <p className={styles.detailDesc}>{suite.description}</p>
+        <div className={styles.detailMeta}>
+          <span>{suite.guests} Guests</span>
+          <span className={styles.detailDot}>·</span>
+          <span>{suite.size}</span>
+          <span className={styles.detailDot}>·</span>
+          <span>{suite.bed}</span>
         </div>
-
-        <div className={styles.footer}>
-          <span className={styles.rate}>
-            {suite.rate} <em className={styles.rateNight}>/ night</em>
+        <div className={styles.detailFooter}>
+          <span className={styles.detailRate}>
+            {suite.rateDisplay}
+            <span className={styles.rateNight}> / night</span>
           </span>
-          <Link href={`/suites/${suite.name.toLowerCase().replace(/\s+/g, '-')}`} className={styles.cta}>
-            View Suite
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <Link href={`/suites/${suite.slug}`} className={styles.detailCta}>
+            Reserve Suite
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
         </div>
@@ -236,14 +77,126 @@ function SuiteRow({ suite, index }: { suite: typeof suites[0]; index: number }) 
   )
 }
 
+/* ── Main ────────────────────────────────────────────────────── */
 export default function SuiteListings() {
+  const [activeRoom, setActiveRoom] = useState(0)
+  const [sectionVisible, setSectionVisible] = useState(false)
+  const slotRefs = useRef<(HTMLDivElement | null)[]>([])
+  const sectionRef = useRef<HTMLElement>(null)
+
+  /* Track active room via IntersectionObserver on each slot */
+  useEffect(() => {
+    const observers = allSuites.map((_, i) => {
+      const el = slotRefs.current[i]
+      if (!el) return null
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveRoom(i)
+        },
+        { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
+      )
+      obs.observe(el)
+      return obs
+    })
+    return () => observers.forEach(o => o?.disconnect())
+  }, [])
+
+  /* Show counter while selector section is in view */
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => setSectionVisible(entry.isIntersecting),
+      { threshold: 0.01 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
   return (
-    <section className={styles.section} aria-label="Suite listings">
-      <div className={styles.inner}>
-        {suites.map((suite, i) => (
-          <SuiteRow key={suite.id} suite={suite} index={i} />
-        ))}
+    <>
+      {/* ── Fixed room counter — far right, rotated ── */}
+      <div
+        className={`${styles.counter} ${sectionVisible ? styles.counterVisible : ''}`}
+        aria-hidden="true"
+      >
+        {String(activeRoom + 1).padStart(2, '0')} / {String(allSuites.length).padStart(2, '0')}
       </div>
-    </section>
+
+      {/* ── Split-screen sticky selector ── */}
+      <section ref={sectionRef} className={styles.selectorSection} aria-label="Suite selector">
+
+        {/* Left: scrollable room list */}
+        <div className={styles.leftPanel}>
+          {allSuites.map((suite, i) => {
+            const isActive = activeRoom === i
+            return (
+              <div
+                key={suite.slug}
+                ref={el => { slotRefs.current[i] = el }}
+                className={`${styles.roomSlot} ${isActive ? styles.roomSlotActive : ''}`}
+              >
+                <div className={styles.roomInner}>
+                  <span className={styles.roomNum}>0{i + 1}</span>
+                  <h2 className={styles.roomName}>{suite.name}</h2>
+
+                  {/* Details — always rendered, opacity controlled */}
+                  <div className={`${styles.roomDetails} ${isActive ? styles.roomDetailsActive : ''}`}>
+                    <p className={styles.roomDesc}>{suite.description}</p>
+                    <div className={styles.roomMeta}>
+                      <span>{suite.guests} Guests</span>
+                      <span className={styles.metaDot}>·</span>
+                      <span>{suite.size}</span>
+                    </div>
+                    <div className={styles.roomFooter}>
+                      <span className={styles.roomRate}>
+                        {suite.rateDisplay}
+                        <span className={styles.rateNight}> / night</span>
+                      </span>
+                      <Link
+                        href={`/suites/${suite.slug}`}
+                        className={`${styles.roomLink} ${isActive ? styles.roomLinkActive : ''}`}
+                        tabIndex={isActive ? 0 : -1}
+                      >
+                        View Suite →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Right: sticky image panel */}
+        <div className={styles.rightPanel}>
+          {allSuites.map((suite, i) => (
+            <div
+              key={suite.slug}
+              className={`${styles.roomImage} ${activeRoom === i ? styles.imageActive : ''}`}
+            >
+              <Image
+                src={suite.images[0].src}
+                alt={suite.name}
+                fill
+                sizes="60vw"
+                style={{ objectFit: 'cover', objectPosition: suite.images[0].position }}
+                priority={i === 0}
+              />
+            </div>
+          ))}
+          {/* Subtle bottom gradient — no text on image */}
+          <div className={styles.imageGradient} aria-hidden="true" />
+        </div>
+
+      </section>
+
+      {/* ── Individual room detail panels ── */}
+      <section className={styles.detailsSection} aria-label="Room details">
+        {allSuites.map((suite, i) => (
+          <DetailPanel key={suite.slug} suite={suite} index={i} />
+        ))}
+      </section>
+    </>
   )
 }
