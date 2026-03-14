@@ -6,8 +6,6 @@ import Suites from '@/components/home/Suites'
 import Facilities from '@/components/home/Facilities'
 import InstagramFeed from '@/components/home/InstagramFeed'
 import Footer from '@/components/home/Footer'
-import CustomCursor from '@/components/home/CustomCursor'
-
 export const metadata = {
   title: 'Oloisiri Namanga Hotel — A Sanctuary at the Edge of Two Nations',
   description:
@@ -21,7 +19,7 @@ const Divider = () => (
 export default function HomePage() {
   return (
     <>
-      <CustomCursor />
+
       <Hero />
       <ReservationBar />
       <Divider />
