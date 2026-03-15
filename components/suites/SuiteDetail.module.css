@@ -596,6 +596,7 @@
 /* Reserve CTA */
 .reserveBtn {
   display: block;
+  width: 100%;
   text-align: center;
   font-family: var(--font-body);
   font-size: 9px;
@@ -605,15 +606,23 @@
   color: var(--color-teal-dark);
   background: var(--color-gold);
   text-decoration: none;
+  border: none;
+  cursor: pointer;
   padding: 18px 24px;
   transition:
     background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.reserveBtn:hover {
+.reserveBtn:hover:not(:disabled) {
   background: var(--color-cream);
   color: var(--color-teal-dark);
+}
+
+.reserveBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .reserveNote {
@@ -624,6 +633,334 @@
   text-align: center;
   line-height: 1.6;
 }
+
+/* Hover highlight on date inputs */
+.reserveInput:hover {
+  border-color: rgba(232, 221, 199, 0.3);
+}
+
+/* ─── Occupancy toggle ───────────────────────────────────── */
+.occupancySection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.occupancyGroup {
+  display: flex;
+  border: 1px solid rgba(232, 221, 199, 0.2);
+  overflow: hidden;
+  transition: border-color 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.occupancyGroupErr {
+  border-color: rgba(220, 80, 80, 0.55);
+}
+
+.occupancyPill {
+  flex: 1;
+  padding: 11px 0;
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(232, 221, 199, 0.15);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(232, 221, 199, 0.4);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.occupancyPill:last-child { border-right: none; }
+
+.occupancyPill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold);
+  clip-path: inset(0 100% 0 0);
+  z-index: 0;
+  transition: clip-path 220ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.occupancyPill span { position: relative; z-index: 1; }
+
+.occupancyPillActive { color: var(--color-teal-dark); }
+.occupancyPillActive::before { clip-path: inset(0 0% 0 0); }
+.occupancyPill:not(.occupancyPillActive):hover { color: rgba(232, 221, 199, 0.72); }
+
+/* ─── Box content transitions ────────────────────────────── */
+.reserveBox { overflow: hidden; }
+
+.boxContentExit {
+  animation: boxExit 350ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  pointer-events: none;
+}
+
+.boxContentEnter {
+  animation: boxEnter 350ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@keyframes boxExit {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-10px); }
+}
+
+@keyframes boxEnter {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Field shake ────────────────────────────────────────── */
+@keyframes fieldShake {
+  0%   { transform: translateX(0); }
+  18%  { transform: translateX(-4px); }
+  45%  { transform: translateX(4px); }
+  72%  { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.fieldShake { animation: fieldShake 320ms cubic-bezier(0.25, 0.1, 0.25, 1); }
+
+/* ─── State 1 inline error messages ─────────────────────── */
+.reserveInputErr { border-color: rgba(220, 80, 80, 0.55) !important; }
+
+.reserveErrMsg {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: rgba(220, 90, 90, 0.85);
+  letter-spacing: 0.2px;
+  animation: rfErrIn 180ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+/* ─── Loading dots ───────────────────────────────────────── */
+.dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dots span {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--color-teal-dark);
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.75); }
+  40%           { opacity: 1;    transform: scale(1); }
+}
+
+/* ─── State 2: form fields on dark background ────────────── */
+.rfField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.rfFieldInner { position: relative; }
+
+.rfFieldInner::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--color-gold);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  pointer-events: none;
+}
+
+.rfFieldInner:focus-within::after { clip-path: inset(0 0% 0 0); }
+
+.rfInput {
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(232, 221, 199, 0.18);
+  padding: 20px 0 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--color-cream);
+  outline: none;
+  width: 100%;
+  color-scheme: dark;
+}
+
+.rfInput::placeholder { color: transparent; }
+
+.rfLabel {
+  position: absolute;
+  left: 0; top: 20px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(232, 221, 199, 0.38);
+  transform-origin: left center;
+  pointer-events: none;
+  transition:
+    transform 240ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 240ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.rfInput:focus ~ .rfLabel,
+.rfInput:not(:placeholder-shown) ~ .rfLabel {
+  transform: translateY(-16px) scale(0.72);
+  color: var(--color-gold);
+}
+
+.rfFieldErr .rfInput { border-bottom-color: rgba(220, 80, 80, 0.5); }
+
+.rfFieldErr .rfFieldInner::after {
+  clip-path: inset(0 0% 0 0);
+  background: rgba(220, 80, 80, 0.65);
+}
+
+.rfErrMsg {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: rgba(220, 90, 90, 0.85);
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+  animation: rfErrIn 180ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@keyframes rfErrIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rfRow2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.rfRow2 .rfField { margin-bottom: 0; }
+
+.rfTextareaWrap { margin-bottom: 6px; }
+
+.rfTextareaLabel {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(232, 221, 199, 0.3);
+  margin-bottom: 8px;
+}
+
+.rfTextarea {
+  width: 100%;
+  background: rgba(232, 221, 199, 0.05);
+  border: 1px solid rgba(232, 221, 199, 0.14);
+  padding: 11px 13px;
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 300;
+  color: var(--color-cream);
+  outline: none; resize: none;
+  color-scheme: dark;
+  transition: border-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.rfTextarea:focus { border-color: rgba(201, 162, 77, 0.45); }
+.rfTextarea::placeholder { color: rgba(232, 221, 199, 0.22); font-style: italic; }
+
+.rfBackLink {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 300;
+  color: rgba(232, 221, 199, 0.35);
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  background: none; border: none; padding: 0;
+  margin-bottom: 18px;
+  transition: color 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.rfBackLink:hover { color: rgba(232, 221, 199, 0.75); }
+
+.rfSummary {
+  font-family: var(--font-body);
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  line-height: 1.9;
+  margin-bottom: 14px;
+}
+
+.rfDivider {
+  width: 100%; height: 1px;
+  background: rgba(201, 162, 77, 0.22);
+  margin-bottom: 22px;
+}
+
+/* ─── State 3: Confirmation ──────────────────────────────── */
+.confirmWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+.confirmCircle {
+  width: 52px; height: 52px;
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-gold);
+  margin-bottom: 26px;
+}
+
+.confirmPath {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: drawCheck 600ms cubic-bezier(0.25, 0.1, 0.25, 1) 200ms forwards;
+}
+
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+.confirmHeading {
+  font-family: var(--font-display);
+  font-weight: 300; font-size: 32px;
+  color: var(--color-cream);
+  margin-bottom: 14px;
+  letter-spacing: -0.3px;
+}
+
+.confirmBody {
+  font-family: var(--font-display);
+  font-style: italic; font-size: 15px;
+  color: rgba(232, 221, 199, 0.55);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+.confirmCall {
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 300;
+  color: rgba(232, 221, 199, 0.32);
+}
+
+.confirmCall a {
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: opacity 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.confirmCall a:hover { opacity: 0.75; }
 
 /* ─── More Rooms ─────────────────────────────────────────── */
 .moreSection {

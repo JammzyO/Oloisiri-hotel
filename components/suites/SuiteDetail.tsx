@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './SuiteDetail.module.css'
@@ -161,6 +161,31 @@ function Calendar({ checkin, checkout, onChange }: CalendarProps) {
 }
 
 /* ─── Reserve box ────────────────────────────────────────── */
+
+// Floating-label input on dark background (State 2)
+function RfField({ id, label, type = 'text', value, onChange, error }: {
+  id: string; label: string; type?: string
+  value: string; onChange: (v: string) => void; error?: string
+}) {
+  return (
+    <div className={`${styles.rfField} ${error ? styles.rfFieldErr : ''}`}>
+      <div className={styles.rfFieldInner}>
+        <input
+          id={id}
+          className={styles.rfInput}
+          type={type}
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          placeholder=" "
+          autoComplete="off"
+        />
+        <label htmlFor={id} className={styles.rfLabel}>{label}</label>
+      </div>
+      {error && <span className={styles.rfErrMsg}>{error}</span>}
+    </div>
+  )
+}
+
 interface ReserveBoxProps {
   suite: Suite
   checkin: Date | null
@@ -170,133 +195,286 @@ interface ReserveBoxProps {
 }
 
 function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChange }: ReserveBoxProps) {
-  const [adults, setAdults] = useState(2)
-  const [children, setChildren] = useState(0)
+  const [adults,    setAdults]    = useState(2)
+  const [children,  setChildren]  = useState(0)
+  const [occupancy, setOccupancy] = useState<'single' | 'double' | ''>('')
+
+  type Phase = 'default' | 'form' | 'done'
+  const [phase,   setPhase]   = useState<Phase>('default')
+  const [leaving, setLeaving] = useState(false)
+
+  // State 1 validation errors + shake refs
+  const [errs,      setErrs]      = useState<Record<string, string>>({})
+  const checkinRef   = useRef<HTMLDivElement>(null)
+  const checkoutRef  = useRef<HTMLDivElement>(null)
+  const occupancyRef = useRef<HTMLDivElement>(null)
+
+  // State 2 form
+  const [form2,   setForm2]   = useState({ firstName: '', lastName: '', email: '', phone: '', requests: '' })
+  const [errs2,   setErrs2]   = useState<Record<string, string>>({})
+  const [loading, setLoading] = useState(false)
+
+  function transitionTo(next: Phase) {
+    setLeaving(true)
+    setTimeout(() => { setPhase(next); setLeaving(false) }, 350)
+  }
+
+  function shake(ref: React.RefObject<HTMLDivElement | null>) {
+    if (!ref.current) return
+    ref.current.classList.remove(styles.fieldShake)
+    void ref.current.offsetWidth
+    ref.current.classList.add(styles.fieldShake)
+  }
 
   function handleCheckinInput(val: string) {
     const d = fromInputValue(val)
     onCheckinChange(d)
-    // If new checkin is after current checkout, clear checkout
     if (d && checkout && d >= checkout) onCheckoutChange(null)
+    setErrs(e => ({ ...e, checkin: '' }))
   }
 
   function handleCheckoutInput(val: string) {
     const d = fromInputValue(val)
-    // Only allow checkout after checkin
     if (d && checkin && d <= checkin) return
     onCheckoutChange(d)
+    setErrs(e => ({ ...e, checkout: '' }))
   }
 
-  const checkinVal = toInputValue(checkin)
+  function handleReserve() {
+    const e: Record<string, string> = {}
+    if (!checkin)  e.checkin  = 'Select a check-in date'
+    if (!checkout) e.checkout = 'Select a check-out date'
+    if (checkin && checkout && checkout <= checkin) e.checkout = 'Must be after check-in'
+    if (!occupancy) e.occupancy = 'Select an occupancy type'
+    if (Object.keys(e).length) {
+      setErrs(e)
+      if (e.checkin)   shake(checkinRef)
+      if (e.checkout)  shake(checkoutRef)
+      if (e.occupancy) shake(occupancyRef)
+      return
+    }
+    transitionTo('form')
+  }
+
+  function set2(key: string, value: string) {
+    setForm2(f => ({ ...f, [key]: value }))
+    setErrs2(e => ({ ...e, [key]: '' }))
+  }
+
+  function handleFormSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    const errs: Record<string, string> = {}
+    if (!form2.firstName.trim()) errs.firstName = 'Required'
+    if (!form2.lastName.trim())  errs.lastName  = 'Required'
+    if (!form2.email.trim() || !form2.email.includes('@')) errs.email = 'Valid email required'
+    if (!form2.phone.trim())     errs.phone     = 'Required'
+    if (Object.keys(errs).length) { setErrs2(errs); return }
+    setLoading(true)
+    setTimeout(() => { setLoading(false); transitionTo('done') }, 900)
+  }
+
+  function fmtDate(d: Date | null) {
+    if (!d) return '—'
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+  }
+
+  const checkinVal  = toInputValue(checkin)
   const checkoutVal = toInputValue(checkout)
 
   return (
     <div className={styles.reserveBox}>
-      <div className={styles.reserveHeader}>
-        <span className={styles.reserveCategory}>{suite.category}</span>
+      {/* key={phase} forces remount on transition → enter animation replays */}
+      <div key={phase} className={leaving ? styles.boxContentExit : styles.boxContentEnter}>
 
-        {/* Resident rates */}
-        <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingBottom: '16px', marginBottom: '2px' }}>
-          <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Resident Rates</span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span className={styles.reservePriceNight}>Single occupancy</span>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                KES 7,500 <span className={styles.reservePriceNight}>B&amp;B</span>
-              </span>
+        {/* ── State 1: Default ─────────────────────────────── */}
+        {phase === 'default' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+            {/* Rates */}
+            <div className={styles.reserveHeader}>
+              <span className={styles.reserveCategory}>{suite.category}</span>
+
+              <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingBottom: '16px', marginBottom: '2px' }}>
+                <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Resident Rates</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <span className={styles.reservePriceNight}>Single occupancy</span>
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                      KES 7,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <span className={styles.reservePriceNight}>Double occupancy</span>
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                      KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingTop: '14px', paddingBottom: '16px' }}>
+                <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Non-Resident Rates</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <span className={styles.reservePriceNight}>Single occupancy</span>
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                      KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <span className={styles.reservePriceNight}>Double occupancy</span>
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                      KES 11,000 <span className={styles.reservePriceNight}>B&amp;B</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ background: '#e8ddc7', borderLeft: '3px solid #c9a24d', padding: '10px 14px', marginTop: '4px' }}>
+                <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '11px', color: '#082f2c', display: 'block', letterSpacing: '0.02em', lineHeight: 1.6 }}>
+                  Special opening rate — available for a limited time.
+                </span>
+              </div>
+
+              <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '10px', color: '#857f77', margin: '0', lineHeight: 1.7, letterSpacing: '0.01em' }}>
+                Buffet meals available on arrangement — KES 2,500 per head, includes one soft drink.
+              </p>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span className={styles.reservePriceNight}>Double occupancy</span>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
-              </span>
+
+            {/* Date + guest fields */}
+            <div className={styles.reserveFields}>
+              <div className={styles.reserveRow}>
+                <div ref={checkinRef} className={styles.reserveField}>
+                  <label className={styles.reserveLabel}>Check In</label>
+                  <input type="date"
+                    className={`${styles.reserveInput} ${errs.checkin ? styles.reserveInputErr : ''}`}
+                    value={checkinVal}
+                    onChange={e => handleCheckinInput(e.target.value)} />
+                  {errs.checkin && <span className={styles.reserveErrMsg}>{errs.checkin}</span>}
+                </div>
+                <div ref={checkoutRef} className={styles.reserveField}>
+                  <label className={styles.reserveLabel}>Check Out</label>
+                  <input type="date"
+                    className={`${styles.reserveInput} ${errs.checkout ? styles.reserveInputErr : ''}`}
+                    value={checkoutVal}
+                    min={checkinVal || undefined}
+                    onChange={e => handleCheckoutInput(e.target.value)} />
+                  {errs.checkout && <span className={styles.reserveErrMsg}>{errs.checkout}</span>}
+                </div>
+              </div>
+
+              <div className={styles.reserveRow}>
+                <div className={styles.reserveField}>
+                  <label className={styles.reserveLabel}>Adults</label>
+                  <div className={styles.counter}>
+                    <button className={styles.counterBtn} onClick={() => setAdults(a => Math.max(1, a - 1))} aria-label="Fewer adults">−</button>
+                    <span className={styles.counterVal}>{adults}</span>
+                    <button className={styles.counterBtn} onClick={() => setAdults(a => Math.min(suite.guests, a + 1))} aria-label="More adults">+</button>
+                  </div>
+                </div>
+                <div className={styles.reserveField}>
+                  <label className={styles.reserveLabel}>Children</label>
+                  <div className={styles.counter}>
+                    <button className={styles.counterBtn} onClick={() => setChildren(c => Math.max(0, c - 1))} aria-label="Fewer children">−</button>
+                    <span className={styles.counterVal}>{children}</span>
+                    <button className={styles.counterBtn} onClick={() => setChildren(c => c + 1)} aria-label="More children">+</button>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Occupancy toggle */}
+            <div ref={occupancyRef} className={styles.occupancySection}>
+              <span className={styles.reserveLabel}>Occupancy</span>
+              <div className={`${styles.occupancyGroup} ${errs.occupancy ? styles.occupancyGroupErr : ''}`}
+                role="group" aria-label="Occupancy type">
+                {(['single', 'double'] as const).map(opt => (
+                  <button key={opt} type="button"
+                    className={`${styles.occupancyPill} ${occupancy === opt ? styles.occupancyPillActive : ''}`}
+                    onClick={() => { setOccupancy(opt); setErrs(e => ({ ...e, occupancy: '' })) }}
+                    aria-pressed={occupancy === opt}>
+                    <span>{opt.charAt(0).toUpperCase() + opt.slice(1)}</span>
+                  </button>
+                ))}
+              </div>
+              {errs.occupancy && <span className={styles.reserveErrMsg}>{errs.occupancy}</span>}
+            </div>
+
+            <button className={styles.reserveBtn} onClick={handleReserve}>
+              Reserve This Suite
+            </button>
+            <p className={styles.reserveNote}>No payment required. Our team will confirm within 24 hours.</p>
           </div>
-        </div>
+        )}
 
-        {/* Non-resident rates */}
-        <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingTop: '14px', paddingBottom: '16px' }}>
-          <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Non-Resident Rates</span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span className={styles.reservePriceNight}>Single occupancy</span>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
-              </span>
+        {/* ── State 2: Contact form ─────────────────────────── */}
+        {phase === 'form' && (
+          <form onSubmit={handleFormSubmit} noValidate style={{ display: 'flex', flexDirection: 'column' }}>
+
+            <div className={styles.rfSummary}>
+              {suite.name}<br />
+              {fmtDate(checkin)} → {fmtDate(checkout)}<br />
+              {adults} adult{adults !== 1 ? 's' : ''}{children > 0 ? ` · ${children} child${children !== 1 ? 'ren' : ''}` : ''} · {occupancy}
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span className={styles.reservePriceNight}>Double occupancy</span>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                KES 11,000 <span className={styles.reservePriceNight}>B&amp;B</span>
-              </span>
+            <div className={styles.rfDivider} />
+
+            <div className={styles.rfRow2}>
+              <RfField id="rf-first" label="First Name" value={form2.firstName}
+                onChange={v => set2('firstName', v)} error={errs2.firstName} />
+              <RfField id="rf-last" label="Last Name" value={form2.lastName}
+                onChange={v => set2('lastName', v)} error={errs2.lastName} />
             </div>
+
+            <RfField id="rf-email" label="Email Address" type="email" value={form2.email}
+              onChange={v => set2('email', v)} error={errs2.email} />
+
+            <RfField id="rf-phone" label="Phone — +254 7XX XXX XXX" type="tel" value={form2.phone}
+              onChange={v => set2('phone', v)} error={errs2.phone} />
+
+            <div className={styles.rfTextareaWrap}>
+              <span className={styles.rfTextareaLabel}>Special Requests</span>
+              <textarea className={styles.rfTextarea} rows={3}
+                placeholder="Dietary requirements, celebrations, accessibility needs."
+                value={form2.requests}
+                onChange={e => set2('requests', e.target.value)} />
+            </div>
+
+            <button type="button" className={styles.rfBackLink}
+              onClick={() => transitionTo('default')}>
+              ← Change dates
+            </button>
+
+            <button type="submit" className={styles.reserveBtn} disabled={loading}>
+              {loading
+                ? <span className={styles.dots}><span /><span /><span /></span>
+                : 'Confirm Reservation Request'
+              }
+            </button>
+            <p className={styles.reserveNote}>No payment required. We will confirm availability within 24 hours.</p>
+          </form>
+        )}
+
+        {/* ── State 3: Confirmation ─────────────────────────── */}
+        {phase === 'done' && (
+          <div className={styles.confirmWrap}>
+            <div className={styles.confirmCircle} aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="1.3"
+                strokeLinecap="round" strokeLinejoin="round">
+                <path className={styles.confirmPath} d="M20 6L9 17l-5-5" />
+              </svg>
+            </div>
+            <h2 className={styles.confirmHeading}>Thank You.</h2>
+            <p className={styles.confirmBody}>
+              Your reservation request has been received. We will confirm availability within 24 hours.
+            </p>
+            <p className={styles.confirmCall}>
+              Call us: <a href="tel:+254718068417">+254 718 068 417</a>
+            </p>
           </div>
-        </div>
+        )}
 
-        {/* Opening rate notice */}
-        <div style={{ background: '#e8ddc7', borderLeft: '3px solid #c9a24d', padding: '10px 14px', marginTop: '4px' }}>
-          <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '11px', color: '#082f2c', display: 'block', letterSpacing: '0.02em', lineHeight: 1.6 }}>
-            Special opening rate — available for a limited time.
-          </span>
-        </div>
-
-        {/* Buffet note */}
-        <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '10px', color: '#857f77', margin: '0', lineHeight: 1.7, letterSpacing: '0.01em' }}>
-          Buffet meals available on arrangement — KES 2,500 per head, includes one soft drink.
-        </p>
       </div>
-
-      <div className={styles.reserveFields}>
-        <div className={styles.reserveRow}>
-          <div className={styles.reserveField}>
-            <label className={styles.reserveLabel}>Check In</label>
-            <input
-              type="date"
-              className={styles.reserveInput}
-              value={checkinVal}
-              onChange={e => handleCheckinInput(e.target.value)}
-            />
-          </div>
-          <div className={styles.reserveField}>
-            <label className={styles.reserveLabel}>Check Out</label>
-            <input
-              type="date"
-              className={styles.reserveInput}
-              value={checkoutVal}
-              min={checkinVal || undefined}
-              onChange={e => handleCheckoutInput(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className={styles.reserveRow}>
-          <div className={styles.reserveField}>
-            <label className={styles.reserveLabel}>Adults</label>
-            <div className={styles.counter}>
-              <button className={styles.counterBtn} onClick={() => setAdults(a => Math.max(1, a - 1))} aria-label="Fewer adults">−</button>
-              <span className={styles.counterVal}>{adults}</span>
-              <button className={styles.counterBtn} onClick={() => setAdults(a => Math.min(suite.guests, a + 1))} aria-label="More adults">+</button>
-            </div>
-          </div>
-          <div className={styles.reserveField}>
-            <label className={styles.reserveLabel}>Children</label>
-            <div className={styles.counter}>
-              <button className={styles.counterBtn} onClick={() => setChildren(c => Math.max(0, c - 1))} aria-label="Fewer children">−</button>
-              <span className={styles.counterVal}>{children}</span>
-              <button className={styles.counterBtn} onClick={() => setChildren(c => c + 1)} aria-label="More children">+</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Link
-        href={`/contact?suite=${suite.slug}&adults=${adults}&children=${children}&checkin=${checkinVal}&checkout=${checkoutVal}`}
-        className={styles.reserveBtn}
-      >
-        Reserve This Suite
-      </Link>
-
-      <p className={styles.reserveNote}>No payment required. Our team will confirm within 24 hours.</p>
     </div>
   )
 }
