@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './SuiteDetail.module.css'
@@ -162,26 +163,27 @@ function Calendar({ checkin, checkout, onChange }: CalendarProps) {
 
 /* ─── Reserve box ────────────────────────────────────────── */
 
-// Floating-label input on dark background (State 2)
-function RfField({ id, label, type = 'text', value, onChange, error }: {
+// Floating-label input on cream background (modal)
+function MfField({ id, label, type = 'text', value, onChange, error, wrapRef }: {
   id: string; label: string; type?: string
   value: string; onChange: (v: string) => void; error?: string
+  wrapRef?: React.RefObject<HTMLDivElement | null>
 }) {
   return (
-    <div className={`${styles.rfField} ${error ? styles.rfFieldErr : ''}`}>
-      <div className={styles.rfFieldInner}>
+    <div ref={wrapRef} className={`${styles.mfField} ${error ? styles.mfFieldErr : ''}`}>
+      <div className={styles.mfFieldInner}>
         <input
           id={id}
-          className={styles.rfInput}
+          className={styles.mfInput}
           type={type}
           value={value}
           onChange={e => onChange(e.target.value)}
           placeholder=" "
           autoComplete="off"
         />
-        <label htmlFor={id} className={styles.rfLabel}>{label}</label>
+        <label htmlFor={id} className={styles.mfLabel}>{label}</label>
       </div>
-      {error && <span className={styles.rfErrMsg}>{error}</span>}
+      {error && <span className={styles.mfErrMsg}>{error}</span>}
     </div>
   )
 }
@@ -198,26 +200,13 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
   const [adults,    setAdults]    = useState(2)
   const [children,  setChildren]  = useState(0)
   const [occupancy, setOccupancy] = useState<'single' | 'double' | ''>('')
-
-  type Phase = 'default' | 'form' | 'done'
-  const [phase,   setPhase]   = useState<Phase>('default')
-  const [leaving, setLeaving] = useState(false)
-
-  // State 1 validation errors + shake refs
   const [errs,      setErrs]      = useState<Record<string, string>>({})
+  const [modalOpen, setModalOpen] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
   const checkinRef   = useRef<HTMLDivElement>(null)
   const checkoutRef  = useRef<HTMLDivElement>(null)
   const occupancyRef = useRef<HTMLDivElement>(null)
-
-  // State 2 form
-  const [form2,   setForm2]   = useState({ firstName: '', lastName: '', email: '', phone: '', requests: '' })
-  const [errs2,   setErrs2]   = useState<Record<string, string>>({})
-  const [loading, setLoading] = useState(false)
-
-  function transitionTo(next: Phase) {
-    setLeaving(true)
-    setTimeout(() => { setPhase(next); setLeaving(false) }, 350)
-  }
 
   function shake(ref: React.RefObject<HTMLDivElement | null>) {
     if (!ref.current) return
@@ -253,24 +242,238 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
       if (e.occupancy) shake(occupancyRef)
       return
     }
-    transitionTo('form')
+    setModalOpen(true)
   }
 
-  function set2(key: string, value: string) {
-    setForm2(f => ({ ...f, [key]: value }))
-    setErrs2(e => ({ ...e, [key]: '' }))
+  const checkinVal  = toInputValue(checkin)
+  const checkoutVal = toInputValue(checkout)
+
+  return (
+    <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+        {/* Rates */}
+        <div className={styles.reserveHeader}>
+          <span className={styles.reserveCategory}>{suite.category}</span>
+
+          <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingBottom: '16px', marginBottom: '2px' }}>
+            <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Resident Rates</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span className={styles.reservePriceNight}>Single occupancy</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                  KES 7,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span className={styles.reservePriceNight}>Double occupancy</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                  KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingTop: '14px', paddingBottom: '16px' }}>
+            <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Non-Resident Rates</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span className={styles.reservePriceNight}>Single occupancy</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                  KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span className={styles.reservePriceNight}>Double occupancy</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                  KES 11,000 <span className={styles.reservePriceNight}>B&amp;B</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ background: '#e8ddc7', borderLeft: '3px solid #c9a24d', padding: '10px 14px', marginTop: '4px' }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '11px', color: '#082f2c', display: 'block', letterSpacing: '0.02em', lineHeight: 1.6 }}>
+              Special opening rate — available for a limited time.
+            </span>
+          </div>
+
+          <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '10px', color: '#857f77', margin: '0', lineHeight: 1.7, letterSpacing: '0.01em' }}>
+            Buffet meals available on arrangement — KES 2,500 per head, includes one soft drink.
+          </p>
+        </div>
+
+        {/* Date + guest fields */}
+        <div className={styles.reserveFields}>
+          <div className={styles.reserveRow}>
+            <div ref={checkinRef} className={styles.reserveField}>
+              <label className={styles.reserveLabel}>Check In</label>
+              <input type="date"
+                className={`${styles.reserveInput} ${errs.checkin ? styles.reserveInputErr : ''}`}
+                value={checkinVal}
+                onChange={e => handleCheckinInput(e.target.value)} />
+              {errs.checkin && <span className={styles.reserveErrMsg}>{errs.checkin}</span>}
+            </div>
+            <div ref={checkoutRef} className={styles.reserveField}>
+              <label className={styles.reserveLabel}>Check Out</label>
+              <input type="date"
+                className={`${styles.reserveInput} ${errs.checkout ? styles.reserveInputErr : ''}`}
+                value={checkoutVal}
+                min={checkinVal || undefined}
+                onChange={e => handleCheckoutInput(e.target.value)} />
+              {errs.checkout && <span className={styles.reserveErrMsg}>{errs.checkout}</span>}
+            </div>
+          </div>
+
+          <div className={styles.reserveRow}>
+            <div className={styles.reserveField}>
+              <label className={styles.reserveLabel}>Adults</label>
+              <div className={styles.counter}>
+                <button className={styles.counterBtn} onClick={() => setAdults(a => Math.max(1, a - 1))} aria-label="Fewer adults">−</button>
+                <span className={styles.counterVal}>{adults}</span>
+                <button className={styles.counterBtn} onClick={() => setAdults(a => Math.min(suite.guests, a + 1))} aria-label="More adults">+</button>
+              </div>
+            </div>
+            <div className={styles.reserveField}>
+              <label className={styles.reserveLabel}>Children</label>
+              <div className={styles.counter}>
+                <button className={styles.counterBtn} onClick={() => setChildren(c => Math.max(0, c - 1))} aria-label="Fewer children">−</button>
+                <span className={styles.counterVal}>{children}</span>
+                <button className={styles.counterBtn} onClick={() => setChildren(c => c + 1)} aria-label="More children">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Occupancy toggle */}
+        <div ref={occupancyRef} className={styles.occupancySection}>
+          <span className={styles.reserveLabel}>Occupancy</span>
+          <div className={`${styles.occupancyGroup} ${errs.occupancy ? styles.occupancyGroupErr : ''}`}
+            role="group" aria-label="Occupancy type">
+            {(['single', 'double'] as const).map(opt => (
+              <button key={opt} type="button"
+                className={`${styles.occupancyPill} ${occupancy === opt ? styles.occupancyPillActive : ''}`}
+                onClick={() => { setOccupancy(opt); setErrs(e => ({ ...e, occupancy: '' })) }}
+                aria-pressed={occupancy === opt}>
+                <span>{opt.charAt(0).toUpperCase() + opt.slice(1)}</span>
+              </button>
+            ))}
+          </div>
+          {errs.occupancy && <span className={styles.reserveErrMsg}>{errs.occupancy}</span>}
+        </div>
+
+        <button
+          className={styles.reserveBtn}
+          onClick={handleReserve}
+          disabled={submitted}
+          style={submitted ? { pointerEvents: 'none' } : undefined}
+        >
+          {submitted ? 'Request Submitted' : 'Reserve This Suite'}
+        </button>
+        <p className={styles.reserveNote}>No payment required. Our team will confirm within 24 hours.</p>
+      </div>
+
+      {modalOpen && (
+        <ReservationModal
+          onClose={() => setModalOpen(false)}
+          onDone={() => { setModalOpen(false); setSubmitted(true) }}
+          suite={suite}
+          checkin={checkin}
+          checkout={checkout}
+          adults={adults}
+          children={children}
+          occupancy={occupancy}
+        />
+      )}
+    </div>
+  )
+}
+
+/* ─── Reservation Modal ──────────────────────────────────── */
+function ReservationModal({
+  onClose, onDone, suite, checkin, checkout, adults, children, occupancy,
+}: {
+  onClose: () => void
+  onDone: () => void
+  suite: Suite
+  checkin: Date | null
+  checkout: Date | null
+  adults: number
+  children: number
+  occupancy: string
+}) {
+  const [phase,     setPhase]     = useState<'form' | 'confirm'>('form')
+  const [leaving,   setLeaving]   = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
+  const [form,      setForm]      = useState({ firstName: '', lastName: '', email: '', phone: '', requests: '' })
+  const [errs,      setErrs]      = useState<Record<string, string>>({})
+  const [loading,   setLoading]   = useState(false)
+
+  const firstRef = useRef<HTMLDivElement>(null)
+  const lastRef  = useRef<HTMLDivElement>(null)
+  const emailRef = useRef<HTMLDivElement>(null)
+  const phoneRef = useRef<HTMLDivElement>(null)
+
+  // Body scroll lock
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  // Escape key
+  useEffect(() => {
+    let handled = false
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !handled) { handled = true; doClose() }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function doClose() {
+    setIsClosing(true)
+    setTimeout(onClose, 300)
   }
 
-  function handleFormSubmit(e: React.FormEvent) {
+  function doDone() {
+    setIsClosing(true)
+    setTimeout(onDone, 300)
+  }
+
+  function shake(ref: React.RefObject<HTMLDivElement | null>) {
+    if (!ref.current) return
+    ref.current.classList.remove(styles.fieldShake)
+    void ref.current.offsetWidth
+    ref.current.classList.add(styles.fieldShake)
+  }
+
+  function setF(key: string, value: string) {
+    setForm(f => ({ ...f, [key]: value }))
+    setErrs(e => ({ ...e, [key]: '' }))
+  }
+
+  function transitionToConfirm() {
+    setLeaving(true)
+    setTimeout(() => { setPhase('confirm'); setLeaving(false) }, 300)
+  }
+
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const errs: Record<string, string> = {}
-    if (!form2.firstName.trim()) errs.firstName = 'Required'
-    if (!form2.lastName.trim())  errs.lastName  = 'Required'
-    if (!form2.email.trim() || !form2.email.includes('@')) errs.email = 'Valid email required'
-    if (!form2.phone.trim())     errs.phone     = 'Required'
-    if (Object.keys(errs).length) { setErrs2(errs); return }
+    const fieldErrs: Record<string, string> = {}
+    if (!form.firstName.trim()) fieldErrs.firstName = 'Required'
+    if (!form.lastName.trim())  fieldErrs.lastName  = 'Required'
+    if (!form.email.trim() || !form.email.includes('@')) fieldErrs.email = 'Valid email required'
+    if (!form.phone.trim()) fieldErrs.phone = 'Required'
+    if (Object.keys(fieldErrs).length) {
+      setErrs(fieldErrs)
+      if (fieldErrs.firstName) shake(firstRef)
+      if (fieldErrs.lastName)  shake(lastRef)
+      if (fieldErrs.email)     shake(emailRef)
+      if (fieldErrs.phone)     shake(phoneRef)
+      return
+    }
     setLoading(true)
-    setTimeout(() => { setLoading(false); transitionTo('done') }, 900)
+    setTimeout(() => { setLoading(false); transitionToConfirm() }, 800)
   }
 
   function fmtDate(d: Date | null) {
@@ -278,205 +481,96 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
   }
 
-  const checkinVal  = toInputValue(checkin)
-  const checkoutVal = toInputValue(checkout)
+  const eyebrow = `${suite.name} · ${fmtDate(checkin)} → ${fmtDate(checkout)} · ${adults} adult${adults !== 1 ? 's' : ''}${children > 0 ? ` · ${children} child${children !== 1 ? 'ren' : ''}` : ''} · ${occupancy}`
 
-  return (
-    <div className={styles.reserveBox}>
-      {/* key={phase} forces remount on transition → enter animation replays */}
-      <div key={phase} className={leaving ? styles.boxContentExit : styles.boxContentEnter}>
+  const content = (
+    <>
+      <div
+        className={`${styles.modalOverlay} ${isClosing ? styles.modalOverlayOut : ''}`}
+        onClick={doClose}
+        aria-hidden="true"
+      />
+      <div
+        className={`${styles.modalCard} ${isClosing ? styles.modalCardOut : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Reservation request"
+        onClick={e => e.stopPropagation()}
+      >
+        <button className={styles.modalClose} onClick={doClose} aria-label="Close modal">✕</button>
 
-        {/* ── State 1: Default ─────────────────────────────── */}
-        {phase === 'default' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div key={phase} className={leaving ? styles.modalContentExit : styles.modalContentEnter}>
 
-            {/* Rates */}
-            <div className={styles.reserveHeader}>
-              <span className={styles.reserveCategory}>{suite.category}</span>
+          {/* ── Form phase ─────────────────────────────────── */}
+          {phase === 'form' && (
+            <form onSubmit={handleSubmit} noValidate>
+              <p className={styles.modalEyebrow}>{eyebrow}</p>
+              <div className={styles.modalDivider} />
+              <h2 className={styles.modalHeading}>Complete Your Request</h2>
 
-              <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingBottom: '16px', marginBottom: '2px' }}>
-                <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Resident Rates</span>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span className={styles.reservePriceNight}>Single occupancy</span>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                      KES 7,500 <span className={styles.reservePriceNight}>B&amp;B</span>
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span className={styles.reservePriceNight}>Double occupancy</span>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                      KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
-                    </span>
-                  </div>
-                </div>
+              <div className={styles.mfRow2}>
+                <MfField id="mf-first" label="First Name" value={form.firstName}
+                  onChange={v => setF('firstName', v)} error={errs.firstName} wrapRef={firstRef} />
+                <MfField id="mf-last" label="Last Name" value={form.lastName}
+                  onChange={v => setF('lastName', v)} error={errs.lastName} wrapRef={lastRef} />
               </div>
 
-              <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingTop: '14px', paddingBottom: '16px' }}>
-                <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Non-Resident Rates</span>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span className={styles.reservePriceNight}>Single occupancy</span>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                      KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span className={styles.reservePriceNight}>Double occupancy</span>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                      KES 11,000 <span className={styles.reservePriceNight}>B&amp;B</span>
-                    </span>
-                  </div>
-                </div>
+              <MfField id="mf-email" label="Email" type="email" value={form.email}
+                onChange={v => setF('email', v)} error={errs.email} wrapRef={emailRef} />
+
+              <MfField id="mf-phone" label="Phone — +254 7XX XXX XXX" type="tel" value={form.phone}
+                onChange={v => setF('phone', v)} error={errs.phone} wrapRef={phoneRef} />
+
+              <div className={styles.mfTextareaWrap}>
+                <span className={styles.mfTextareaLabel}>Special Requests</span>
+                <textarea
+                  className={styles.mfTextarea}
+                  rows={3}
+                  placeholder="Dietary requirements, celebrations, accessibility needs."
+                  value={form.requests}
+                  onChange={e => setF('requests', e.target.value)}
+                />
               </div>
 
-              <div style={{ background: '#e8ddc7', borderLeft: '3px solid #c9a24d', padding: '10px 14px', marginTop: '4px' }}>
-                <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '11px', color: '#082f2c', display: 'block', letterSpacing: '0.02em', lineHeight: 1.6 }}>
-                  Special opening rate — available for a limited time.
-                </span>
-              </div>
+              <button type="submit" className={styles.modalSubmitBtn} disabled={loading}>
+                {loading
+                  ? <span className={styles.dots}><span /><span /><span /></span>
+                  : 'Confirm Reservation Request'
+                }
+              </button>
+              <p className={styles.modalNote}>No payment required. We will confirm availability within 24 hours.</p>
+            </form>
+          )}
 
-              <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '10px', color: '#857f77', margin: '0', lineHeight: 1.7, letterSpacing: '0.01em' }}>
-                Buffet meals available on arrangement — KES 2,500 per head, includes one soft drink.
+          {/* ── Confirmation phase ──────────────────────────── */}
+          {phase === 'confirm' && (
+            <div className={styles.modalConfirm}>
+              <div className={styles.modalCheckCircle} aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.3"
+                  strokeLinecap="round" strokeLinejoin="round">
+                  <path className={styles.modalCheckPath} d="M20 6L9 17l-5-5" />
+                </svg>
+              </div>
+              <h2 className={styles.modalConfirmHeading}>Request Received</h2>
+              <p className={styles.modalConfirmBody}>
+                Thank you {form.firstName}. We'll confirm availability for {suite.name},{' '}
+                {fmtDate(checkin)} to {fmtDate(checkout)} and be in touch within 24 hours.
               </p>
+              <p className={styles.modalConfirmCall}>
+                Questions? Call us:{' '}
+                <a href="tel:+254718068417">+254 718 068 417</a>
+              </p>
+              <button className={styles.modalCloseBtn} onClick={doDone}>Close</button>
             </div>
+          )}
 
-            {/* Date + guest fields */}
-            <div className={styles.reserveFields}>
-              <div className={styles.reserveRow}>
-                <div ref={checkinRef} className={styles.reserveField}>
-                  <label className={styles.reserveLabel}>Check In</label>
-                  <input type="date"
-                    className={`${styles.reserveInput} ${errs.checkin ? styles.reserveInputErr : ''}`}
-                    value={checkinVal}
-                    onChange={e => handleCheckinInput(e.target.value)} />
-                  {errs.checkin && <span className={styles.reserveErrMsg}>{errs.checkin}</span>}
-                </div>
-                <div ref={checkoutRef} className={styles.reserveField}>
-                  <label className={styles.reserveLabel}>Check Out</label>
-                  <input type="date"
-                    className={`${styles.reserveInput} ${errs.checkout ? styles.reserveInputErr : ''}`}
-                    value={checkoutVal}
-                    min={checkinVal || undefined}
-                    onChange={e => handleCheckoutInput(e.target.value)} />
-                  {errs.checkout && <span className={styles.reserveErrMsg}>{errs.checkout}</span>}
-                </div>
-              </div>
-
-              <div className={styles.reserveRow}>
-                <div className={styles.reserveField}>
-                  <label className={styles.reserveLabel}>Adults</label>
-                  <div className={styles.counter}>
-                    <button className={styles.counterBtn} onClick={() => setAdults(a => Math.max(1, a - 1))} aria-label="Fewer adults">−</button>
-                    <span className={styles.counterVal}>{adults}</span>
-                    <button className={styles.counterBtn} onClick={() => setAdults(a => Math.min(suite.guests, a + 1))} aria-label="More adults">+</button>
-                  </div>
-                </div>
-                <div className={styles.reserveField}>
-                  <label className={styles.reserveLabel}>Children</label>
-                  <div className={styles.counter}>
-                    <button className={styles.counterBtn} onClick={() => setChildren(c => Math.max(0, c - 1))} aria-label="Fewer children">−</button>
-                    <span className={styles.counterVal}>{children}</span>
-                    <button className={styles.counterBtn} onClick={() => setChildren(c => c + 1)} aria-label="More children">+</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Occupancy toggle */}
-            <div ref={occupancyRef} className={styles.occupancySection}>
-              <span className={styles.reserveLabel}>Occupancy</span>
-              <div className={`${styles.occupancyGroup} ${errs.occupancy ? styles.occupancyGroupErr : ''}`}
-                role="group" aria-label="Occupancy type">
-                {(['single', 'double'] as const).map(opt => (
-                  <button key={opt} type="button"
-                    className={`${styles.occupancyPill} ${occupancy === opt ? styles.occupancyPillActive : ''}`}
-                    onClick={() => { setOccupancy(opt); setErrs(e => ({ ...e, occupancy: '' })) }}
-                    aria-pressed={occupancy === opt}>
-                    <span>{opt.charAt(0).toUpperCase() + opt.slice(1)}</span>
-                  </button>
-                ))}
-              </div>
-              {errs.occupancy && <span className={styles.reserveErrMsg}>{errs.occupancy}</span>}
-            </div>
-
-            <button className={styles.reserveBtn} onClick={handleReserve}>
-              Reserve This Suite
-            </button>
-            <p className={styles.reserveNote}>No payment required. Our team will confirm within 24 hours.</p>
-          </div>
-        )}
-
-        {/* ── State 2: Contact form ─────────────────────────── */}
-        {phase === 'form' && (
-          <form onSubmit={handleFormSubmit} noValidate style={{ display: 'flex', flexDirection: 'column' }}>
-
-            <div className={styles.rfSummary}>
-              {suite.name}<br />
-              {fmtDate(checkin)} → {fmtDate(checkout)}<br />
-              {adults} adult{adults !== 1 ? 's' : ''}{children > 0 ? ` · ${children} child${children !== 1 ? 'ren' : ''}` : ''} · {occupancy}
-            </div>
-            <div className={styles.rfDivider} />
-
-            <div className={styles.rfRow2}>
-              <RfField id="rf-first" label="First Name" value={form2.firstName}
-                onChange={v => set2('firstName', v)} error={errs2.firstName} />
-              <RfField id="rf-last" label="Last Name" value={form2.lastName}
-                onChange={v => set2('lastName', v)} error={errs2.lastName} />
-            </div>
-
-            <RfField id="rf-email" label="Email Address" type="email" value={form2.email}
-              onChange={v => set2('email', v)} error={errs2.email} />
-
-            <RfField id="rf-phone" label="Phone — +254 7XX XXX XXX" type="tel" value={form2.phone}
-              onChange={v => set2('phone', v)} error={errs2.phone} />
-
-            <div className={styles.rfTextareaWrap}>
-              <span className={styles.rfTextareaLabel}>Special Requests</span>
-              <textarea className={styles.rfTextarea} rows={3}
-                placeholder="Dietary requirements, celebrations, accessibility needs."
-                value={form2.requests}
-                onChange={e => set2('requests', e.target.value)} />
-            </div>
-
-            <button type="button" className={styles.rfBackLink}
-              onClick={() => transitionTo('default')}>
-              ← Change dates
-            </button>
-
-            <button type="submit" className={styles.reserveBtn} disabled={loading}>
-              {loading
-                ? <span className={styles.dots}><span /><span /><span /></span>
-                : 'Confirm Reservation Request'
-              }
-            </button>
-            <p className={styles.reserveNote}>No payment required. We will confirm availability within 24 hours.</p>
-          </form>
-        )}
-
-        {/* ── State 3: Confirmation ─────────────────────────── */}
-        {phase === 'done' && (
-          <div className={styles.confirmWrap}>
-            <div className={styles.confirmCircle} aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="1.3"
-                strokeLinecap="round" strokeLinejoin="round">
-                <path className={styles.confirmPath} d="M20 6L9 17l-5-5" />
-              </svg>
-            </div>
-            <h2 className={styles.confirmHeading}>Thank You.</h2>
-            <p className={styles.confirmBody}>
-              Your reservation request has been received. We will confirm availability within 24 hours.
-            </p>
-            <p className={styles.confirmCall}>
-              Call us: <a href="tel:+254718068417">+254 718 068 417</a>
-            </p>
-          </div>
-        )}
-
+        </div>
       </div>
-    </div>
+    </>
   )
+
+  return createPortal(content, document.body)
 }
 
 /* ─── More Rooms ─────────────────────────────────────────── */
