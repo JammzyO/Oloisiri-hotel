@@ -2,6 +2,7 @@
 .section {
   background: var(--color-teal-dark);
   padding: 120px 80px;
+  overflow: hidden; /* prevent any carousel bleed from causing scroll */
   opacity: 0;
   transform: translateY(28px);
   transition:
@@ -47,51 +48,58 @@
   color: var(--color-white);
 }
 
-.headingItalic {
-  font-style: italic;
-}
+.headingItalic { font-style: italic; }
 
-/* ─── Carousel wrap — arrows + viewport in a row ─────────── */
+/* ─── Carousel wrap — arrows + viewport as a flex row ──── */
 .carouselWrap {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 28px;
-  width: 100%;
   margin-bottom: 48px;
 }
 
-/* ─── Viewport — clips the side cards ────────────────────── */
-.carousel {
-  position: relative;
-  /* width = 2 * SPACING - 0.6 * CARD_W  →  2*395 - 0.6*360 = 574px */
-  width: 574px;
-  /* extra height accommodates scale(1.02) on center card */
-  height: 520px;
+/* ─── Viewport — clips the sliding track ─────────────────── */
+/*
+ * Desktop: card=320px, gap=20px, step=340px
+ * vpW = 2 * (110 + 20) + 320 = 580px  (110px side visible = 34%)
+ * offset = (580 - 320) / 2 = 130px
+ */
+.viewport {
+  width: 580px;
+  height: 500px;
   overflow: hidden;
+  position: relative;
   flex-shrink: 0;
 }
 
-/* ─── Card wrap — absolutely positioned, transitions ────── */
-.cardWrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 360px;
-  height: 500px;
-  margin-top: -250px;
-  cursor: pointer;
-  transition:
-    transform 400ms cubic-bezier(0.25, 0.1, 0.25, 1),
-    opacity 400ms cubic-bezier(0.25, 0.1, 0.25, 1);
+/* ─── Track — slides left / right ────────────────────────── */
+.track {
+  display: flex;
+  gap: 20px;
+  /* transform and transition set inline by JS */
+  height: 100%;
 }
+
+/* ─── Card wrap ───────────────────────────────────────────── */
+.cardWrap {
+  width: 320px;
+  height: 500px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Center card: full opacity, pointer shows hand */
+.cardCenter { opacity: 1; }
+
+/* Side cards: dimmed, image only */
+.cardSide { opacity: 0.5; }
 
 /* ─── Card ───────────────────────────────────────────────── */
 .card {
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: 180px 180px 0 0;
+  border-radius: 160px 160px 0 0;
   overflow: hidden;
   position: relative;
   text-decoration: none;
@@ -101,14 +109,17 @@
 .cardImage {
   position: absolute;
   inset: 0;
+}
+
+.cardCenter .cardImage {
   transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .cardCenter:hover .cardImage {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
-/* ─── Card overlay — fades up on hover (center only) ─────── */
+/* ─── Card overlay — always visible on center card ───────── */
 .cardOverlay {
   position: absolute;
   bottom: 0;
@@ -118,22 +129,12 @@
   background: linear-gradient(
     to top,
     rgba(4, 20, 18, 0.88) 0%,
-    rgba(8, 47, 44, 0.55) 55%,
+    rgba(8, 47, 44, 0.5) 55%,
     transparent 100%
   );
   display: flex;
   flex-direction: column;
   gap: 6px;
-  transform: translateY(28px);
-  opacity: 0;
-  transition:
-    transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
-    opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.cardCenter:hover .cardOverlay {
-  transform: translateY(0);
-  opacity: 1;
 }
 
 .suiteCategory {
@@ -186,6 +187,7 @@
 .arrow {
   width: 44px;
   height: 44px;
+  flex-shrink: 0;
   border-radius: 50%;
   border: 1px solid var(--color-gold);
   background: transparent;
@@ -194,7 +196,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  flex-shrink: 0;
   transition:
     background 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
     color 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -206,9 +207,7 @@
 }
 
 /* ─── CTA ────────────────────────────────────────────────── */
-.cta {
-  margin-top: 8px;
-}
+.cta { margin-top: 8px; }
 
 .ctaBtn {
   display: inline-block;
@@ -232,71 +231,68 @@
 }
 
 /* ─── Tablet ─────────────────────────────────────────────── */
+/*
+ * card=240px, gap=16px, step=256px
+ * vpW = 2 * (80 + 16) + 240 = 432px  (80px side visible = 33%)
+ * offset = (432 - 240) / 2 = 96px
+ */
 @media (max-width: 900px) {
-  .section {
-    padding: 80px 40px;
+  .section { padding: 80px 40px; }
+
+  .carouselWrap { gap: 20px; }
+
+  .viewport {
+    width: 432px;
+    height: 400px;
   }
 
-  .carousel {
-    /* 2*310 - 0.6*280 = 620 - 168 = 452px */
-    width: 452px;
-    height: 440px;
-  }
-
-  .cardWrap {
-    width: 280px;
-    height: 420px;
-    margin-top: -210px;
-  }
-
-  .card {
-    border-radius: 140px 140px 0 0;
-  }
-
-  /* Always show overlay on touch devices */
-  .cardCenter .cardOverlay {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* ─── Mobile ─────────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .section {
-    padding: 64px 20px;
-  }
-
-  .heading {
-    font-size: 34px;
-  }
-
-  .carouselWrap {
-    gap: 16px;
-  }
-
-  .carousel {
-    /* 2*245 - 0.6*220 = 490 - 132 = 358px */
-    width: 358px;
-    height: 380px;
-  }
+  .track { gap: 16px; }
 
   .cardWrap {
-    width: 220px;
-    height: 360px;
-    margin-top: -180px;
+    width: 240px;
+    height: 400px;
   }
 
-  .card {
-    border-radius: 110px 110px 0 0;
-  }
+  .card { border-radius: 120px 120px 0 0; }
 
   .arrow {
     width: 36px;
     height: 36px;
   }
+}
 
-  .cardCenter .cardOverlay {
-    transform: translateY(0);
-    opacity: 1;
+/* ─── Mobile ─────────────────────────────────────────────── */
+/*
+ * card=160px, gap=12px, step=172px
+ * vpW = 2 * (52 + 12) + 160 = 288px  (52px side visible = 33%)
+ * offset = (288 - 160) / 2 = 64px
+ */
+@media (max-width: 600px) {
+  .section { padding: 64px 20px; }
+
+  .heading { font-size: 34px; }
+
+  .carouselWrap { gap: 14px; }
+
+  .viewport {
+    width: 288px;
+    height: 280px;
   }
+
+  .track { gap: 12px; }
+
+  .cardWrap {
+    width: 160px;
+    height: 280px;
+  }
+
+  .card { border-radius: 80px 80px 0 0; }
+
+  .arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .suiteName { font-size: 16px; }
+  .suiteRate  { font-size: 12px; }
 }
