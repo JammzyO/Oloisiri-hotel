@@ -36,7 +36,7 @@ interface Country {
   dialCode:  string
   maxDigits: number
   minDigits: number
-  style:     FormatStyle
+  style:     string
 }
 
 const PRIORITY_COUNTRIES: Country[] = [
