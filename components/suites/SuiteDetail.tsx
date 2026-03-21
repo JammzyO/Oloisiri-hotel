@@ -653,8 +653,8 @@ export default function SuiteDetail({ suite }: { suite: Suite }) {
               sizes="(max-width:768px) 100vw, 55vw"
               priority
               style={{
-                objectFit: 'cover',
-                objectPosition: activeImg.position,
+                objectFit: 'contain',
+                objectPosition: 'center',
                 opacity: transitioning ? 0 : 1,
                 transition: 'opacity 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
               }}
