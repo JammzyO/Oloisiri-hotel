@@ -167,10 +167,11 @@ function ThankYou({ firstName }: { firstName: string }) {
 // ── General inquiry form ──────────────────────────────────────────────────────
 
 function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
-  const [form, setForm]           = useState({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' })
-  const [errors, setErrors]       = useState<Record<string, string>>({})
-  const [loading, setLoading]     = useState(false)
+  const [form, setForm]             = useState({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' })
+  const [errors, setErrors]         = useState<Record<string, string>>({})
+  const [loading, setLoading]       = useState(false)
   const [phoneValid, setPhoneValid] = useState(false)
+  const [submitStage, setSubmitStage] = useState<'idle' | 'choose'>('idle')
 
   function set(key: string, value: string) {
     setForm(f => ({ ...f, [key]: value }))
@@ -216,6 +217,10 @@ function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
+    setSubmitStage('choose')
+  }
+
+  async function sendByEmail() {
     setLoading(true)
     try {
       await fetch('https://hook.eu2.make.com/63n5mfv4mnxthadep8a46ie2wi1und3u', {
@@ -235,6 +240,24 @@ function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
       console.error('General inquiry webhook error:', err)
     }
     setLoading(false)
+    onDone(form.firstName)
+  }
+
+  function sendByWhatsApp() {
+    const subjectLabel = SUBJECTS.find(s => s.value === form.subject)?.label ?? form.subject
+    const message = [
+      `Hello Oloisiri,`,
+      ``,
+      `I have a general inquiry.`,
+      ``,
+      `Name: ${form.firstName} ${form.lastName}`,
+      `Email: ${form.email}`,
+      `Phone: ${form.phone}`,
+      `Subject: ${subjectLabel}`,
+      ``,
+      form.message,
+    ].join('\n')
+    window.open(`https://wa.me/254718068417?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
     onDone(form.firstName)
   }
 
@@ -305,13 +328,42 @@ function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
         {errors.message && <span className={styles.errMsg}>{errors.message}</span>}
       </div>
 
-      <button type="submit" className={styles.submitBtn} disabled={loading}>
-        {loading
-          ? <span className={styles.dots}><span /><span /><span /></span>
-          : 'Send Message'
-        }
-      </button>
-      <p className={styles.submitNote}>We respond to all enquiries within 24 hours.</p>
+      <div className={styles.submitArea}>
+
+        {/* State A: single submit button */}
+        <div className={submitStage === 'choose' ? styles.submitSingleExit : styles.submitSingleIdle}>
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading
+              ? <span className={styles.dots}><span /><span /><span /></span>
+              : 'Send Message'
+            }
+          </button>
+          <p className={styles.submitNote}>We respond to all enquiries within 24 hours.</p>
+        </div>
+
+        {/* State B: choose channel */}
+        <div className={submitStage === 'choose' ? styles.submitChooseVisible : styles.submitChooseIdle}>
+          <p className={styles.submitPrompt}>How would you like to send your inquiry?</p>
+          <div className={styles.sendBtnRow}>
+            <button type="button" className={styles.submitBtn} onClick={sendByEmail} disabled={loading}>
+              {loading
+                ? <span className={styles.dots}><span /><span /><span /></span>
+                : 'Send by Email'
+              }
+            </button>
+            <button type="button" className={styles.sendWaBtn} onClick={sendByWhatsApp}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="white" aria-hidden="true" style={{ flexShrink: 0 }}>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Send via WhatsApp
+            </button>
+          </div>
+          <button type="button" className={styles.backLink} onClick={() => setSubmitStage('idle')}>
+            ← Back
+          </button>
+        </div>
+
+      </div>
     </form>
   )
 }
