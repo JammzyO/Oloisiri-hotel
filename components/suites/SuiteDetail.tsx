@@ -625,6 +625,14 @@ export default function SuiteDetail({ suite }: { suite: Suite }) {
     }, 150)
   }
 
+  function handlePrev() {
+    handleThumbClick((activeImgIdx - 1 + suite.images.length) % suite.images.length)
+  }
+
+  function handleNext() {
+    handleThumbClick((activeImgIdx + 1) % suite.images.length)
+  }
+
   const activeImg = suite.images[activeImgIdx]
 
   return (
@@ -657,6 +665,20 @@ export default function SuiteDetail({ suite }: { suite: Suite }) {
                 transition: 'opacity 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
               }}
             />
+            {suite.images.length > 1 && (
+              <>
+                <button className={`${styles.imgArrow} ${styles.imgArrowPrev}`} onClick={handlePrev} aria-label="Previous image">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M13 4L7 10L13 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button className={`${styles.imgArrow} ${styles.imgArrowNext}`} onClick={handleNext} aria-label="Next image">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 4L13 10L7 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
 
           {/* Thumbnails */}
