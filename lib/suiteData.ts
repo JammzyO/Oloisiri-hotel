@@ -60,9 +60,11 @@ export const allSuites: Suite[] = [
     checkin: '2:00 PM',
     checkout: '10:00 AM',
     images: [
-      { src: '/suite-kilimanjaro-a.jpg', position: 'center' },
-      { src: '/suite-kilimanjaro-b.jpg', position: 'center' },
-      { src: '/suite-kilimanjaro-c.jpg', position: 'center' },
+      { src: '/images/rooms/luxury-view-1.jpeg',     position: 'center' },
+      { src: '/images/rooms/luxury-view-2.jpeg',     position: 'center' },
+      { src: '/images/rooms/luxury-view-3.jpeg',     position: 'center' },
+      { src: '/images/rooms/luxury-bathroom-1.jpeg', position: 'center' },
+      { src: '/images/rooms/luxury-bathroom-2.jpeg', position: 'center' },
     ],
   },
   {
@@ -103,9 +105,10 @@ export const allSuites: Suite[] = [
     checkin: '2:00 PM',
     checkout: '10:00 AM',
     images: [
-      { src: '/suite-savannah-a.jpg', position: 'center' },
-      { src: '/suite-savannah-b.jpg', position: 'center' },
-      { src: '/suite-savannah-c.jpg', position: 'center' },
+      { src: '/images/rooms/standard-king-view-1.jpeg',     position: 'center' },
+      { src: '/images/rooms/standard-king-view-2.jpeg',     position: 'center' },
+      { src: '/images/rooms/standard-king-view-3.jpeg',     position: 'center' },
+      { src: '/images/rooms/standard-king-bathroom-1.jpeg', position: 'center' },
     ],
   },
   {
@@ -146,8 +149,9 @@ export const allSuites: Suite[] = [
     checkin: '2:00 PM',
     checkout: '10:00 AM',
     images: [
-      { src: '/suite-savannah-b.jpg', position: 'center' },
-      { src: '/suite-savannah-c.jpg', position: 'center' },
+      { src: '/images/rooms/twin-room-view-1.jpeg',     position: 'center' },
+      { src: '/images/rooms/twin-room-view-2.jpeg',     position: 'center' },
+      { src: '/images/rooms/twin-room-bathroom-1.jpeg', position: 'center' },
     ],
   },
   {
@@ -188,9 +192,10 @@ export const allSuites: Suite[] = [
     checkin: '2:00 PM',
     checkout: '10:00 AM',
     images: [
-      { src: '/suite-bushvilla-a.jpg', position: 'center' },
-      { src: '/suite-bushvilla-b.jpg', position: 'center' },
-      { src: '/suite-bushvilla-c.jpg', position: 'center' },
+      { src: '/images/rooms/family-room-view-1.jpeg',     position: 'center' },
+      { src: '/images/rooms/family-room-view-2.jpeg',     position: 'center' },
+      { src: '/images/rooms/family-room-view-3.jpeg',     position: 'center' },
+      { src: '/images/rooms/family-room-bathroom-1.jpeg', position: 'center' },
     ],
   },
   {
@@ -231,9 +236,10 @@ export const allSuites: Suite[] = [
     checkin: '2:00 PM',
     checkout: '10:00 AM',
     images: [
-      { src: '/suite-bushvilla-b.jpg', position: 'center' },
-      { src: '/suite-bushvilla-c.jpg', position: 'center' },
-      { src: '/suite-bushvilla-d.jpg', position: 'center' },
+      { src: '/images/rooms/interleading-view-1.jpeg',      position: 'center' },
+      { src: '/images/rooms/interleading-view-2.jpeg',      position: 'center' },
+      { src: '/images/rooms/interleading-bathroom-1.jpeg',  position: 'center' },
+      { src: '/images/rooms/interleading-bathroom-2.jpeg',  position: 'center' },
     ],
   },
 ]
