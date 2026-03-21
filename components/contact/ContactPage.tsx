@@ -288,15 +288,27 @@ function ReservationForm({ onDone }: { onDone: (name: string) => void }) {
   async function sendByEmail() {
     setLoading(true)
     try {
-      const url = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL
-      if (url) {
-        await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        })
-      }
-    } catch {}
+      await fetch('https://hook.eu2.make.com/63n5mfv4mnxthadep8a46ie2wi1und3u', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type:             'Reservation Inquiry',
+          firstname:        form.firstName,
+          lastname:         form.lastName,
+          email:            form.email,
+          phone:            form.phone,
+          checkin:          form.arrival,
+          checkout:         form.departure,
+          adults:           String(form.adults),
+          children:         String(form.children),
+          room:             form.suite,
+          occupancy:        form.occupancy,
+          special_requests: form.requests,
+        }),
+      })
+    } catch (err) {
+      console.error('Reservation webhook error:', err)
+    }
     setLoading(false)
     onDone(form.firstName)
   }
@@ -500,7 +512,23 @@ function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
+    try {
+      await fetch('https://hook.eu2.make.com/63n5mfv4mnxthadep8a46ie2wi1und3u', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type:      'General Inquiry',
+          firstname: form.firstName,
+          lastname:  form.lastName,
+          email:     form.email,
+          phone:     form.phone,
+          subject:   form.subject,
+          message:   form.message,
+        }),
+      })
+    } catch (err) {
+      console.error('General inquiry webhook error:', err)
+    }
     setLoading(false)
     onDone(form.firstName)
   }
