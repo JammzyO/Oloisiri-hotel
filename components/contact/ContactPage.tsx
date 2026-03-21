@@ -511,7 +511,7 @@ function ContactClient() {
 
           <div style={{ borderLeft: '3px solid #c9a24d', paddingLeft: '16px', marginBottom: '24px' }}>
             <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '12px', color: '#082f2c', margin: '0', lineHeight: 1.75, letterSpacing: '0.01em' }}>
-              These are special opening rates, available for a limited period. All rates are per room per night, bed and breakfast basis. Buffet meals available on arrangement at KES 2,500 per head.
+              These are special opening rates, available for a limited period. All rates are per room per night, bed and breakfast basis. Pre-prepared buffet meals available on arrangement at KES 2,500 per head — one soft drink included.
             </p>
           </div>
 

@@ -230,6 +230,54 @@
 }
 
 /* ══════════════════════════════════════════════════════════
+   S3b: Practical notes — cream, three columns
+══════════════════════════════════════════════════════════ */
+.practicalSection {
+  background: var(--color-cream);
+  padding: 80px 72px;
+  border-top: 1px solid rgba(8, 47, 44, 0.07);
+}
+
+.practicalInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 0 40px;
+  align-items: start;
+}
+
+.practicalDivider {
+  width: 1px;
+  background: rgba(8, 47, 44, 0.1);
+  align-self: stretch;
+  min-height: 80px;
+}
+
+.practicalItem {}
+
+.practicalLabel {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 16px;
+}
+
+.practicalBody {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: #5a5a52;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
    S4: Pillars — dark teal, ghost numerals
 ══════════════════════════════════════════════════════════ */
 .pillarsSection {
@@ -494,9 +542,19 @@
   .pillarsSection,
   .detailSection,
   .ctaSection,
-  .statsSection {
+  .statsSection,
+  .practicalSection {
     padding-left: 40px;
     padding-right: 40px;
+  }
+
+  .practicalInner {
+    grid-template-columns: 1fr;
+    gap: 40px 0;
+  }
+
+  .practicalDivider {
+    display: none;
   }
 
   .storyInner {

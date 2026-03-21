@@ -177,6 +177,36 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ── S3b: Practical notes ─────────────────────────── */}
+      <section className={styles.practicalSection}>
+        <div className={styles.practicalInner}>
+          <div className={styles.practicalItem}>
+            <span className={styles.practicalLabel}>Accessibility</span>
+            <p className={styles.practicalBody}>
+              Oloisiri is fully accessible to guests using wheelchairs and pushchairs.
+              Our porters are always on hand — just ask at the desk and someone will be with you.
+            </p>
+          </div>
+          <div className={styles.practicalDivider} aria-hidden="true" />
+          <div className={styles.practicalItem}>
+            <span className={styles.practicalLabel}>Coming Soon</span>
+            <p className={styles.practicalBody}>
+              A swimming pool and rooftop lift are both on their way. Until then, the stairs are
+              worth it — and the view from the top is the reason you came.
+            </p>
+          </div>
+          <div className={styles.practicalDivider} aria-hidden="true" />
+          <div className={styles.practicalItem}>
+            <span className={styles.practicalLabel}>A Natural Stop</span>
+            <p className={styles.practicalBody}>
+              Whether you are a Kilimanjaro hiker resting before the climb, a family en route to
+              Amboseli, or a traveller wanting a proper meal on the Nairobi–Arusha road — the
+              highway is traffic-free and the door is always open.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── S4: Three pillars ────────────────────────────── */}
       <section
         ref={pillars.ref}
