@@ -161,15 +161,13 @@ export default function Suites() {
 
               // translateX centres the card at its slot (left:50% in CSS)
               const tx = offset * step - halfCard
-              // center card rises 20 px — transform only, never height
-              const ty = isCenter ? -20 : 0
 
               return (
                 <div
                   key={suiteIdx}
                   className={`${styles.cardWrap} ${isCenter ? styles.cardCenter : ''}`}
                   style={{
-                    transform: `translateX(${tx}px) translateY(${ty}px)`,
+                    transform: `translateX(${tx}px)`,
                     opacity:   isCenter ? 1 : isHidden ? 0 : 0.5,
                     pointerEvents: isHidden ? 'none' : 'auto',
                     cursor: isLeft || isRight ? 'pointer' : 'default',

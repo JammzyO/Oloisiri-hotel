@@ -684,7 +684,20 @@
   letter-spacing: 0.08em;
 }
 
-/* ── Country selector ─────────────────────────────────────── */
+/* ── Phone prefix ─────────────────────────────────────────── */
+.phonePrefix {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--color-teal-dark);
+  letter-spacing: 0.03em;
+  padding: 10px 10px 10px 0;
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* ── Country selector (unused — kept for safety) ──────────── */
 .countryWrap {
   position: relative;
   flex-shrink: 0;

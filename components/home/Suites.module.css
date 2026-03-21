@@ -82,15 +82,15 @@
   bottom: 0;
   left: 50%;           /* translateX in JS offsets from this midpoint */
   width: 300px;
-  height: 460px;
+  height: 400px;       /* side cards */
   transition:
     transform 450ms cubic-bezier(0.25, 0.1, 0.25, 1),
     opacity   450ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-/* Center card: slightly taller appearance via translateY(-20px) in JS */
+/* Center card: taller — extends above side cards naturally (both bottom-aligned) */
 .cardCenter {
-  /* hover zoom only applies to center */
+  height: 460px;
 }
 
 /* ─── Card ───────────────────────────────────────────────── */
@@ -180,6 +180,16 @@
   font-weight: 300;
   color: var(--color-gold);
   margin-top: 4px;
+  opacity: 0;
+  transform: translateY(5px);
+  transition:
+    opacity 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.cardCenter .card:hover .suiteRate {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ─── Arrow buttons ──────────────────────────────────────── */
@@ -247,6 +257,10 @@
 
   .cardWrap {
     width: 180px;
+    height: 310px;
+  }
+
+  .cardCenter {
     height: 360px;
   }
 
@@ -278,6 +292,10 @@
 
   .cardWrap {
     width: 140px;
+    height: 235px;
+  }
+
+  .cardCenter {
     height: 280px;
   }
 

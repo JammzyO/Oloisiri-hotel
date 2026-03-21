@@ -26,174 +26,11 @@ const SUBJECTS = [
   { value: 'other',         label: 'Other'               },
 ]
 
-// ── Country data ──────────────────────────────────────────────────────────────
-
-type FormatStyle = 'ke' | 'uk' | 'us' | 'fr' | 'in' | 'cn' | 'za' | 'au' | 'default'
-
-interface Country {
-  flag:      string
-  name:      string
-  dialCode:  string
-  maxDigits: number
-  minDigits: number
-  style:     string
-}
-
-const PRIORITY_COUNTRIES: Country[] = [
-  { flag: '🇰🇪', name: 'Kenya',                dialCode: '+254', maxDigits: 9,  minDigits: 9,  style: 'ke'      },
-  { flag: '🇹🇿', name: 'Tanzania',             dialCode: '+255', maxDigits: 9,  minDigits: 9,  style: 'ke'      },
-  { flag: '🇺🇬', name: 'Uganda',               dialCode: '+256', maxDigits: 9,  minDigits: 9,  style: 'ke'      },
-  { flag: '🇬🇧', name: 'United Kingdom',       dialCode: '+44',  maxDigits: 10, minDigits: 10, style: 'uk'      },
-  { flag: '🇺🇸', name: 'United States',        dialCode: '+1',   maxDigits: 10, minDigits: 10, style: 'us'      },
-  { flag: '🇦🇪', name: 'United Arab Emirates', dialCode: '+971', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇩🇪', name: 'Germany',              dialCode: '+49',  maxDigits: 11, minDigits: 10, style: 'default' },
-  { flag: '🇫🇷', name: 'France',               dialCode: '+33',  maxDigits: 9,  minDigits: 9,  style: 'fr'      },
-  { flag: '🇮🇳', name: 'India',                dialCode: '+91',  maxDigits: 10, minDigits: 10, style: 'in'      },
-  { flag: '🇨🇳', name: 'China',                dialCode: '+86',  maxDigits: 11, minDigits: 11, style: 'cn'      },
-  { flag: '🇿🇦', name: 'South Africa',         dialCode: '+27',  maxDigits: 9,  minDigits: 9,  style: 'za'      },
-  { flag: '🇦🇺', name: 'Australia',            dialCode: '+61',  maxDigits: 9,  minDigits: 9,  style: 'au'      },
-  { flag: '🇨🇦', name: 'Canada',               dialCode: '+1',   maxDigits: 10, minDigits: 10, style: 'us'      },
-]
-
-const REST_COUNTRIES: Country[] = [
-  { flag: '🇦🇫', name: 'Afghanistan',      dialCode: '+93',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇦🇱', name: 'Albania',          dialCode: '+355', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇩🇿', name: 'Algeria',          dialCode: '+213', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇦🇴', name: 'Angola',           dialCode: '+244', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇦🇷', name: 'Argentina',        dialCode: '+54',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇦🇹', name: 'Austria',          dialCode: '+43',  maxDigits: 11, minDigits: 9,  style: 'default' },
-  { flag: '🇧🇭', name: 'Bahrain',          dialCode: '+973', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇧🇩', name: 'Bangladesh',       dialCode: '+880', maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇧🇪', name: 'Belgium',          dialCode: '+32',  maxDigits: 9,  minDigits: 8,  style: 'default' },
-  { flag: '🇧🇷', name: 'Brazil',           dialCode: '+55',  maxDigits: 11, minDigits: 10, style: 'default' },
-  { flag: '🇧🇫', name: 'Burkina Faso',     dialCode: '+226', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇨🇲', name: 'Cameroon',         dialCode: '+237', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇨🇱', name: 'Chile',            dialCode: '+56',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇨🇴', name: 'Colombia',         dialCode: '+57',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇨🇩', name: 'Congo (DRC)',       dialCode: '+243', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇨🇬', name: 'Congo (Rep.)',      dialCode: '+242', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇨🇮', name: "Côte d'Ivoire",    dialCode: '+225', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇭🇷', name: 'Croatia',          dialCode: '+385', maxDigits: 9,  minDigits: 8,  style: 'default' },
-  { flag: '🇨🇾', name: 'Cyprus',           dialCode: '+357', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇨🇿', name: 'Czech Republic',   dialCode: '+420', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇩🇰', name: 'Denmark',          dialCode: '+45',  maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇪🇬', name: 'Egypt',            dialCode: '+20',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇪🇹', name: 'Ethiopia',         dialCode: '+251', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇫🇮', name: 'Finland',          dialCode: '+358', maxDigits: 10, minDigits: 9,  style: 'default' },
-  { flag: '🇬🇭', name: 'Ghana',            dialCode: '+233', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇬🇷', name: 'Greece',           dialCode: '+30',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇭🇰', name: 'Hong Kong',        dialCode: '+852', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇭🇺', name: 'Hungary',          dialCode: '+36',  maxDigits: 9,  minDigits: 8,  style: 'default' },
-  { flag: '🇮🇩', name: 'Indonesia',        dialCode: '+62',  maxDigits: 11, minDigits: 9,  style: 'default' },
-  { flag: '🇮🇷', name: 'Iran',             dialCode: '+98',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇮🇶', name: 'Iraq',             dialCode: '+964', maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇮🇪', name: 'Ireland',          dialCode: '+353', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇮🇱', name: 'Israel',           dialCode: '+972', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇮🇹', name: 'Italy',            dialCode: '+39',  maxDigits: 10, minDigits: 9,  style: 'default' },
-  { flag: '🇯🇵', name: 'Japan',            dialCode: '+81',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇯🇴', name: 'Jordan',           dialCode: '+962', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇰🇼', name: 'Kuwait',           dialCode: '+965', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇱🇧', name: 'Lebanon',          dialCode: '+961', maxDigits: 8,  minDigits: 7,  style: 'default' },
-  { flag: '🇲🇾', name: 'Malaysia',         dialCode: '+60',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇲🇻', name: 'Maldives',         dialCode: '+960', maxDigits: 7,  minDigits: 7,  style: 'default' },
-  { flag: '🇲🇱', name: 'Mali',             dialCode: '+223', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇲🇦', name: 'Morocco',          dialCode: '+212', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇲🇿', name: 'Mozambique',       dialCode: '+258', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇳🇦', name: 'Namibia',          dialCode: '+264', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇳🇬', name: 'Nigeria',          dialCode: '+234', maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇳🇴', name: 'Norway',           dialCode: '+47',  maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇴🇲', name: 'Oman',             dialCode: '+968', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇵🇰', name: 'Pakistan',         dialCode: '+92',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇵🇭', name: 'Philippines',      dialCode: '+63',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇵🇱', name: 'Poland',           dialCode: '+48',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇵🇹', name: 'Portugal',         dialCode: '+351', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇶🇦', name: 'Qatar',            dialCode: '+974', maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇷🇴', name: 'Romania',          dialCode: '+40',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇷🇺', name: 'Russia',           dialCode: '+7',   maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇷🇼', name: 'Rwanda',           dialCode: '+250', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇸🇦', name: 'Saudi Arabia',     dialCode: '+966', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇸🇳', name: 'Senegal',          dialCode: '+221', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇸🇬', name: 'Singapore',        dialCode: '+65',  maxDigits: 8,  minDigits: 8,  style: 'default' },
-  { flag: '🇸🇰', name: 'Slovakia',         dialCode: '+421', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇸🇴', name: 'Somalia',          dialCode: '+252', maxDigits: 8,  minDigits: 7,  style: 'default' },
-  { flag: '🇪🇸', name: 'Spain',            dialCode: '+34',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇸🇩', name: 'Sudan',            dialCode: '+249', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇸🇪', name: 'Sweden',           dialCode: '+46',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇨🇭', name: 'Switzerland',      dialCode: '+41',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇸🇾', name: 'Syria',            dialCode: '+963', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇹🇭', name: 'Thailand',         dialCode: '+66',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇹🇷', name: 'Turkey',           dialCode: '+90',  maxDigits: 10, minDigits: 10, style: 'default' },
-  { flag: '🇺🇦', name: 'Ukraine',          dialCode: '+380', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇻🇳', name: 'Vietnam',          dialCode: '+84',  maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇿🇲', name: 'Zambia',           dialCode: '+260', maxDigits: 9,  minDigits: 9,  style: 'default' },
-  { flag: '🇿🇼', name: 'Zimbabwe',         dialCode: '+263', maxDigits: 9,  minDigits: 9,  style: 'default' },
-].sort((a, b) => a.name.localeCompare(b.name))
-
-// ── Phone number formatter ────────────────────────────────────────────────────
-
-function formatPhoneNumber(digits: string, country: Country): string {
-  const d = digits.slice(0, country.maxDigits)
-  switch (country.style) {
-    case 'ke': {
-      if (d.length <= 3) return d
-      if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`
-      return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`
-    }
-    case 'uk': {
-      if (d.length <= 4) return d
-      if (d.length <= 7) return `${d.slice(0, 4)} ${d.slice(4)}`
-      return `${d.slice(0, 4)} ${d.slice(4, 7)} ${d.slice(7)}`
-    }
-    case 'us': {
-      if (d.length < 3) return d
-      if (d.length === 3) return `(${d}) `
-      if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`
-      return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`
-    }
-    case 'fr': {
-      if (d.length <= 1) return d
-      if (d.length <= 3) return `${d.slice(0, 1)} ${d.slice(1)}`
-      if (d.length <= 5) return `${d.slice(0, 1)} ${d.slice(1, 3)} ${d.slice(3)}`
-      if (d.length <= 7) return `${d.slice(0, 1)} ${d.slice(1, 3)} ${d.slice(3, 5)} ${d.slice(5)}`
-      return `${d.slice(0, 1)} ${d.slice(1, 3)} ${d.slice(3, 5)} ${d.slice(5, 7)} ${d.slice(7)}`
-    }
-    case 'in': {
-      if (d.length <= 5) return d
-      return `${d.slice(0, 5)} ${d.slice(5)}`
-    }
-    case 'cn': {
-      if (d.length <= 3) return d
-      if (d.length <= 7) return `${d.slice(0, 3)} ${d.slice(3)}`
-      return `${d.slice(0, 3)} ${d.slice(3, 7)} ${d.slice(7)}`
-    }
-    case 'za': {
-      if (d.length <= 2) return d
-      if (d.length <= 5) return `${d.slice(0, 2)} ${d.slice(2)}`
-      return `${d.slice(0, 2)} ${d.slice(2, 5)} ${d.slice(5)}`
-    }
-    case 'au': {
-      if (d.length <= 3) return d
-      if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`
-      return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`
-    }
-    default: {
-      let result = ''
-      for (let i = 0; i < d.length; i++) {
-        if (i > 0 && i % 3 === 0) result += ' '
-        result += d[i]
-      }
-      return result
-    }
-  }
-}
-
 // ── Email validator ───────────────────────────────────────────────────────────
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)
 }
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 // ── Floating-label field ──────────────────────────────────────────────────────
 
@@ -279,119 +116,7 @@ function Counter({ label, value, min = 0, onChange }: {
   )
 }
 
-// ── Country selector ──────────────────────────────────────────────────────────
-
-function CountrySelector({ selected, onSelect }: {
-  selected: Country
-  onSelect: (c: Country) => void
-}) {
-  const [open, setOpen]     = useState(false)
-  const [search, setSearch] = useState('')
-  const wrapRef             = useRef<HTMLDivElement>(null)
-  const searchRef           = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    const handler = (e: MouseEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) {
-        setOpen(false)
-        setSearch('')
-      }
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [open])
-
-  useEffect(() => {
-    if (open) setTimeout(() => searchRef.current?.focus(), 10)
-  }, [open])
-
-  const q = search.trim().toLowerCase()
-  const filteredPriority = q
-    ? PRIORITY_COUNTRIES.filter(c => c.name.toLowerCase().includes(q) || c.dialCode.includes(q))
-    : PRIORITY_COUNTRIES
-  const filteredRest = q
-    ? REST_COUNTRIES.filter(c => c.name.toLowerCase().includes(q) || c.dialCode.includes(q))
-    : REST_COUNTRIES
-  const showSep = !q && filteredPriority.length > 0 && filteredRest.length > 0
-
-  return (
-    <div className={styles.countryWrap} ref={wrapRef}>
-      <button
-        type="button"
-        className={`${styles.countryBtn} ${open ? styles.countryBtnOpen : ''}`}
-        onClick={() => setOpen(o => !o)}
-        aria-label={`Country code: ${selected.dialCode}`}
-        aria-expanded={open}
-      >
-        <span className={styles.countryFlag}>{selected.flag}</span>
-        <span className={styles.countryCode}>{selected.dialCode}</span>
-        <svg
-          width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true"
-          className={`${styles.countryChevron} ${open ? styles.countryChevronOpen : ''}`}
-        >
-          <path d="M1.5 3L4.5 6L7.5 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-        </svg>
-      </button>
-
-      {open && (
-        <div className={styles.countryDropdown} role="listbox" aria-label="Select country">
-          <div className={styles.countrySearchWrap}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-            <input
-              ref={searchRef}
-              type="text"
-              className={styles.countrySearch}
-              placeholder="Search country or code…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              aria-label="Search countries"
-            />
-          </div>
-          <div className={styles.countryList} role="presentation">
-            {filteredPriority.map(c => (
-              <button
-                key={`pri-${c.dialCode}-${c.name}`}
-                type="button"
-                role="option"
-                aria-selected={c.name === selected.name}
-                className={`${styles.countryOption} ${c.name === selected.name ? styles.countryOptionSelected : ''}`}
-                onClick={() => { onSelect(c); setOpen(false); setSearch('') }}
-              >
-                <span className={styles.countryOptFlag}>{c.flag}</span>
-                <span className={styles.countryOptName}>{c.name}</span>
-                <span className={styles.countryOptCode}>{c.dialCode}</span>
-              </button>
-            ))}
-            {showSep && <div className={styles.countrySep} role="separator" />}
-            {filteredRest.map(c => (
-              <button
-                key={`rest-${c.dialCode}-${c.name}`}
-                type="button"
-                role="option"
-                aria-selected={c.name === selected.name}
-                className={`${styles.countryOption} ${c.name === selected.name ? styles.countryOptionSelected : ''}`}
-                onClick={() => { onSelect(c); setOpen(false); setSearch('') }}
-              >
-                <span className={styles.countryOptFlag}>{c.flag}</span>
-                <span className={styles.countryOptName}>{c.name}</span>
-                <span className={styles.countryOptCode}>{c.dialCode}</span>
-              </button>
-            ))}
-            {filteredPriority.length === 0 && filteredRest.length === 0 && (
-              <p className={styles.countryEmpty}>No results</p>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ── Phone field ───────────────────────────────────────────────────────────────
+// ── Phone field (Kenya fixed prefix) ─────────────────────────────────────────
 
 function PhoneField({ onChange, onValidityChange, error, onErrorClear }: {
   onChange: (fullNumber: string) => void
@@ -399,10 +124,8 @@ function PhoneField({ onChange, onValidityChange, error, onErrorClear }: {
   error?: string
   onErrorClear: () => void
 }) {
-  const [country, setCountry]     = useState(PRIORITY_COUNTRIES[0])
   const [rawDigits, setRawDigits] = useState('')
-  const shakeRef                  = useRef<HTMLDivElement>(null)
-  const numberRef                 = useRef<HTMLInputElement>(null)
+  const shakeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (error && shakeRef.current) {
@@ -412,13 +135,11 @@ function PhoneField({ onChange, onValidityChange, error, onErrorClear }: {
     }
   }, [error])
 
-  function handleCountrySelect(c: Country) {
-    setCountry(c)
-    const trimmed = rawDigits.slice(0, c.maxDigits)
-    setRawDigits(trimmed)
-    onChange(c.dialCode + trimmed)
-    onValidityChange(trimmed.length >= c.minDigits)
-    setTimeout(() => numberRef.current?.focus(), 50)
+  function formatKe(digits: string): string {
+    const d = digits.slice(0, 9)
+    if (d.length <= 3) return d
+    if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`
+    return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -428,39 +149,28 @@ function PhoneField({ onChange, onValidityChange, error, onErrorClear }: {
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const digits = e.target.value.replace(/\D/g, '').slice(0, country.maxDigits)
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 9)
     setRawDigits(digits)
-    onChange(country.dialCode + digits)
-    const valid = digits.length >= country.minDigits
+    onChange('+254' + digits)
+    const valid = digits.length === 9
     onValidityChange(valid)
     if (digits.length > 0) onErrorClear()
   }
-
-  const placeholder = country.style === 'ke' ? '7XX XXX XXX'
-    : country.style === 'uk' ? '7XXX XXX XXX'
-    : country.style === 'us' ? '(XXX) XXX-XXXX'
-    : country.style === 'fr' ? 'X XX XX XX XX'
-    : country.style === 'in' ? 'XXXXX XXXXX'
-    : country.style === 'cn' ? 'XXX XXXX XXXX'
-    : country.style === 'za' ? 'XX XXX XXXX'
-    : country.style === 'au' ? 'XXX XXX XXX'
-    : 'XXX XXX XXX'
 
   return (
     <div ref={shakeRef} className={styles.phoneField}>
       <span className={styles.phoneLabel}>Phone</span>
       <div className={`${styles.phoneRow} ${error ? styles.phoneRowErr : ''}`}>
-        <CountrySelector selected={country} onSelect={handleCountrySelect} />
+        <span className={styles.phonePrefix}>🇰🇪 +254</span>
         <input
-          ref={numberRef}
           id="res-phone"
           type="tel"
           inputMode="numeric"
           className={styles.phoneInput}
-          value={formatPhoneNumber(rawDigits, country)}
+          value={formatKe(rawDigits)}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder="7XX XXX XXX"
           aria-label="Phone number"
           aria-invalid={!!error}
         />
@@ -514,9 +224,9 @@ function ReservationForm({ onDone }: { onDone: (name: string) => void }) {
     occupancy:  '',
     requests:   '',
   })
-  const [errors, setErrors]       = useState<Record<string, string>>({})
-  const [loading, setLoading]     = useState(false)
-  const [phoneValid, setPhoneValid] = useState(false)
+  const [errors, setErrors]           = useState<Record<string, string>>({})
+  const [loading, setLoading]         = useState(false)
+  const [phoneValid, setPhoneValid]   = useState(false)
   const [submitStage, setSubmitStage] = useState<'idle' | 'choose'>('idle')
 
   function set(key: string, value: string | number) {
@@ -528,7 +238,7 @@ function ReservationForm({ onDone }: { onDone: (name: string) => void }) {
 
   function handleNameKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.ctrlKey || e.metaKey || e.altKey) return
-    if (e.key.length > 1) return // allow Backspace, Delete, Arrow keys etc.
+    if (e.key.length > 1) return
     if (!/[a-zA-ZÀ-ÿ\s'\-]/.test(e.key)) e.preventDefault()
   }
 
@@ -556,15 +266,15 @@ function ReservationForm({ onDone }: { onDone: (name: string) => void }) {
 
   function validate() {
     const e: Record<string, string> = {}
-    if (!form.firstName.trim())                        e.firstName  = 'Please enter a valid name'
-    if (!form.lastName.trim())                         e.lastName   = 'Please enter a valid name'
-    if (!form.email.trim() || !isValidEmail(form.email)) e.email    = 'Please enter a valid email address'
-    if (!form.phone || !phoneValid)                    e.phone      = 'Please enter a complete phone number'
-    if (!form.arrival)                                 e.arrival    = 'This field is required'
-    if (!form.departure)                               e.departure  = 'This field is required'
+    if (!form.firstName.trim())                          e.firstName = 'Please enter a valid name'
+    if (!form.lastName.trim())                           e.lastName  = 'Please enter a valid name'
+    if (!form.email.trim() || !isValidEmail(form.email)) e.email     = 'Please enter a valid email address'
+    if (!form.phone || !phoneValid)                      e.phone     = 'Please enter a complete phone number'
+    if (!form.arrival)                                   e.arrival   = 'This field is required'
+    if (!form.departure)                                 e.departure = 'This field is required'
     if (form.arrival && form.departure && form.departure <= form.arrival)
       e.departure = 'Check-out must be after check-in'
-    if (!form.occupancy)                               e.occupancy  = 'Please select an occupancy type'
+    if (!form.occupancy)                                 e.occupancy = 'Please select an occupancy type'
     return e
   }
 

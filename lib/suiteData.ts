@@ -192,10 +192,10 @@ export const allSuites: Suite[] = [
     checkin: '2:00 PM',
     checkout: '10:00 AM',
     images: [
-      { src: '/images/rooms/family-room-view-1.jpeg',     position: 'center' },
-      { src: '/images/rooms/family-room-view-2.jpeg',     position: 'center' },
+      { src: '/images/rooms/family-room-view-1.jpeg',     position: 'center 30%' },
+      { src: '/images/rooms/family-room-view-2.jpeg',     position: 'center 35%' },
       { src: '/images/rooms/family-room-view-3.jpeg',     position: 'center' },
-      { src: '/images/rooms/family-room-bathroom-1.jpeg', position: 'center' },
+      { src: '/images/rooms/family-room-bathroom-1.jpeg', position: 'center 20%' },
     ],
   },
   {
