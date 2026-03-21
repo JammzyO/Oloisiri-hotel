@@ -106,7 +106,7 @@ export default function Sidebar() {
 
           {/* Reserve CTA */}
           <div className={styles.reserveWrapper}>
-            <Link href="/contact" className={styles.reserveLink}>
+            <Link href="/reserve" className={styles.reserveLink}>
               Reserve Your Stay
             </Link>
           </div>
