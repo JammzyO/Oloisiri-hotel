@@ -54,33 +54,30 @@ function AnimatedStat({ value, suffix = '', label }: { value: number; suffix?: s
   )
 }
 
-const PILLARS = [
-  {
-    num: '01',
-    title: 'The craft is in the room',
-    body: 'Stone floors. Proper mattresses. Curtains that block the morning light when you want them to. Linen sourced from Kenya. A bathroom with space to breathe. We spent a long time on the rooms because that is where you will spend most of your time — and it shows.',
-  },
-  {
-    num: '02',
-    title: 'The people here know this land',
-    body: 'Oloisiri is run by a small team from Namanga and the surrounding communities. We do not have an org chart to share. We have people who know this land, take care of it, and will remember your name when you return.',
-  },
-  {
-    num: '03',
-    title: 'We are careful about how we build',
-    body: 'Solar power. Locally sourced materials where possible. Active relationships with Maasai landowners and community groups in the area. Not because it makes good marketing. Because we are going to be here a long time and the land matters more than the hotel.',
-  },
+const WHY_ITEMS = [
+  'A perfect weekend getaway',
+  'A base for business travel',
+  'The best conference facilities',
+  'A cozy stopover on your journey',
+  'Safari adventures in Amboseli',
+  'A cultural cross-border trip to Tanzania',
+  'Or simply a quiet escape into nature',
 ]
 
 /* ─── Page ───────────────────────────────────────────────── */
 export default function AboutPage() {
   const [loaded, setLoaded] = useState(false)
 
-  const story   = useInView(0.1)
-  const stats   = useInView(0.12)
-  const pillars = useInView(0.08)
-  const detail  = useInView(0.1)
-  const cta     = useInView(0.15)
+  const intro        = useInView(0.1)
+  const location     = useInView(0.1)
+  const rooms        = useInView(0.1)
+  const rooftop      = useInView(0.1)
+  const fb           = useInView(0.1)
+  const meetings     = useInView(0.08)
+  const gardens      = useInView(0.1)
+  const lookingAhead = useInView(0.1)
+  const why          = useInView(0.08)
+  const cta          = useInView(0.15)
 
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 80)
@@ -90,13 +87,9 @@ export default function AboutPage() {
   return (
     <div className={styles.page}>
 
-      {/* ── S1: Cinematic opener ─────────────────────────── */}
+      {/* ── S1: Hero ─────────────────────────────────────────── */}
       <section className={styles.hero}>
-
-        {/* Animated beams background */}
         <BeamsCanvas />
-
-        {/* Top bar — eyebrow left, coords right */}
         <div className={`${styles.heroTopBar} ${loaded ? styles.barIn : ''}`}>
           <span className={styles.heroEyebrow}>Namanga, Kenya — Est. 2024</span>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-end' }}>
@@ -104,68 +97,31 @@ export default function AboutPage() {
             <span className={styles.heroCoords}>Oloisiri &mdash; &ldquo;Blessings&rdquo; in the Maa language</span>
           </div>
         </div>
-
-        {/* Gold sweep line */}
-        <div
-          className={`${styles.heroSweep} ${loaded ? styles.sweepIn : ''}`}
-          aria-hidden="true"
-        />
-
-        {/* Headline — bottom left */}
+        <div className={`${styles.heroSweep} ${loaded ? styles.sweepIn : ''}`} aria-hidden="true" />
         <div className={styles.heroBottom}>
           <h1 className={`${styles.heroHeading} ${loaded ? styles.headingIn : ''}`}>
             <span className={styles.heroL1}>We built a hotel</span>
             <span className={styles.heroL2}>at a border crossing.</span>
           </h1>
         </div>
-
       </section>
 
-      {/* ── S2: Story ────────────────────────────────────── */}
+      {/* ── S2: Intro ────────────────────────────────────────── */}
       <section
-        ref={story.ref}
-        className={`${styles.story} ${story.inView ? styles.inView : ''}`}
+        ref={intro.ref}
+        className={`${styles.introSection} ${intro.inView ? styles.inView : ''}`}
       >
-        <div className={styles.storyInner}>
-
-          <div className={styles.storyLeft}>
-            <span className={styles.eyebrow}>Our Story</span>
-            <h2 className={styles.storyHeading}>
-              Built at a crossing. Designed to make you stop.
-            </h2>
-            <p className={styles.storyBody}>
-              Oloisiri sits in Namanga — a town that literally straddles the Kenya–Tanzania border,
-              2km from the crossing, 163km from Nairobi on the traffic-free A104, 110km from Arusha,
-              and 50km from Amboseli National Park. The name comes from the Maa language.
-              It means Blessings.
-            </p>
-            <p className={styles.storyBody}>
-              Forty rooms, each finished by hand — stone underfoot, timber overhead, linen
-              that moves with the breeze off the plains. We are not a lodge in the bush. We are not
-              a business hotel on a highway. We are something in between — a proper place to stay
-              that happens to sit at one of East Africa's most quietly extraordinary addresses, with
-              Kilimanjaro on the southern horizon and Amboseli an hour to the north. We opened because
-              there was nowhere good to stay here. That is the whole story.
-            </p>
-          </div>
-
-          <div className={styles.storyRight}>
-            <div className={styles.storyImageWrap}>
-              <Image
-                src="/about-story.jpg"
-                alt="Oloisiri — suite interior"
-                fill
-                sizes="(max-width: 900px) 100vw, 40vw"
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
-              />
-            </div>
-          </div>
-
+        <div className={styles.introInner}>
+          <p className={styles.introText}>
+            The name Oloisiri comes from the Maa language, meaning &lsquo;Blessings.&rsquo; True to its name,
+            Oloisiri Hotel Namanga is where comfort, elegance, and warm African hospitality come
+            together to create unforgettable experiences.
+          </p>
         </div>
       </section>
 
-      {/* ── S3: Stats strip ──────────────────────────────── */}
-      <section ref={stats.ref} className={styles.statsSection}>
+      {/* ── S3: Stats strip ──────────────────────────────────── */}
+      <section className={styles.statsSection}>
         <div className={styles.statsInner}>
           <AnimatedStat value={40}  label="Rooms & suites" />
           <div className={styles.statDivider} aria-hidden="true" />
@@ -177,101 +133,207 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── S3b: Practical notes ─────────────────────────── */}
-      <section className={styles.practicalSection}>
-        <div className={styles.practicalInner}>
-          <div className={styles.practicalItem}>
-            <span className={styles.practicalLabel}>Accessibility</span>
-            <p className={styles.practicalBody}>
-              Oloisiri is fully accessible to guests using wheelchairs and pushchairs.
-              Our porters are always on hand — just ask at the desk and someone will be with you.
+      {/* ── S4: Location ─────────────────────────────────────── */}
+      <section
+        ref={location.ref}
+        className={`${styles.locationSection} ${location.inView ? styles.inView : ''}`}
+      >
+        <div className={styles.locationInner}>
+          <span className={styles.eyebrowLight}>Location</span>
+          <h2 className={styles.locationHeading}>A Gateway to Amboseli &amp; Beyond</h2>
+          <p className={styles.locationBody}>
+            Nestled at the foot of the Namanga Hills, and just off the Nairobi–Namanga Highway, our
+            hotel offers a perfect gateway to Amboseli National Park, Arusha in Tanzania, and
+            sweeping views of Mount Kilimanjaro and Longido Hills.
+          </p>
+        </div>
+      </section>
+
+      {/* ── S5: Rooms ────────────────────────────────────────── */}
+      <section
+        ref={rooms.ref}
+        className={`${styles.roomsSection} ${rooms.inView ? styles.inView : ''}`}
+      >
+        <div className={styles.roomsInner}>
+          <div className={styles.roomsLeft}>
+            <span className={styles.eyebrow}>Accommodation</span>
+            <h2 className={styles.sectionHeading}>Rooms Made to Tempt You</h2>
+            <p className={styles.sectionBody}>
+              Our rooms blend cozy charm with modern luxury. Each space is designed to invite
+              relaxation — with elegant interiors, private balconies, and panoramic views that
+              tempt you to stay one more night. At Oloisiri, it&rsquo;s never easy to leave.
             </p>
+            <Link href="/suites" className={styles.sectionLink}>Explore the Rooms</Link>
           </div>
-          <div className={styles.practicalDivider} aria-hidden="true" />
-          <div className={styles.practicalItem}>
-            <span className={styles.practicalLabel}>Coming Soon</span>
-            <p className={styles.practicalBody}>
-              A swimming pool and rooftop lift are both on their way. Until then, the stairs are
-              worth it — and the view from the top is the reason you came.
+          <div className={styles.roomsRight}>
+            <div className={styles.roomsImageWrap}>
+              <Image
+                src="/about-room-1.jpg"
+                alt="Oloisiri — room interior"
+                fill
+                sizes="(max-width: 900px) 100vw, 45vw"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── S6: Rooftop ──────────────────────────────────────── */}
+      <section
+        ref={rooftop.ref}
+        className={`${styles.rooftopSection} ${rooftop.inView ? styles.inView : ''}`}
+      >
+        <div className={styles.rooftopInner}>
+          <span className={styles.eyebrowLight}>The Rooftop</span>
+          <h2 className={styles.rooftopHeading}>Rooftop Views You&rsquo;ll Never Forget</h2>
+          <p className={styles.rooftopBody}>
+            From our rooftop lounges, soak in panoramic views of Kilimanjaro, the Namanga Hills,
+            and the Longido Hills. Whether at sunrise, sunset, or under the stars, these moments
+            create memories you truly won&rsquo;t want to leave behind.
+          </p>
+        </div>
+      </section>
+
+      {/* ── S7: Food & Beverage ──────────────────────────────── */}
+      <section
+        ref={fb.ref}
+        className={`${styles.fbSection} ${fb.inView ? styles.inView : ''}`}
+      >
+        <div className={styles.fbInner}>
+          <div className={styles.fbLeft}>
+            <div className={styles.fbImageWrap}>
+              <Image
+                src="/images/restaurant-4.jpeg"
+                alt="Oloisiri dining"
+                fill
+                sizes="(max-width: 900px) 100vw, 45vw"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
+            </div>
+          </div>
+          <div className={styles.fbRight}>
+            <span className={styles.eyebrow}>Dining</span>
+            <h2 className={styles.sectionHeading}>Food &amp; Beverage &ndash; A Taste of Namanga</h2>
+            <p className={styles.sectionBody}>
+              Our Food &amp; Beverage offerings bring you the true taste of Namanga delicacies. With bars
+              that boast majestic views, an elegant restaurant, outdoor deck, and tranquil gardens,
+              every meal is crafted to be an experience in itself — casual, celebratory, or simply indulgent.
             </p>
+            <Link href="/experiences" className={styles.sectionLink}>Discover Dining</Link>
           </div>
-          <div className={styles.practicalDivider} aria-hidden="true" />
-          <div className={styles.practicalItem}>
-            <span className={styles.practicalLabel}>A Natural Stop</span>
-            <p className={styles.practicalBody}>
-              Whether you are a Kilimanjaro hiker resting before the climb, a family en route to
-              Amboseli, or a traveller wanting a proper meal on the Nairobi–Arusha road — the
-              highway is traffic-free and the door is always open.
+        </div>
+      </section>
+
+      {/* ── S8: Meetings & Conferences ───────────────────────── */}
+      <section
+        ref={meetings.ref}
+        className={`${styles.meetingsSection} ${meetings.inView ? styles.inView : ''}`}
+      >
+        <div className={styles.meetingsInner}>
+          <span className={styles.eyebrowLight}>Business</span>
+          <h2 className={styles.meetingsHeading}>Meetings &amp; Conferences</h2>
+          <p className={styles.meetingsBody}>
+            At Oloisiri Hotel, our meeting and conference facilities offer nothing but the best.
+            Each venue is carefully designed to combine functionality with comfort, making them ideal
+            for everything from intimate boardroom sessions to large gatherings. Business and leisure
+            meet seamlessly here.
+          </p>
+        </div>
+      </section>
+
+      {/* ── S9: Gardens ──────────────────────────────────────── */}
+      <section
+        ref={gardens.ref}
+        className={`${styles.gardensSection} ${gardens.inView ? styles.inView : ''}`}
+      >
+        <div className={styles.gardensInner}>
+          <div className={styles.gardensLeft}>
+            <div className={styles.gardensImageWrap}>
+              <Image
+                src="/images/hero-garden.jpeg"
+                alt="Oloisiri gardens"
+                fill
+                sizes="(max-width: 900px) 100vw, 45vw"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
+            </div>
+          </div>
+          <div className={styles.gardensRight}>
+            <span className={styles.eyebrow}>Events</span>
+            <h2 className={styles.sectionHeading}>Our Gardens &ndash; For Life&rsquo;s Special Moments</h2>
+            <p className={styles.sectionBody}>
+              Our beautiful gardens are the heart of Oloisiri. Perfect for weddings, outdoor parties,
+              and private celebrations, they offer a serene, enchanting backdrop that turns every
+              occasion into a cherished memory.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── S4: Three pillars ────────────────────────────── */}
+      {/* ── S10: Looking Ahead ───────────────────────────────── */}
       <section
-        ref={pillars.ref}
-        className={`${styles.pillarsSection} ${pillars.inView ? styles.inView : ''}`}
+        ref={lookingAhead.ref}
+        className={`${styles.lookingAheadSection} ${lookingAhead.inView ? styles.inView : ''}`}
       >
-        <div className={styles.pillarsInner}>
-          <div className={styles.pillarsHeader}>
-            <span className={styles.eyebrowLight}>What We Believe</span>
-            <h2 className={styles.pillarsHeading}>
-              Three things we will not compromise on.
-            </h2>
+        <div className={styles.lookingAheadInner}>
+          <div className={styles.lookingAheadLeft}>
+            <span className={styles.eyebrow}>Looking Ahead</span>
+            <h2 className={styles.sectionHeading}>Always Evolving</h2>
           </div>
+          <div className={styles.lookingAheadRight}>
+            <p className={styles.lookingAheadItem}>
+              We&rsquo;re always evolving to give you more. Our swimming pool is coming soon, offering
+              future moments of relaxation and refreshment for all our guests.
+            </p>
+            <p className={styles.lookingAheadItem}>
+              Our lift will also be coming up soon — but until then, a little exercise goes a long way.
+              And don&rsquo;t worry, our friendly porters are always ready to assist with your bags.
+            </p>
+            <p className={styles.lookingAheadItem}>
+              We are proud to be a wheelchair and pram-friendly establishment, ensuring that every
+              guest enjoys smooth access and a comfortable stay.
+            </p>
+          </div>
+        </div>
+      </section>
 
-          <div className={styles.pillarsGrid}>
-            {PILLARS.map((p, i) => (
-              <div
-                key={p.num}
-                className={styles.pillar}
-                style={{ transitionDelay: `${i * 150}ms` }}
+      {/* ── S11: Why Oloisiri ────────────────────────────────── */}
+      <section
+        ref={why.ref}
+        className={`${styles.whySection} ${why.inView ? styles.inView : ''}`}
+      >
+        <div className={styles.whyInner}>
+          <div className={styles.whyLeft}>
+            <span className={styles.eyebrowLight}>The case for Oloisiri</span>
+            <h2 className={styles.whyHeading}>Why Oloisiri?</h2>
+            <p className={styles.whyIntro}>Because here, everyone is well catered for. We offer:</p>
+          </div>
+          <ul className={styles.whyList}>
+            {WHY_ITEMS.map((item, i) => (
+              <li
+                key={i}
+                className={styles.whyItem}
+                style={{ transitionDelay: `${i * 80}ms` }}
               >
-                <div className={styles.pillarGhost} aria-hidden="true">{p.num}</div>
-                <h3 className={styles.pillarTitle}>{p.title}</h3>
-                <p className={styles.pillarBody}>{p.body}</p>
-              </div>
+                {item}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* ── S5: The Detail ───────────────────────────────── */}
-      <section
-        ref={detail.ref}
-        className={`${styles.detailSection} ${detail.inView ? styles.inView : ''}`}
-      >
-        <div className={styles.detailInner}>
-
-          <div className={styles.detailLeft}>
-            <span className={styles.eyebrow}>The Detail</span>
-            <h2 className={styles.detailHeading}>Nothing here is an accident.</h2>
-            <p className={styles.detailBody}>
-              The soap in your room carries the Oloisiri mark. The art on the wall was made by
-              someone whose name we know. The coffee at breakfast is Kenyan — single origin, from
-              the highlands. The thread count of the linen is not a number we advertise, but it
-              is a number we argued about.
-            </p>
-          </div>
-
-          <div className={styles.detailRight}>
-            <p className={styles.detailQuote}>
-              The light through the curtains at seven in the morning is, we believe, a designed experience.
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── S6: CTA ──────────────────────────────────────── */}
+      {/* ── S12: CTA / Tagline ───────────────────────────────── */}
       <section
         ref={cta.ref}
         className={`${styles.ctaSection} ${cta.inView ? styles.inView : ''}`}
       >
         <div className={styles.ctaInner}>
           <h2 className={styles.ctaHeading}>Come and see it for yourself.</h2>
-          <p className={styles.ctaSubtext}>Reservations open. No minimum stay.</p>
-          <Link href="/contact" className={styles.ctaBtn}>
+          <p className={styles.ctaSubtext}>
+            Oloisiri Hotel Namanga &mdash; Where Serenity Meets Hospitality.
+          </p>
+          <Link href="/reserve" className={styles.ctaBtn}>
             Begin Planning Your Visit
           </Link>
         </div>

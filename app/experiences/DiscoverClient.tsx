@@ -136,6 +136,11 @@ function DineSection() {
             horizon — every outlet at Oloisiri is built around the same idea: good food, unhurried
             service, and the right view.
           </p>
+          <p className={`${styles.dineBody} ${styles.bodyReveal}`}>
+            Our Food &amp; Beverage offerings bring you the true taste of Namanga delicacies. With bars
+            that boast majestic views, an elegant restaurant, outdoor deck, and tranquil gardens,
+            every meal is crafted to be an experience in itself — casual, celebratory, or simply indulgent.
+          </p>
         </div>
       </div>
 

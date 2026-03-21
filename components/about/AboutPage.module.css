@@ -104,7 +104,466 @@
 }
 
 /* ══════════════════════════════════════════════════════════
-   S2: Story — asymmetric editorial grid
+   S2: Intro — centred pull quote on cream
+══════════════════════════════════════════════════════════ */
+.introSection {
+  background: var(--color-cream);
+  padding: 96px 72px 80px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.introSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.introInner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.introText {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.55;
+  color: var(--color-teal-dark);
+  letter-spacing: -0.1px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   S4: Location — dark teal, editorial left-aligned
+══════════════════════════════════════════════════════════ */
+.locationSection {
+  background: var(--color-teal-dark);
+  padding: 100px 72px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.locationSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.locationInner {
+  max-width: 680px;
+}
+
+.locationHeading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.05;
+  color: var(--color-cream);
+  letter-spacing: -0.3px;
+  margin-bottom: 32px;
+}
+
+.locationBody {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(232, 221, 199, 0.65);
+  max-width: 560px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Shared section styles — reused across cream sections
+══════════════════════════════════════════════════════════ */
+.sectionHeading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(32px, 3.5vw, 48px);
+  line-height: 1.05;
+  color: var(--color-teal-dark);
+  letter-spacing: -0.3px;
+  margin-bottom: 28px;
+}
+
+.sectionBody {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--color-stone);
+  max-width: 520px;
+  margin-bottom: 36px;
+}
+
+.sectionBody:last-child {
+  margin-bottom: 0;
+}
+
+.sectionLink {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--color-teal-dark);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-gold);
+  padding-bottom: 4px;
+  transition: color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.sectionLink:hover {
+  color: var(--color-gold);
+}
+
+/* ══════════════════════════════════════════════════════════
+   S5: Rooms — two-column, image right
+══════════════════════════════════════════════════════════ */
+.roomsSection {
+  background: var(--color-cream);
+  padding: 100px 72px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.roomsSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.roomsInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+}
+
+.roomsLeft {}
+
+.roomsRight {
+  margin-top: -40px;
+}
+
+.roomsImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  outline: 1px solid var(--color-gold);
+  outline-offset: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   S6: Rooftop — dark teal, centered editorial
+══════════════════════════════════════════════════════════ */
+.rooftopSection {
+  background: var(--color-teal);
+  padding: 100px 72px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.rooftopSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rooftopInner {
+  max-width: 700px;
+}
+
+.rooftopHeading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.05;
+  color: var(--color-cream);
+  letter-spacing: -0.3px;
+  margin-bottom: 28px;
+}
+
+.rooftopBody {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(232, 221, 199, 0.65);
+  max-width: 560px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   S7: F&B — two-column, image left
+══════════════════════════════════════════════════════════ */
+.fbSection {
+  background: var(--color-cream);
+  padding: 100px 72px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.fbSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fbInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+}
+
+.fbLeft {
+  margin-top: -40px;
+}
+
+.fbImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  outline: 1px solid var(--color-gold);
+  outline-offset: 8px;
+}
+
+.fbRight {}
+
+/* ══════════════════════════════════════════════════════════
+   S8: Meetings — dark teal, editorial
+══════════════════════════════════════════════════════════ */
+.meetingsSection {
+  background: var(--color-teal-dark);
+  padding: 100px 72px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.meetingsSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.meetingsInner {
+  max-width: 720px;
+}
+
+.meetingsHeading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.05;
+  color: var(--color-cream);
+  letter-spacing: -0.3px;
+  margin-bottom: 28px;
+}
+
+.meetingsBody {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(232, 221, 199, 0.65);
+  max-width: 580px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   S9: Gardens — two-column, image left
+══════════════════════════════════════════════════════════ */
+.gardensSection {
+  background: var(--color-cream);
+  padding: 100px 72px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.gardensSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gardensInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+}
+
+.gardensLeft {
+  margin-top: -40px;
+}
+
+.gardensImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  outline: 1px solid var(--color-gold);
+  outline-offset: 8px;
+}
+
+.gardensRight {}
+
+/* ══════════════════════════════════════════════════════════
+   S10: Looking Ahead — cream, two-column
+══════════════════════════════════════════════════════════ */
+.lookingAheadSection {
+  background: var(--color-cream);
+  padding: 100px 72px;
+  border-top: 1px solid rgba(8, 47, 44, 0.07);
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.lookingAheadSection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lookingAheadInner {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: start;
+  max-width: 1100px;
+}
+
+.lookingAheadLeft {}
+
+.lookingAheadRight {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.lookingAheadItem {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--color-stone);
+  padding-left: 24px;
+  border-left: 2px solid rgba(201, 162, 77, 0.35);
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   S11: Why Oloisiri — dark teal, two-column list
+══════════════════════════════════════════════════════════ */
+.whySection {
+  background: var(--color-teal-dark);
+  padding: 100px 72px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.whySection.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.whyInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  max-width: 1100px;
+}
+
+.whyLeft {}
+
+.whyHeading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.05;
+  color: var(--color-cream);
+  letter-spacing: -0.3px;
+  margin-bottom: 20px;
+}
+
+.whyIntro {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(232, 221, 199, 0.5);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.whyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.whyItem {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--color-cream);
+  line-height: 1;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(232, 221, 199, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  transform: translateX(16px);
+  transition:
+    opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.whyItem::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: var(--color-gold);
+  flex-shrink: 0;
+}
+
+.whySection.inView .whyItem {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ══════════════════════════════════════════════════════════
+   S2: Story — asymmetric editorial grid (preserved, unused)
 ══════════════════════════════════════════════════════════ */
 .story {
   padding: 120px 72px;
@@ -517,7 +976,12 @@
 ══════════════════════════════════════════════════════════ */
 @media (max-width: 1100px) {
   .storyInner,
-  .detailInner {
+  .detailInner,
+  .roomsInner,
+  .fbInner,
+  .gardensInner,
+  .lookingAheadInner,
+  .whyInner {
     gap: 48px;
   }
 
@@ -538,6 +1002,15 @@
     right: 40px;
   }
 
+  .introSection,
+  .locationSection,
+  .roomsSection,
+  .rooftopSection,
+  .fbSection,
+  .meetingsSection,
+  .gardensSection,
+  .lookingAheadSection,
+  .whySection,
   .story,
   .pillarsSection,
   .detailSection,
@@ -587,6 +1060,32 @@
   .stat {
     padding: 0 24px;
   }
+
+  .roomsInner,
+  .fbInner,
+  .gardensInner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .roomsRight,
+  .fbLeft,
+  .gardensLeft {
+    margin-top: 0;
+    order: -1;
+  }
+
+  .roomsImageWrap,
+  .fbImageWrap,
+  .gardensImageWrap {
+    aspect-ratio: 4 / 3;
+  }
+
+  .lookingAheadInner,
+  .whyInner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -607,12 +1106,21 @@
     padding-bottom: 48px;
   }
 
+  .introSection,
+  .locationSection,
+  .roomsSection,
+  .rooftopSection,
+  .fbSection,
+  .meetingsSection,
+  .gardensSection,
+  .lookingAheadSection,
+  .whySection,
   .story,
   .pillarsSection,
   .detailSection,
   .ctaSection {
-    padding-top: 80px;
-    padding-bottom: 80px;
+    padding-top: 72px;
+    padding-bottom: 72px;
     padding-left: 28px;
     padding-right: 28px;
   }

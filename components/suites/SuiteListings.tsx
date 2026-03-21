@@ -80,10 +80,19 @@ function DetailPanel({ suite, index }: { suite: Suite; index: number }) {
 /* ── Main ────────────────────────────────────────────────────── */
 export default function SuiteListings() {
   return (
-    <section className={styles.detailsSection} aria-label="Room details">
-      {allSuites.map((suite, i) => (
-        <DetailPanel key={suite.slug} suite={suite} index={i} />
-      ))}
-    </section>
+    <>
+      <div className={styles.roomsIntro}>
+        <p className={styles.roomsIntroText}>
+          Our rooms blend cozy charm with modern luxury. Each space is designed to invite
+          relaxation — with elegant interiors, private balconies, and panoramic views that
+          tempt you to stay one more night. At Oloisiri, it&rsquo;s never easy to leave.
+        </p>
+      </div>
+      <section className={styles.detailsSection} aria-label="Room details">
+        {allSuites.map((suite, i) => (
+          <DetailPanel key={suite.slug} suite={suite} index={i} />
+        ))}
+      </section>
+    </>
   )
 }

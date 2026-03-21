@@ -81,8 +81,9 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Copyright */}
+      {/* Tagline + Copyright */}
       <div className={styles.copyright}>
+        <span className={styles.tagline}>Oloisiri Hotel Namanga &mdash; Where Serenity Meets Hospitality.</span>
         <span>© 2025 Oloisiri Namanga Hotel. All rights reserved.</span>
       </div>
     </footer>
