@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: 55fr 45fr;
   gap: 56px;
-  padding: 64px 64px 56px;
+  padding: 64px 64px 40px;
   background: var(--color-cream);
   align-items: start;
 }
@@ -21,12 +21,15 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-self: stretch;
 }
 
 .mainImageWrap {
   position: relative;
   width: 100%;
-  height: 700px;
+  flex: 1;
+  min-height: 480px;
+  max-height: 860px;
   border-radius: 4px;
   overflow: hidden;
   background: #1a1a18;
@@ -1156,7 +1159,7 @@
 }
 
 @media (max-width: 900px) {
-  .mainImageWrap { height: 520px; }
+  .mainImageWrap { min-height: 520px; max-height: 600px; }
 
   .topSection {
     grid-template-columns: 1fr;
@@ -1186,7 +1189,7 @@
 }
 
 @media (max-width: 600px) {
-  .mainImageWrap { height: 360px; }
+  .mainImageWrap { min-height: 360px; max-height: 480px; }
 
   .topSection {
     padding: 28px 20px 28px;
