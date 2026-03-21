@@ -150,7 +150,7 @@ export default function Suites() {
             overflow:hidden hides only the ±2 slots entering/exiting.
             The 3 visible cards (slots -1, 0, +1) are never clipped.
           */}
-          <div className={styles.viewport} data-no-cursor>
+          <div className={styles.viewport}>
             {OFFSETS.map(offset => {
               const suiteIdx = mod(center + offset, N)
               const suite    = SUITES[suiteIdx]
