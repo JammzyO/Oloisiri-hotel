@@ -26,9 +26,10 @@
 .mainImageWrap {
   position: relative;
   width: 100%;
+  height: 620px;
   border-radius: 4px;
   overflow: hidden;
-  background: var(--color-cream);
+  background: var(--color-teal-dark);
 }
 
 /* Image navigation arrows */
@@ -1155,6 +1156,8 @@
 }
 
 @media (max-width: 900px) {
+  .mainImageWrap { height: 460px; }
+
   .topSection {
     grid-template-columns: 1fr;
     padding: 40px 32px 40px;
@@ -1183,6 +1186,8 @@
 }
 
 @media (max-width: 600px) {
+  .mainImageWrap { height: 320px; }
+
   .topSection {
     padding: 28px 20px 28px;
     gap: 24px;

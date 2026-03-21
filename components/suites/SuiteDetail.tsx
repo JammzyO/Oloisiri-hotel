@@ -649,18 +649,12 @@ export default function SuiteDetail({ suite }: { suite: Suite }) {
             <Image
               src={activeImg.src}
               alt={suite.name}
-              width={900}
-              height={1200}
+              fill
               sizes="(max-width:768px) 100vw, 55vw"
               priority
               style={{
-                width: '100%',
-                height: 'auto',
-                minHeight: 540,
                 objectFit: 'cover',
                 objectPosition: activeImg.position,
-                display: 'block',
-                borderRadius: 4,
                 opacity: transitioning ? 0 : 1,
                 transition: 'opacity 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
               }}
