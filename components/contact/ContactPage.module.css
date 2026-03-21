@@ -916,6 +916,10 @@
   margin-bottom: 18px;
 }
 
+.sendBtnRow .submitBtn {
+  margin-top: 0;
+}
+
 .sendWaBtn {
   display: flex;
   align-items: center;
