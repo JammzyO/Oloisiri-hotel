@@ -1,0 +1,181 @@
+{
+    "name": "Oloisiri Hotel — Inquiry Handler",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 3984958,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "label": "Oloisiri Reservation Inquiry",
+                            "data": {
+                                "editable": "true"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "type",
+                        "type": "text"
+                    },
+                    {
+                        "name": "source",
+                        "type": "text"
+                    },
+                    {
+                        "name": "firstname",
+                        "type": "text"
+                    },
+                    {
+                        "name": "lastname",
+                        "type": "text"
+                    },
+                    {
+                        "name": "email",
+                        "type": "text"
+                    },
+                    {
+                        "name": "phone",
+                        "type": "text"
+                    },
+                    {
+                        "name": "checkin",
+                        "type": "text"
+                    },
+                    {
+                        "name": "checkout",
+                        "type": "text"
+                    },
+                    {
+                        "name": "adults",
+                        "type": "text"
+                    },
+                    {
+                        "name": "children",
+                        "type": "text"
+                    },
+                    {
+                        "name": "room",
+                        "type": "text"
+                    },
+                    {
+                        "name": "occupancy",
+                        "type": "text"
+                    },
+                    {
+                        "name": "special_requests",
+                        "type": "text"
+                    },
+                    {
+                        "name": "subject",
+                        "type": "text"
+                    },
+                    {
+                        "name": "message",
+                        "type": "text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "email:ActionSendEmail",
+            "version": 7,
+            "parameters": {},
+            "mapper": {
+                "to": [
+                    {
+                        "name": "YOUR_TEST_EMAIL@gmail.com",
+                        "address": "YOUR_TEST_EMAIL@gmail.com"
+                    }
+                ],
+                "subject": "New {{1.type}} — {{1.firstname}} {{1.lastname}} — Oloisiri Hotel",
+                "content": "Type: {{1.type}}\nSource: {{1.source}}\n\nName: {{1.firstname}} {{1.lastname}}\nEmail: {{1.email}}\nPhone: {{1.phone}}\n\n--- STAY DETAILS ---\nArrival: {{1.checkin}}\nDeparture: {{1.checkout}}\nAdults: {{1.adults}}\nChildren: {{1.children}}\nRoom: {{1.room}}\nOccupancy: {{1.occupancy}}\nSpecial Requests: {{1.special_requests}}\n\n--- GENERAL INQUIRY ---\nSubject: {{1.subject}}\nMessage: {{1.message}}\n\n---\nSent from oloisirihotel.com",
+                "contentType": "text"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "mapper": {
+                        "contentType": {
+                            "label": "Plaintext"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "to",
+                        "type": "email",
+                        "label": "To",
+                        "required": true
+                    },
+                    {
+                        "name": "subject",
+                        "type": "text",
+                        "label": "Subject"
+                    },
+                    {
+                        "name": "contentType",
+                        "type": "select",
+                        "label": "Content Type",
+                        "required": true
+                    },
+                    {
+                        "name": "content",
+                        "type": "text",
+                        "label": "Content"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    }
+}
