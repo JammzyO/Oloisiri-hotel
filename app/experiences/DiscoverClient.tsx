@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import styles from './experiences.module.css'
 
@@ -106,8 +107,18 @@ function DineSection() {
             <div
               key={i}
               className={styles.dineLeftBgSlot}
-              style={{ opacity: activeSlot === i ? 1 : 0, background: '#0b4742' }}
-            />
+              style={{ opacity: activeSlot === i ? 1 : 0 }}
+            >
+              {i === 0 && (
+                <Image
+                  src="/images/restaurant-4.jpeg"
+                  alt=""
+                  fill
+                  sizes="45vw"
+                  style={{ objectFit: 'cover' }}
+                />
+              )}
+            </div>
           ))}
         </div>
         <div
@@ -139,6 +150,15 @@ function DineSection() {
               onMouseLeave={() => setActiveSlot(null)}
             >
               <div className={styles.venueImgSlot}>
+                {i === 0 && (
+                  <Image
+                    src="/images/restaurant-2.jpeg"
+                    alt={venue.name}
+                    fill
+                    sizes="(max-width:900px) 100vw, 25vw"
+                    style={{ objectFit: 'cover' }}
+                  />
+                )}
                 <span className={styles.venueImgLabel}>{venue.label}</span>
               </div>
               <div className={styles.venueText}>

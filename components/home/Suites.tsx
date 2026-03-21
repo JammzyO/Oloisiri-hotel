@@ -60,72 +60,66 @@ const SUITES = [
 
 const N = SUITES.length
 
-// Track: [room4_clone, room0, room1, room2, room3, room4, room0_clone]
-// Real cards at indices 1..N, clones at 0 and N+1 for seamless looping
-const TRACK = [SUITES[N - 1], ...SUITES, SUITES[0]]
+function mod(n: number, m: number) {
+  return ((n % m) + m) % m
+}
 
-// Pixel configs per breakpoint — must match CSS values exactly
-type Cfg = { step: number; offset: number }
-const CFG_DESKTOP: Cfg = { step: 340, offset: 130 } // card=320, gap=20, vpW=580
-const CFG_TABLET:  Cfg = { step: 256, offset: 96  } // card=240, gap=16, vpW=432
-const CFG_MOBILE:  Cfg = { step: 172, offset: 64  } // card=160, gap=12, vpW=288
+// Each breakpoint: card width, gap — must match CSS exactly
+type Cfg = { cardW: number; gap: number }
+const CFG_DESKTOP: Cfg = { cardW: 300, gap: 20 }
+const CFG_TABLET:  Cfg = { cardW: 180, gap: 14 }
+const CFG_MOBILE:  Cfg = { cardW: 140, gap: 12 }
+
+// Five slots rendered at all times: hidden-left, left, center, right, hidden-right
+const OFFSETS = [-2, -1, 0, 1, 2] as const
 
 export default function Suites() {
-  // trackIdx=1 → room0 centered at start
-  const [trackIdx, setTrackIdx] = useState(1)
-  const [jumping, setJumping] = useState(false)
-  const [cfg, setCfg] = useState<Cfg>(CFG_DESKTOP)
-  const sectionRef = useRef<HTMLElement>(null)
-  const [inView, setInView] = useState(false)
+  const [center, setCenter] = useState(0)
+  const [busy,   setBusy]   = useState(false)
+  const [cfg,    setCfg]    = useState<Cfg>(CFG_DESKTOP)
+  const sectionRef           = useRef<HTMLElement>(null)
+  const [inView, setInView]  = useState(false)
 
   // Scroll reveal
   useEffect(() => {
     const el = sectionRef.current
     if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect() } },
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect() } },
       { threshold: 0.15 }
     )
-    observer.observe(el)
-    return () => observer.disconnect()
+    obs.observe(el)
+    return () => obs.disconnect()
   }, [])
 
-  // Responsive config — must stay in sync with CSS breakpoints
+  // Responsive config — stays in sync with CSS breakpoints
   useEffect(() => {
     function update() {
       const w = window.innerWidth
-      if (w <= 600) setCfg(CFG_MOBILE)
-      else if (w <= 900) setCfg(CFG_TABLET)
-      else setCfg(CFG_DESKTOP)
+      setCfg(w <= 600 ? CFG_MOBILE : w <= 900 ? CFG_TABLET : CFG_DESKTOP)
     }
     update()
     window.addEventListener('resize', update, { passive: true })
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  // Infinite loop: after animation ends, silently jump from clone to real card
-  useEffect(() => {
-    if (trackIdx !== 0 && trackIdx !== N + 1) return
-    const timer = setTimeout(() => {
-      const jumpTo = trackIdx === 0 ? N : 1
-      setJumping(true)
-      setTrackIdx(jumpTo)
-      // Re-enable transition after DOM has updated with new position
-      requestAnimationFrame(() => requestAnimationFrame(() => setJumping(false)))
-    }, 460) // just after 450ms transition
-    return () => clearTimeout(timer)
-  }, [trackIdx])
+  const go = useCallback((dir: 1 | -1) => {
+    if (busy) return
+    setBusy(true)
+    setCenter(c => mod(c + dir, N))
+    setTimeout(() => setBusy(false), 460)
+  }, [busy])
 
-  const prev = useCallback(() => {
-    if (!jumping) setTrackIdx(i => i - 1)
-  }, [jumping])
+  const prev = useCallback(() => go(-1), [go])
+  const next = useCallback(() => go(1),  [go])
 
-  const next = useCallback(() => {
-    if (!jumping) setTrackIdx(i => i + 1)
-  }, [jumping])
-
-  // Track translateX: centers the active card in the viewport
-  const trackX = cfg.offset - trackIdx * cfg.step
+  // step  = distance between adjacent slot centres (= cardW + gap)
+  // Using key={suiteIdx}: React reuses the same DOM node as a suite moves between
+  // slots → the browser sees the transform change and fires the CSS transition.
+  // The one suite that wraps (e.g. slot -2 → +2) is always opacity:0, so the
+  // instantaneous jump is invisible.
+  const step     = cfg.cardW + cfg.gap
+  const halfCard = cfg.cardW / 2
 
   return (
     <section
@@ -145,86 +139,89 @@ export default function Suites() {
 
         <div className={styles.carouselWrap}>
 
-          {/* ── Left arrow ──────────────────────────────── */}
           <button className={styles.arrow} onClick={prev} aria-label="Previous suite">
             <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
               <path d="M13 4L7 10L13 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
 
-          {/* ── Viewport — clips the sliding track ──────── */}
-          <div className={styles.viewport}>
-            <div
-              className={styles.track}
-              style={{
-                transform: `translateX(${trackX}px)`,
-                transition: jumping ? 'none' : 'transform 450ms cubic-bezier(0.25, 0.1, 0.25, 1)',
-              }}
-            >
-              {TRACK.map((suite, i) => {
-                const isCenter = i === trackIdx
-                const isLeft   = i === trackIdx - 1
-                const isRight  = i === trackIdx + 1
+          {/*
+            Viewport is exactly 3 cards wide (3×cardW + 2×gap).
+            overflow:hidden hides only the ±2 slots entering/exiting.
+            The 3 visible cards (slots -1, 0, +1) are never clipped.
+          */}
+          <div className={styles.viewport} data-no-cursor>
+            {OFFSETS.map(offset => {
+              const suiteIdx = mod(center + offset, N)
+              const suite    = SUITES[suiteIdx]
+              const isCenter = offset === 0
+              const isHidden = Math.abs(offset) === 2
+              const isLeft   = offset === -1
+              const isRight  = offset === 1
 
-                return (
-                  <div
-                    key={i}
-                    className={`${styles.cardWrap} ${isCenter ? styles.cardCenter : styles.cardSide}`}
-                  >
-                    {isCenter ? (
-                      /* Center: navigate to suite page on click */
-                      <Link
-                        href={`/suites/${suite.slug}`}
-                        className={styles.card}
-                        aria-label={`${suite.name} — view details`}
-                      >
-                        <div className={styles.cardImage}>
-                          <Image
-                            src={suite.src}
-                            alt={suite.alt}
-                            fill
-                            sizes="(max-width:600px) 160px, (max-width:900px) 240px, 320px"
-                            style={{ objectFit: 'cover' }}
-                            priority={i === 1}
-                          />
-                        </div>
-                        <div className={styles.cardOverlay}>
-                          <span className={styles.suiteCategory}>{suite.category}</span>
-                          <h3 className={styles.suiteName}>{suite.name}</h3>
-                          <div className={styles.suiteMeta}>
-                            <span className={styles.suiteMetaItem}>{suite.guests}</span>
-                            <span className={styles.suiteMetaDot}>·</span>
-                            <span className={styles.suiteMetaItem}>{suite.size}</span>
-                          </div>
-                          <span className={styles.suiteRate}>{suite.rate}</span>
-                        </div>
-                      </Link>
-                    ) : (
-                      /* Side: click advances carousel in that direction */
-                      <div
-                        className={styles.card}
-                        onClick={isLeft ? prev : isRight ? next : undefined}
-                        style={{ cursor: isLeft || isRight ? 'pointer' : 'default' }}
-                        aria-hidden="true"
-                      >
-                        <div className={styles.cardImage}>
-                          <Image
-                            src={suite.src}
-                            alt=""
-                            fill
-                            sizes="(max-width:600px) 160px, (max-width:900px) 240px, 320px"
-                            style={{ objectFit: 'cover' }}
-                          />
-                        </div>
+              // translateX centres the card at its slot (left:50% in CSS)
+              const tx = offset * step - halfCard
+              // center card rises 20 px — transform only, never height
+              const ty = isCenter ? -20 : 0
+
+              return (
+                <div
+                  key={suiteIdx}
+                  className={`${styles.cardWrap} ${isCenter ? styles.cardCenter : ''}`}
+                  style={{
+                    transform: `translateX(${tx}px) translateY(${ty}px)`,
+                    opacity:   isCenter ? 1 : isHidden ? 0 : 0.5,
+                    pointerEvents: isHidden ? 'none' : 'auto',
+                    cursor: isLeft || isRight ? 'pointer' : 'default',
+                  }}
+                  onClick={isLeft ? prev : isRight ? next : undefined}
+                  aria-hidden={isCenter ? undefined : true}
+                >
+                  {isCenter ? (
+                    <Link
+                      href={`/suites/${suite.slug}`}
+                      className={styles.card}
+                      aria-label={`${suite.name} — view details`}
+                    >
+                      <div className={styles.cardImage}>
+                        <Image
+                          src={suite.src}
+                          alt={suite.alt}
+                          fill
+                          sizes="(max-width:600px) 140px, (max-width:900px) 180px, 300px"
+                          style={{ objectFit: 'cover' }}
+                          priority
+                        />
                       </div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
+                      <div className={styles.cardOverlay}>
+                        <span className={styles.suiteCategory}>{suite.category}</span>
+                        <h3 className={styles.suiteName}>{suite.name}</h3>
+                        <div className={styles.suiteMeta}>
+                          <span className={styles.suiteMetaItem}>{suite.guests}</span>
+                          <span className={styles.suiteMetaDot}>·</span>
+                          <span className={styles.suiteMetaItem}>{suite.size}</span>
+                        </div>
+                        <span className={styles.suiteRate}>{suite.rate}</span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div className={styles.card}>
+                      <div className={styles.cardImage}>
+                        <Image
+                          src={suite.src}
+                          alt=""
+                          fill
+                          sizes="(max-width:600px) 140px, (max-width:900px) 180px, 300px"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
 
-          {/* ── Right arrow ─────────────────────────────── */}
           <button className={styles.arrow} onClick={next} aria-label="Next suite">
             <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
               <path d="M7 4L13 10L7 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

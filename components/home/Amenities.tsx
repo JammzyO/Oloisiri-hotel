@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import styles from './Amenities.module.css'
 
 const amenities = [
@@ -133,13 +134,38 @@ export default function Amenities() {
               key={item.title}
               ref={el => { tileRefs.current[i] = el }}
               className={styles.tile}
-              style={{ '--delay': `${i * 80}ms` } as React.CSSProperties}
+              style={{
+                '--delay': `${i * 80}ms`,
+                ...(i === 0 ? { position: 'relative', overflow: 'hidden' } : {}),
+              } as React.CSSProperties}
             >
-              <div className={styles.iconArch}>
-                {item.icon}
+              {i === 0 && (
+                <>
+                  <Image
+                    src="/images/restaurant-3.jpeg"
+                    alt=""
+                    fill
+                    sizes="(max-width:600px) 100vw, (max-width:900px) 50vw, 360px"
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'rgba(8, 47, 44, 0.72)',
+                    zIndex: 0,
+                  }} />
+                </>
+              )}
+              <div style={i === 0 ? { position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' } : {}}>
+                <div className={styles.iconArch}>
+                  {item.icon}
+                </div>
+                <h3 className={styles.tileTitle} style={i === 0 ? { color: 'var(--color-cream)' } : {}}>
+                  {item.title}
+                </h3>
+                <p className={styles.tileDesc} style={i === 0 ? { color: 'rgba(232, 221, 199, 0.75)' } : {}}>
+                  {item.description}
+                </p>
               </div>
-              <h3 className={styles.tileTitle}>{item.title}</h3>
-              <p className={styles.tileDesc}>{item.description}</p>
             </div>
           ))}
         </div>

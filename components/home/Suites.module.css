@@ -2,7 +2,7 @@
 .section {
   background: var(--color-teal-dark);
   padding: 120px 80px;
-  overflow: hidden; /* prevent any carousel bleed from causing scroll */
+  overflow: hidden;
   opacity: 0;
   transform: translateY(28px);
   transition:
@@ -50,56 +50,55 @@
 
 .headingItalic { font-style: italic; }
 
-/* ─── Carousel wrap — arrows + viewport as a flex row ──── */
+/* ─── Carousel wrap ──────────────────────────────────────── */
 .carouselWrap {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 20px;
   margin-bottom: 48px;
 }
 
-/* ─── Viewport — clips the sliding track ─────────────────── */
-/*
- * Desktop: card=320px, gap=20px, step=340px
- * vpW = 2 * (110 + 20) + 320 = 580px  (110px side visible = 34%)
- * offset = (580 - 320) / 2 = 130px
+/* ─── Viewport ───────────────────────────────────────────────
+ *
+ * Desktop: card=300px, gap=20px
+ *   width  = 3×300 + 2×20 = 940px   ← all 3 visible cards fit fully
+ *   height = card_height(460) + 20px elevation headroom = 480px
+ *
+ * Cards are absolutely positioned inside with left:50%.
+ * overflow:hidden hides only the ±2 slots (the invisible entrants).
+ * The 3 visible cards (slots -1, 0, +1) are never clipped.
  */
 .viewport {
-  width: 580px;
-  height: 500px;
-  overflow: hidden;
   position: relative;
+  width: 940px;
+  height: 480px;
+  overflow: hidden;
   flex-shrink: 0;
-}
-
-/* ─── Track — slides left / right ────────────────────────── */
-.track {
-  display: flex;
-  gap: 20px;
-  /* transform and transition set inline by JS */
-  height: 100%;
 }
 
 /* ─── Card wrap ───────────────────────────────────────────── */
 .cardWrap {
-  width: 320px;
-  height: 500px;
-  flex-shrink: 0;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 50%;           /* translateX in JS offsets from this midpoint */
+  width: 300px;
+  height: 460px;
+  transition:
+    transform 450ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity   450ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-/* Center card: full opacity, pointer shows hand */
-.cardCenter { opacity: 1; }
-
-/* Side cards: dimmed, image only */
-.cardSide { opacity: 0.5; }
+/* Center card: slightly taller appearance via translateY(-20px) in JS */
+.cardCenter {
+  /* hover zoom only applies to center */
+}
 
 /* ─── Card ───────────────────────────────────────────────── */
 .card {
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: 160px 160px 0 0;
+  border-radius: 150px 150px 0 0;
   overflow: hidden;
   position: relative;
   text-decoration: none;
@@ -111,15 +110,15 @@
   inset: 0;
 }
 
-.cardCenter .cardImage {
+.cardCenter .card .cardImage {
   transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.cardCenter:hover .cardImage {
+.cardCenter .card:hover .cardImage {
   transform: scale(1.03);
 }
 
-/* ─── Card overlay — always visible on center card ───────── */
+/* ─── Card overlay ───────────────────────────────────────── */
 .cardOverlay {
   position: absolute;
   bottom: 0;
@@ -198,7 +197,7 @@
   cursor: pointer;
   transition:
     background 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
-    color 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    color     200ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .arrow:hover {
@@ -222,7 +221,7 @@
   padding: 14px 32px;
   transition:
     border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+    color        0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .ctaBtn:hover {
@@ -232,28 +231,26 @@
 
 /* ─── Tablet ─────────────────────────────────────────────── */
 /*
- * card=240px, gap=16px, step=256px
- * vpW = 2 * (80 + 16) + 240 = 432px  (80px side visible = 33%)
- * offset = (432 - 240) / 2 = 96px
+ * card=180px, gap=14px
+ * viewport width = 3×180 + 2×14 = 568px
+ * JS step = 194, halfCard = 90
  */
 @media (max-width: 900px) {
   .section { padding: 80px 40px; }
 
-  .carouselWrap { gap: 20px; }
+  .carouselWrap { gap: 16px; }
 
   .viewport {
-    width: 432px;
-    height: 400px;
+    width: 568px;
+    height: 380px;
   }
-
-  .track { gap: 16px; }
 
   .cardWrap {
-    width: 240px;
-    height: 400px;
+    width: 180px;
+    height: 360px;
   }
 
-  .card { border-radius: 120px 120px 0 0; }
+  .card { border-radius: 90px 90px 0 0; }
 
   .arrow {
     width: 36px;
@@ -263,9 +260,9 @@
 
 /* ─── Mobile ─────────────────────────────────────────────── */
 /*
- * card=160px, gap=12px, step=172px
- * vpW = 2 * (52 + 12) + 160 = 288px  (52px side visible = 33%)
- * offset = (288 - 160) / 2 = 64px
+ * card=140px, gap=12px
+ * viewport width = 3×140 + 2×12 = 444px
+ * JS step = 152, halfCard = 70
  */
 @media (max-width: 600px) {
   .section { padding: 64px 20px; }
@@ -275,18 +272,16 @@
   .carouselWrap { gap: 14px; }
 
   .viewport {
-    width: 288px;
-    height: 280px;
+    width: 444px;
+    height: 300px;
   }
-
-  .track { gap: 12px; }
 
   .cardWrap {
-    width: 160px;
+    width: 140px;
     height: 280px;
   }
 
-  .card { border-radius: 80px 80px 0 0; }
+  .card { border-radius: 70px 70px 0 0; }
 
   .arrow {
     width: 30px;

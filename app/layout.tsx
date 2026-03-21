@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import CustomCursor from '@/components/home/CustomCursor'
+import WhatsAppButton from '@/components/WhatsAppButton'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body>
         <CustomCursor />
         <Sidebar />
+        <WhatsAppButton />
         <main className="main-content">{children}</main>
       </body>
     </html>

@@ -18,6 +18,7 @@ export default function CustomCursor() {
     let targetX = -100
     let targetY = -100
     let hovered = false
+    let noCursor = false
     let rafId: number
 
     const onMove = (e: MouseEvent) => {
@@ -28,12 +29,19 @@ export default function CustomCursor() {
       }
       targetX = e.clientX
       targetY = e.clientY
-      cursor.style.opacity = '1'
+      if (!noCursor) cursor.style.opacity = '1'
     }
 
     const onOver = (e: MouseEvent) => {
       const el = e.target as Element
-      hovered = !!el.closest('a, button, [data-cursor]')
+      noCursor = !!el.closest('[data-no-cursor]')
+      if (noCursor) {
+        cursor.style.opacity = '0'
+        hovered = false
+      } else {
+        cursor.style.opacity = '1'
+        hovered = !!el.closest('a, button, [data-cursor]')
+      }
     }
 
     const onOut = () => { hovered = false }

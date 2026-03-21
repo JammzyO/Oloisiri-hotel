@@ -8,27 +8,33 @@ import styles from './Hero.module.css'
 const slides = [
   {
     id: 0,
-    src: '/hero-1.jpg',
-    alt: 'Oloisiri hotel overlooking the savannah at dusk',
-    objectPosition: 'center',
+    src: '/images/hero-hotel.jpeg',
+    alt: 'Oloisiri hotel grounds',
+    objectFit: 'cover' as const,
+    objectPosition: '50% 0%',
+    bg: 'transparent',
     headline1: 'Where the Wild',
     headline2: 'Meets the Refined.',
     sub: 'A sanctuary at the edge of two nations — Kenya and Tanzania.',
   },
   {
     id: 1,
-    src: '/hero-2.jpg',
-    alt: 'Oloisiri suite with warm natural light and yellow linen',
-    objectPosition: 'center',
+    src: '/images/hero-garden.jpeg',
+    alt: 'Oloisiri garden and pool',
+    objectFit: 'cover' as const,
+    objectPosition: 'center center',
+    bg: 'transparent',
     headline1: 'A Sanctuary',
     headline2: 'Above the Plains.',
     sub: 'Forty rooms where stillness is the greatest indulgence.',
   },
   {
     id: 2,
-    src: '/hero-3.jpg',
-    alt: 'Breakfast at Oloisiri with views across the borderland plains',
-    objectPosition: 'center 40%',
+    src: '/images/hero-luxury.jpeg',
+    alt: 'Oloisiri Luxury Room',
+    objectFit: 'cover' as const,
+    objectPosition: 'center center',
+    bg: 'transparent',
     headline1: 'Evenings Among',
     headline2: 'Ancient Embers.',
     sub: 'Dine beneath open skies as the borderland breathes around you.',
@@ -95,6 +101,7 @@ export default function Hero() {
           <div
             key={s.id}
             className={`${styles.slideBg} ${i === current ? styles.slideBgActive : ''}`}
+            style={{ background: s.bg }}
           >
             <Image
               src={s.src}
@@ -102,7 +109,7 @@ export default function Hero() {
               fill
               priority={i === 0}
               sizes="100vw"
-              style={{ objectFit: 'cover', objectPosition: s.objectPosition }}
+              style={{ objectFit: s.objectFit, objectPosition: s.objectPosition }}
             />
             <div className={styles.slideOverlay} />
           </div>

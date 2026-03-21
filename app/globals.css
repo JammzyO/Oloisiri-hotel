@@ -88,3 +88,42 @@ body {
     margin-left: 0;
   }
 }
+
+/* ─── WhatsApp floating button ───────────────────────────── */
+.whatsapp-btn:hover {
+  transform: scale(1.08);
+}
+
+.whatsapp-tooltip {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #1a1a1a;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.whatsapp-btn:hover .whatsapp-tooltip {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .whatsapp-btn {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .whatsapp-tooltip {
+    display: none;
+  }
+}

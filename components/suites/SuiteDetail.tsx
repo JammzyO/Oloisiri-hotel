@@ -39,8 +39,12 @@ const ICONS: Record<string, string> = {
   window:    'M3 3h18v18H3zM3 12h18M12 3v18',
   view:      'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zm11-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
   pool:      'M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0M2 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0M7 7V2M12 7V2M17 7V2',
-  butler:    'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z',
-  kitchen:   'M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zM6 1v3M10 1v3M14 1v3',
+  butler:       'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z',
+  kitchen:      'M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zM6 1v3M10 1v3M14 1v3',
+  fridge:       'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 9h10M10 6v4',
+  desk:         'M2 15h20v2H2zM6 6h12a1 1 0 0 1 1 1v8H5V7a1 1 0 0 1 1-1zm4 11v3m4-3v3M9 21h6',
+  housekeeping: 'M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83',
+  curtains:     'M3 3h18v18H3zM9 3v18M15 3v18',
 }
 
 /* ─── Availability calendar ──────────────────────────────── */
@@ -249,7 +253,7 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
   const checkoutVal = toInputValue(checkout)
 
   return (
-    <div>
+    <div className={styles.reserveBox}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
         {/* Rates */}
