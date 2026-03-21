@@ -61,7 +61,6 @@ function Calendar({ checkin, checkout, onChange }: CalendarProps) {
   const anchor = checkin ?? today
   const [base, setBase] = useState({ year: anchor.getFullYear(), month: anchor.getMonth() })
 
-  // When checkin changes from the reserve box, navigate calendar to show that month
   useEffect(() => {
     if (checkin) {
       setBase({ year: checkin.getFullYear(), month: checkin.getMonth() })
@@ -97,7 +96,6 @@ function Calendar({ checkin, checkout, onChange }: CalendarProps) {
 
   function handleDay(day: Date) {
     if (day < today) return
-    // If no start, or both are set → start fresh
     if (!checkin || (checkin && checkout)) {
       onChange(day, null)
     } else {
@@ -167,7 +165,6 @@ function Calendar({ checkin, checkout, onChange }: CalendarProps) {
 
 /* ─── Reserve box ────────────────────────────────────────── */
 
-// Floating-label input on cream background (modal)
 function MfField({ id, label, type = 'text', value, onChange, error, wrapRef }: {
   id: string; label: string; type?: string
   value: string; onChange: (v: string) => void; error?: string
@@ -258,7 +255,6 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
 
         {/* Rates */}
         <div className={styles.reserveHeader}>
-          <span className={styles.reserveCategory}>{suite.category}</span>
 
           <div style={{ borderBottom: '1px solid rgba(201,162,77,0.2)', paddingBottom: '16px', marginBottom: '2px' }}>
             <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Resident Rates</span>
@@ -418,13 +414,11 @@ function ReservationModal({
   const emailRef = useRef<HTMLDivElement>(null)
   const phoneRef = useRef<HTMLDivElement>(null)
 
-  // Body scroll lock
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = '' }
   }, [])
 
-  // Escape key
   useEffect(() => {
     let handled = false
     const handler = (e: KeyboardEvent) => {
@@ -505,7 +499,6 @@ function ReservationModal({
 
         <div key={phase} className={leaving ? styles.modalContentExit : styles.modalContentEnter}>
 
-          {/* ── Form phase ─────────────────────────────────── */}
           {phase === 'form' && (
             <form onSubmit={handleSubmit} noValidate>
               <p className={styles.modalEyebrow}>{eyebrow}</p>
@@ -546,7 +539,6 @@ function ReservationModal({
             </form>
           )}
 
-          {/* ── Confirmation phase ──────────────────────────── */}
           {phase === 'confirm' && (
             <div className={styles.modalConfirm}>
               <div className={styles.modalCheckCircle} aria-hidden="true">
@@ -614,8 +606,9 @@ function MoreRooms({ current }: { current: string }) {
 
 /* ─── Main component ─────────────────────────────────────── */
 export default function SuiteDetail({ suite }: { suite: Suite }) {
-  const [imgIndex, setImgIndex] = useState(0)
-  const [checkin, setCheckin] = useState<Date | null>(null)
+  const [activeImgIdx,  setActiveImgIdx]  = useState(0)
+  const [transitioning, setTransitioning] = useState(false)
+  const [checkin,  setCheckin]  = useState<Date | null>(null)
   const [checkout, setCheckout] = useState<Date | null>(null)
 
   function handleCalendarChange(newCheckin: Date | null, newCheckout: Date | null) {
@@ -623,182 +616,188 @@ export default function SuiteDetail({ suite }: { suite: Suite }) {
     setCheckout(newCheckout)
   }
 
-  const prev = useCallback(() =>
-    setImgIndex(i => (i - 1 + suite.images.length) % suite.images.length),
-    [suite.images.length]
-  )
-  const next = useCallback(() =>
-    setImgIndex(i => (i + 1) % suite.images.length),
-    [suite.images.length]
-  )
+  function handleThumbClick(i: number) {
+    if (i === activeImgIdx || transitioning) return
+    setTransitioning(true)
+    setTimeout(() => {
+      setActiveImgIdx(i)
+      setTransitioning(false)
+    }, 150)
+  }
+
+  const activeImg = suite.images[activeImgIdx]
 
   return (
     <div className={styles.page}>
 
-      {/* ── Gallery ──────────────────────────────────────── */}
-      <div className={styles.gallery}>
-        {suite.images.map((img, i) => (
-          <div
-            key={img.src}
-            className={`${styles.gallerySlide} ${i === imgIndex ? styles.gallerySlideActive : ''}`}
-          >
+      {/* ── Two-column top section ───────────────────────── */}
+      <div className={styles.topSection}>
+
+        {/* Left: image gallery */}
+        <div className={styles.galleryCol}>
+
+          {/* Main image */}
+          <div className={styles.mainImageWrap}>
             <Image
-              src={img.src}
-              alt={`${suite.name} — image ${i + 1}`}
-              fill
-              sizes="100vw"
-              style={{ objectFit: 'cover', objectPosition: img.position }}
-              priority={i === 0}
+              src={activeImg.src}
+              alt={suite.name}
+              width={900}
+              height={1200}
+              sizes="(max-width:768px) 100vw, 55vw"
+              priority
+              style={{
+                width: '100%',
+                height: 'auto',
+                minHeight: 540,
+                objectFit: 'cover',
+                objectPosition: activeImg.position,
+                display: 'block',
+                borderRadius: 4,
+                opacity: transitioning ? 0 : 1,
+                transition: 'opacity 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+              }}
             />
           </div>
-        ))}
 
-        <div className={styles.galleryOverlay} />
-
-        {suite.images.length > 1 && (
-          <>
-            <button className={`${styles.galleryArrow} ${styles.galleryArrowPrev}`} onClick={prev} aria-label="Previous image">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M13 4L7 10L13 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className={`${styles.galleryArrow} ${styles.galleryArrowNext}`} onClick={next} aria-label="Next image">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M7 4L13 10L7 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <div className={styles.galleryCounter}>
-              {suite.images.map((_, i) => (
+          {/* Thumbnails */}
+          {suite.images.length > 1 && (
+            <div className={styles.thumbRow}>
+              {suite.images.map((img, i) => (
                 <button
-                  key={i}
-                  className={`${styles.galleryDot} ${i === imgIndex ? styles.galleryDotActive : ''}`}
-                  onClick={() => setImgIndex(i)}
-                  aria-label={`Image ${i + 1}`}
-                />
+                  key={img.src}
+                  className={`${styles.thumb} ${i === activeImgIdx ? styles.thumbActive : ''}`}
+                  onClick={() => handleThumbClick(i)}
+                  aria-label={`View image ${i + 1}`}
+                  aria-pressed={i === activeImgIdx}
+                >
+                  <Image
+                    src={img.src}
+                    alt=""
+                    fill
+                    sizes="88px"
+                    style={{ objectFit: 'cover', objectPosition: img.position }}
+                  />
+                </button>
               ))}
             </div>
-          </>
-        )}
+          )}
 
-        <div className={styles.galleryTitle}>
-          <span className={styles.galleryCat}>{suite.category}</span>
-          <h1 className={styles.galleryName}>{suite.name}</h1>
         </div>
-      </div>
 
-      {/* ── Content + Reserve ────────────────────────────── */}
-      <div className={styles.body}>
-        <div className={styles.bodyInner}>
+        {/* Right: sticky info + reserve */}
+        <div className={styles.infoCol}>
 
-          {/* Content column */}
-          <div className={styles.content}>
+          {/* Suite info header */}
+          <div className={styles.infoHeader}>
+            <span className={styles.infoCategory}>{suite.category}</span>
+            <h1 className={styles.infoName}>{suite.name}</h1>
+            <div className={styles.infoLine} />
+            <p className={styles.infoDesc}>{suite.description}</p>
 
-            {/* Meta */}
-            <div className={styles.meta}>
-              <span className={styles.metaItem}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <div className={styles.infoMeta}>
+              <span className={styles.infoMetaItem}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                 </svg>
                 {suite.guests} Guests
               </span>
-              <span className={styles.metaDot}>·</span>
-              <span className={styles.metaItem}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <span className={styles.infoMetaDot}>·</span>
+              <span className={styles.infoMetaItem}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
                 </svg>
                 {suite.size}
               </span>
-              <span className={styles.metaDot}>·</span>
-              <span className={styles.metaItem}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <span className={styles.infoMetaDot}>·</span>
+              <span className={styles.infoMetaItem}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M2 9h20M2 9v10a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V9M2 9l2-6h16l2 6"/>
                 </svg>
                 {suite.bed}
               </span>
               {suite.connecting && (
                 <>
-                  <span className={styles.metaDot}>·</span>
-                  <span className={styles.metaItem}>Connecting Rooms</span>
+                  <span className={styles.infoMetaDot}>·</span>
+                  <span className={styles.infoMetaItem}>Connecting Rooms</span>
                 </>
               )}
             </div>
-
-            <div className={styles.divider} />
-
-            {/* Description */}
-            <p className={styles.description}>{suite.description}</p>
-
-            {/* Amenities */}
-            <div className={styles.amenitiesBlock}>
-              <h3 className={styles.blockTitle}>Room Amenities</h3>
-              <div className={styles.amenitiesGrid}>
-                {suite.amenities.map(a => (
-                  <div key={a.key} className={styles.amenityItem}>
-                    <div className={styles.amenityIcon}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d={ICONS[a.key] ?? 'M12 12h.01'} />
-                      </svg>
-                    </div>
-                    <span className={styles.amenityLabel}>{a.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Features */}
-            <div className={styles.featuresBlock}>
-              <h3 className={styles.blockTitle}>Room Features</h3>
-              <ul className={styles.featuresList}>
-                {suite.features.map(f => (
-                  <li key={f.label} className={styles.featureItem}>
-                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                      <path d="M4 10l5 5 7-8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <span><strong>{f.label}:</strong> {f.detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Check-in / out times */}
-            <div className={styles.timesBlock}>
-              <h3 className={styles.blockTitle}>Check In &amp; Check Out</h3>
-              <div className={styles.timesRow}>
-                <div className={styles.timeItem}>
-                  <span className={styles.timeLabel}>Check In</span>
-                  <span className={styles.timeValue}>{suite.checkin}</span>
-                </div>
-                <div className={styles.timeDivider} />
-                <div className={styles.timeItem}>
-                  <span className={styles.timeLabel}>Check Out</span>
-                  <span className={styles.timeValue}>{suite.checkout}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Calendar */}
-            <div className={styles.calBlock}>
-              <h3 className={styles.blockTitle}>Availability Calendar</h3>
-              <Calendar
-                checkin={checkin}
-                checkout={checkout}
-                onChange={handleCalendarChange}
-              />
-            </div>
-
           </div>
 
-          {/* Reserve column */}
-          <div className={styles.reserveCol}>
-            <ReserveBox
-              suite={suite}
+          {/* Booking box */}
+          <ReserveBox
+            suite={suite}
+            checkin={checkin}
+            checkout={checkout}
+            onCheckinChange={d => {
+              setCheckin(d)
+              if (d && checkout && d >= checkout) setCheckout(null)
+            }}
+            onCheckoutChange={setCheckout}
+          />
+
+        </div>
+      </div>
+
+      {/* ── Content below ────────────────────────────────── */}
+      <div className={styles.body}>
+        <div className={styles.bodyContent}>
+
+          {/* Amenities */}
+          <div className={styles.amenitiesBlock}>
+            <h3 className={styles.blockTitle}>Room Amenities</h3>
+            <div className={styles.amenitiesGrid}>
+              {suite.amenities.map(a => (
+                <div key={a.key} className={styles.amenityItem}>
+                  <div className={styles.amenityIcon}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d={ICONS[a.key] ?? 'M12 12h.01'} />
+                    </svg>
+                  </div>
+                  <span className={styles.amenityLabel}>{a.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Features */}
+          <div className={styles.featuresBlock}>
+            <h3 className={styles.blockTitle}>Room Features</h3>
+            <ul className={styles.featuresList}>
+              {suite.features.map(f => (
+                <li key={f.label} className={styles.featureItem}>
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M4 10l5 5 7-8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span><strong>{f.label}:</strong> {f.detail}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Check-in / out times */}
+          <div className={styles.timesBlock}>
+            <h3 className={styles.blockTitle}>Check In &amp; Check Out</h3>
+            <div className={styles.timesRow}>
+              <div className={styles.timeItem}>
+                <span className={styles.timeLabel}>Check In</span>
+                <span className={styles.timeValue}>{suite.checkin}</span>
+              </div>
+              <div className={styles.timeDivider} />
+              <div className={styles.timeItem}>
+                <span className={styles.timeLabel}>Check Out</span>
+                <span className={styles.timeValue}>{suite.checkout}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Calendar */}
+          <div className={styles.calBlock}>
+            <h3 className={styles.blockTitle}>Availability Calendar</h3>
+            <Calendar
               checkin={checkin}
               checkout={checkout}
-              onCheckinChange={d => {
-                setCheckin(d)
-                if (d && checkout && d >= checkout) setCheckout(null)
-              }}
-              onCheckoutChange={setCheckout}
+              onChange={handleCalendarChange}
             />
           </div>
 
