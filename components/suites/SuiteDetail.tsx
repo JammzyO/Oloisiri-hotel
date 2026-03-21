@@ -165,6 +165,57 @@ function Calendar({ checkin, checkout, onChange }: CalendarProps) {
 
 /* ─── Reserve box ────────────────────────────────────────── */
 
+function MfPhoneField({ onChange, onValidityChange, error, wrapRef }: {
+  onChange: (fullNumber: string) => void
+  onValidityChange: (valid: boolean) => void
+  error?: string
+  wrapRef?: React.RefObject<HTMLDivElement | null>
+}) {
+  const [rawDigits, setRawDigits] = useState('')
+
+  function formatKe(digits: string): string {
+    const d = digits.slice(0, 9)
+    if (d.length <= 3) return d
+    if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`
+    return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End']
+    if (allowed.includes(e.key) || e.ctrlKey || e.metaKey) return
+    if (!/^\d$/.test(e.key)) e.preventDefault()
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 9)
+    setRawDigits(digits)
+    onChange('+254' + digits)
+    onValidityChange(digits.length === 9)
+  }
+
+  return (
+    <div ref={wrapRef} className={styles.mfPhoneField}>
+      <span className={styles.mfPhoneLabel}>Phone</span>
+      <div className={`${styles.mfPhoneRow} ${error ? styles.mfPhoneRowErr : ''}`}>
+        <span className={styles.mfPhonePrefix}>🇰🇪 +254</span>
+        <input
+          id="mf-phone"
+          type="tel"
+          inputMode="numeric"
+          className={styles.mfPhoneInput}
+          value={formatKe(rawDigits)}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="7XX XXX XXX"
+          aria-label="Phone number"
+          aria-invalid={!!error}
+        />
+      </div>
+      {error && <span className={styles.mfPhoneErrMsg}>{error}</span>}
+    </div>
+  )
+}
+
 function MfField({ id, label, type = 'text', value, onChange, error, wrapRef }: {
   id: string; label: string; type?: string
   value: string; onChange: (v: string) => void; error?: string
@@ -405,9 +456,10 @@ function ReservationModal({
   const [phase,     setPhase]     = useState<'form' | 'confirm'>('form')
   const [leaving,   setLeaving]   = useState(false)
   const [isClosing, setIsClosing] = useState(false)
-  const [form,      setForm]      = useState({ firstName: '', lastName: '', email: '', phone: '', requests: '' })
-  const [errs,      setErrs]      = useState<Record<string, string>>({})
-  const [loading,   setLoading]   = useState(false)
+  const [form,       setForm]       = useState({ firstName: '', lastName: '', email: '', phone: '', requests: '' })
+  const [errs,       setErrs]       = useState<Record<string, string>>({})
+  const [loading,    setLoading]    = useState(false)
+  const [phoneValid, setPhoneValid] = useState(false)
 
   const firstRef = useRef<HTMLDivElement>(null)
   const lastRef  = useRef<HTMLDivElement>(null)
@@ -461,7 +513,7 @@ function ReservationModal({
     if (!form.firstName.trim()) fieldErrs.firstName = 'Required'
     if (!form.lastName.trim())  fieldErrs.lastName  = 'Required'
     if (!form.email.trim() || !form.email.includes('@')) fieldErrs.email = 'Valid email required'
-    if (!form.phone.trim()) fieldErrs.phone = 'Required'
+    if (!form.phone || !phoneValid) fieldErrs.phone = 'Required'
     if (Object.keys(fieldErrs).length) {
       setErrs(fieldErrs)
       if (fieldErrs.firstName) shake(firstRef)
@@ -515,8 +567,11 @@ function ReservationModal({
               <MfField id="mf-email" label="Email" type="email" value={form.email}
                 onChange={v => setF('email', v)} error={errs.email} wrapRef={emailRef} />
 
-              <MfField id="mf-phone" label="Phone — +254 7XX XXX XXX" type="tel" value={form.phone}
-                onChange={v => setF('phone', v)} error={errs.phone} wrapRef={phoneRef} />
+              <MfPhoneField
+                onChange={v => setF('phone', v)}
+                onValidityChange={setPhoneValid}
+                error={errs.phone}
+                wrapRef={phoneRef} />
 
               <div className={styles.mfTextareaWrap}>
                 <span className={styles.mfTextareaLabel}>Special Requests</span>

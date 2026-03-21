@@ -896,6 +896,81 @@
 
 .mfRow2 > .mfField { margin-bottom: 0; }
 
+/* ── Modal phone prefix field ────────────────────────────── */
+.mfPhoneField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.mfPhoneLabel {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  color: rgba(8, 47, 44, 0.4);
+  margin-bottom: 2px;
+}
+
+.mfPhoneRow {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(8, 47, 44, 0.18);
+  position: relative;
+}
+
+.mfPhoneRow::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 1px;
+  background: var(--color-gold);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  pointer-events: none;
+}
+
+.mfPhoneRow:focus-within::after { clip-path: inset(0 0% 0 0); }
+
+.mfPhoneRowErr { border-bottom-color: rgba(200, 60, 60, 0.45); }
+
+.mfPhoneRowErr::after {
+  clip-path: inset(0 0% 0 0);
+  background: rgba(200, 60, 60, 0.55);
+}
+
+.mfPhonePrefix {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: #082f2c;
+  padding: 20px 8px 8px 0;
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.mfPhoneInput {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 20px 0 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: #082f2c;
+  outline: none;
+  width: 100%;
+}
+
+.mfPhoneErrMsg {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: rgba(180, 50, 50, 0.85);
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+}
+
 .mfTextareaWrap { margin-bottom: 6px; }
 
 .mfTextareaLabel {
