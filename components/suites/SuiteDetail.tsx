@@ -646,6 +646,23 @@ export default function SuiteDetail({ suite }: { suite: Suite }) {
 
           {/* Main image */}
           <div className={styles.mainImageWrap}>
+            {/* Blurred background — fills letterbox bars naturally */}
+            <Image
+              src={activeImg.src}
+              alt=""
+              fill
+              sizes="(max-width:768px) 100vw, 55vw"
+              aria-hidden="true"
+              style={{
+                objectFit: 'cover',
+                objectPosition: activeImg.position,
+                filter: 'blur(18px)',
+                transform: 'scale(1.12)',
+                opacity: transitioning ? 0 : 0.45,
+                transition: 'opacity 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+              }}
+            />
+            {/* Foreground — sharp, full uncropped image */}
             <Image
               src={activeImg.src}
               alt={suite.name}
