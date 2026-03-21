@@ -75,6 +75,69 @@ function Field({ id, label, type = 'text', value, onChange, error, errorClassNam
   )
 }
 
+// ── Phone field (Kenya fixed prefix) ─────────────────────────────────────────
+
+function PhoneField({ onChange, onValidityChange, error, onErrorClear }: {
+  onChange: (fullNumber: string) => void
+  onValidityChange: (valid: boolean) => void
+  error?: string
+  onErrorClear: () => void
+}) {
+  const [rawDigits, setRawDigits] = useState('')
+  const shakeRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (error && shakeRef.current) {
+      shakeRef.current.classList.remove(styles.fieldShake)
+      void shakeRef.current.offsetWidth
+      shakeRef.current.classList.add(styles.fieldShake)
+    }
+  }, [error])
+
+  function formatKe(digits: string): string {
+    const d = digits.slice(0, 9)
+    if (d.length <= 3) return d
+    if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`
+    return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End']
+    if (allowed.includes(e.key) || e.ctrlKey || e.metaKey) return
+    if (!/^\d$/.test(e.key)) e.preventDefault()
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 9)
+    setRawDigits(digits)
+    onChange('+254' + digits)
+    onValidityChange(digits.length === 9)
+    if (digits.length > 0) onErrorClear()
+  }
+
+  return (
+    <div ref={shakeRef} className={styles.phoneField}>
+      <span className={styles.phoneLabel}>Phone</span>
+      <div className={`${styles.phoneRow} ${error ? styles.phoneRowErr : ''}`}>
+        <span className={styles.phonePrefix}>🇰🇪 +254</span>
+        <input
+          id="gen-phone"
+          type="tel"
+          inputMode="numeric"
+          className={styles.phoneInput}
+          value={formatKe(rawDigits)}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="7XX XXX XXX"
+          aria-label="Phone number"
+          aria-invalid={!!error}
+        />
+      </div>
+      {error && <span className={styles.errMsgGold}>{error}</span>}
+    </div>
+  )
+}
+
 // ── Thank-you panel ───────────────────────────────────────────────────────────
 
 function ThankYou({ firstName }: { firstName: string }) {
@@ -104,30 +167,48 @@ function ThankYou({ firstName }: { firstName: string }) {
 // ── General inquiry form ──────────────────────────────────────────────────────
 
 function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName:  '',
-    email:     '',
-    phone:     '',
-    subject:   '',
-    message:   '',
-  })
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [loading, setLoading] = useState(false)
+  const [form, setForm]           = useState({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' })
+  const [errors, setErrors]       = useState<Record<string, string>>({})
+  const [loading, setLoading]     = useState(false)
+  const [phoneValid, setPhoneValid] = useState(false)
 
   function set(key: string, value: string) {
     setForm(f => ({ ...f, [key]: value }))
     setErrors(e => ({ ...e, [key]: '' }))
   }
 
+  function handleNameKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return
+    if (e.key.length > 1) return
+    if (!/[a-zA-ZÀ-ÿ\s'\-]/.test(e.key)) e.preventDefault()
+  }
+
+  function handleFirstNamePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+    e.preventDefault()
+    const cleaned = e.clipboardData.getData('text').replace(/[^a-zA-ZÀ-ÿ\s'\-]/g, '')
+    set('firstName', cleaned)
+  }
+
+  function handleLastNamePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+    e.preventDefault()
+    const cleaned = e.clipboardData.getData('text').replace(/[^a-zA-ZÀ-ÿ\s'\-]/g, '')
+    set('lastName', cleaned)
+  }
+
+  function handleEmailBlur() {
+    if (form.email && !isValidEmail(form.email)) {
+      setErrors(e => ({ ...e, email: 'Please enter a valid email address' }))
+    }
+  }
+
   function validate() {
     const e: Record<string, string> = {}
-    if (!form.firstName.trim()) e.firstName = 'This field is required'
-    if (!form.lastName.trim())  e.lastName  = 'This field is required'
-    if (!form.email.trim() || !form.email.includes('@')) e.email = 'A valid email is required'
-    if (!form.phone.trim())     e.phone     = 'This field is required'
-    if (!form.subject)          e.subject   = 'Please select a subject'
-    if (!form.message.trim())   e.message   = 'This field is required'
+    if (!form.firstName.trim())                          e.firstName = 'Please enter a valid name'
+    if (!form.lastName.trim())                           e.lastName  = 'Please enter a valid name'
+    if (!form.email.trim() || !isValidEmail(form.email)) e.email     = 'Please enter a valid email address'
+    if (!form.phone || !phoneValid)                      e.phone     = 'Please enter a complete phone number'
+    if (!form.subject)                                   e.subject   = 'Please select a subject'
+    if (!form.message.trim())                            e.message   = 'This field is required'
     return e
   }
 
@@ -167,17 +248,29 @@ function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
       {/* Row 1: Name */}
       <div className={styles.row2}>
         <Field id="gen-first" label="First Name" value={form.firstName}
-          onChange={v => set('firstName', v)} error={errors.firstName} required />
+          onChange={v => set('firstName', v)}
+          onKeyDown={handleNameKeyDown}
+          onPaste={handleFirstNamePaste}
+          error={errors.firstName} required />
         <Field id="gen-last" label="Last Name" value={form.lastName}
-          onChange={v => set('lastName', v)} error={errors.lastName} required />
+          onChange={v => set('lastName', v)}
+          onKeyDown={handleNameKeyDown}
+          onPaste={handleLastNamePaste}
+          error={errors.lastName} required />
       </div>
 
       {/* Row 2: Contact */}
       <div className={styles.row2}>
         <Field id="gen-email" label="Email Address" type="email" value={form.email}
-          onChange={v => set('email', v)} error={errors.email} required />
-        <Field id="gen-phone" label="Phone — +254 7XX XXX XXX" type="tel" value={form.phone}
-          onChange={v => set('phone', v)} error={errors.phone} required />
+          onChange={v => set('email', v)}
+          onBlur={handleEmailBlur}
+          error={errors.email} required />
+        <PhoneField
+          onChange={v => set('phone', v)}
+          onValidityChange={setPhoneValid}
+          error={errors.phone}
+          onErrorClear={() => setErrors(e => ({ ...e, phone: '' }))}
+        />
       </div>
 
       {/* Row 3: Subject */}
