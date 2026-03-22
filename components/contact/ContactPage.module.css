@@ -1119,20 +1119,24 @@
 
   .panel {
     position: relative;
-    height: 55vh;
+    height: auto;           /* was 55vh — clipped content at bottom */
   }
 
   .panelBg {
-    top: 0;
+    top: 0;                 /* remove parallax overshoot on mobile */
     bottom: 0;
   }
 
+  .panelContent {
+    padding: 44px 24px 40px; /* tighter side padding on narrow screens */
+  }
+
   .formSide {
-    padding: 48px 28px 72px;
+    padding: 48px 24px 72px;
   }
 
   .ratesSection {
-    padding: 64px 28px;
+    padding: 64px 24px;
   }
 }
 
@@ -1149,7 +1153,7 @@
   }
 
   .panelHeading {
-    font-size: 48px;
+    font-size: 38px;    /* was 48px — gives more room for contact details below */
   }
 
   .formTitle {
