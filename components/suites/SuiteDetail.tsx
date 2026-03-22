@@ -572,7 +572,7 @@ function ReservationModal({
       ``,
       `Please confirm availability.`,
     ].join('\n')
-    window.open(`https://wa.me/254718068417?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+    window.open(`https://wa.me/254740659172?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
     transitionToConfirm()
   }
 
@@ -689,7 +689,7 @@ function ReservationModal({
               </p>
               <p className={styles.modalConfirmCall}>
                 Questions? Call us:{' '}
-                <a href="tel:+254718068417">+254 718 068 417</a>
+                <a href="tel:+254740659172">+254 740 659 172</a>
               </p>
               <button className={styles.modalCloseBtn} onClick={doDone}>Close</button>
             </div>
