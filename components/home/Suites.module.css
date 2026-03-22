@@ -272,40 +272,74 @@
   }
 }
 
+/* ─── Mobile swipe strip — hidden on desktop/tablet ─────── */
+.mobileStrip {
+  display: none;
+}
+
+/* Always-visible rate (used inside mobileCard only) */
+.suiteRateVisible {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--color-gold);
+  margin-top: 4px;
+}
+
 /* ─── Mobile ─────────────────────────────────────────────── */
-/*
- * card=140px, gap=12px
- * viewport width = 3×140 + 2×12 = 444px
- * JS step = 152, halfCard = 70
- */
 @media (max-width: 600px) {
-  .section { padding: 64px 20px; }
+  .section { padding: 64px 0; }
+
+  .inner { padding: 0 20px; }
+
+  .header { padding: 0; }
 
   .heading { font-size: 34px; }
 
-  .carouselWrap { gap: 14px; }
+  /* Hide the JS-driven carousel on mobile */
+  .carouselWrap { display: none; }
 
-  .viewport {
-    width: 444px;
-    height: 300px;
+  /* Show the swipe strip */
+  .mobileStrip {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 14px;
+    /* Padding lets first/last card sit inset from edge */
+    padding: 0 20px 16px;
+    /* Extend strip edge-to-edge */
+    width: 100vw;
+    margin-left: -20px;
+    margin-bottom: 32px;
   }
 
-  .cardWrap {
-    width: 140px;
-    height: 235px;
+  .mobileStrip::-webkit-scrollbar {
+    display: none;
   }
 
-  .cardCenter {
-    height: 280px;
+  .mobileCard {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    /* Card takes most of screen width */
+    width: calc(80vw);
+    height: 360px;
+    border-radius: 40vw 40vw 0 0;
+    overflow: hidden;
+    position: relative;
+    display: block;
+    text-decoration: none;
   }
 
-  .card { border-radius: 70px 70px 0 0; }
-
-  .arrow {
-    width: 30px;
-    height: 30px;
+  .mobileCardImage {
+    position: absolute;
+    inset: 0;
   }
 
-  .suiteName { font-size: 16px; }
-  .suiteRate  { font-size: 12px; }
+  .suiteName { font-size: 18px; }
+  .suiteRateVisible { font-size: 13px; }
+
+  /* CTA still needs padding since .inner has padding */
+  .cta { padding: 0; }
 }

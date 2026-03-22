@@ -228,6 +228,38 @@ export default function Suites() {
 
         </div>
 
+        {/* Mobile-only swipe carousel — hidden on desktop/tablet via CSS */}
+        <div className={styles.mobileStrip}>
+          {SUITES.map(suite => (
+            <Link
+              key={suite.slug}
+              href={`/suites/${suite.slug}`}
+              className={styles.mobileCard}
+              aria-label={`${suite.name} — view details`}
+            >
+              <div className={styles.mobileCardImage}>
+                <Image
+                  src={suite.src}
+                  alt={suite.alt}
+                  fill
+                  sizes="80vw"
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+              <div className={styles.cardOverlay}>
+                <span className={styles.suiteCategory}>{suite.category}</span>
+                <h3 className={styles.suiteName}>{suite.name}</h3>
+                <div className={styles.suiteMeta}>
+                  <span className={styles.suiteMetaItem}>{suite.guests}</span>
+                  <span className={styles.suiteMetaDot}>·</span>
+                  <span className={styles.suiteMetaItem}>{suite.size}</span>
+                </div>
+                <span className={styles.suiteRateVisible}>{suite.rate}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
         <div className={styles.cta}>
           <a href="/suites" className={styles.ctaBtn}>View All Suites</a>
         </div>

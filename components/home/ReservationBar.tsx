@@ -1,11 +1,15 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import styles from './ReservationBar.module.css'
 
 export default function ReservationBar() {
-  const [adults, setAdults] = useState(2)
+  const [adults,   setAdults]   = useState(2)
   const [children, setChildren] = useState(0)
+  const [checkIn,  setCheckIn]  = useState('')
+  const [checkOut, setCheckOut] = useState('')
+  const router = useRouter()
 
   const changeAdults = (delta: number) => {
     setAdults(v => Math.max(1, Math.min(10, v + delta)))
@@ -13,6 +17,15 @@ export default function ReservationBar() {
 
   const changeChildren = (delta: number) => {
     setChildren(v => Math.max(0, Math.min(8, v + delta)))
+  }
+
+  function handleCheckAvailability() {
+    const params = new URLSearchParams()
+    if (checkIn)  params.set('checkin',  checkIn)
+    if (checkOut) params.set('checkout', checkOut)
+    params.set('adults',   String(adults))
+    params.set('children', String(children))
+    router.push(`/reserve?${params.toString()}`)
   }
 
   return (
@@ -27,6 +40,8 @@ export default function ReservationBar() {
           id="check-in"
           type="date"
           className={styles.dateInput}
+          value={checkIn}
+          onChange={e => setCheckIn(e.target.value)}
           aria-label="Check in date"
         />
       </div>
@@ -39,6 +54,8 @@ export default function ReservationBar() {
           id="check-out"
           type="date"
           className={styles.dateInput}
+          value={checkOut}
+          onChange={e => setCheckOut(e.target.value)}
           aria-label="Check out date"
         />
       </div>
@@ -101,7 +118,7 @@ export default function ReservationBar() {
         </div>
       </div>
 
-      <button className={styles.checkBtn} type="button">
+      <button className={styles.checkBtn} type="button" onClick={handleCheckAvailability}>
         Check Availability
       </button>
     </div>
