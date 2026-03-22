@@ -155,6 +155,7 @@
 /* ─── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .bar {
+    position: static;
     height: auto;
     flex-wrap: wrap;
     padding: 14px 16px;

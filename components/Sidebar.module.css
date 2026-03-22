@@ -270,9 +270,11 @@
 
   .overlay {
     display: block;
+    pointer-events: none;
   }
 
   .overlayVisible {
     opacity: 1;
+    pointer-events: auto;
   }
 }
