@@ -11,7 +11,7 @@ const SUITES = [
     category: 'Top Floor',
     guests: '2 Guests',
     size: '45 m²',
-    rate: 'From KES 38,000',
+    rate: 'From KES 7,500',
     src: '/images/rooms/luxury-view-1.jpeg',
     alt: 'Luxury Room — bedroom view',
     slug: 'luxury-room',

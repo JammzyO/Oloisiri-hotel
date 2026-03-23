@@ -31,7 +31,7 @@ export const allSuites: Suite[] = [
     bed: '1 King Bed',
     connecting: false,
     rate: 38000,
-    rateDisplay: 'KES 38,000',
+    rateDisplay: 'From KES 7,500',
     description:
       'The best room in the house. On clear mornings Kilimanjaro fills the window before you are fully awake. Elevated finishes, the quietest floor, and a balcony that earns its name.',
     amenities: [
