@@ -27,11 +27,11 @@
 
 .eyebrow {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 20px;
   font-weight: 400;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-teal-dark);
   display: block;
   margin-bottom: 20px;
 }
