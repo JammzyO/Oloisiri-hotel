@@ -187,7 +187,7 @@ function ThankYou({ firstName }: { firstName: string }) {
         </p>
         <p className={styles.thankCall}>
           Questions in the meantime?{' '}
-          Call us: <a href="tel:+254740659172">+254 740 659 172</a>
+          Call us: <a href="tel:+254706134921">+254 706 134 921</a>
         </p>
       </div>
     </div>
@@ -315,7 +315,7 @@ function ReservationForm({ onDone }: { onDone: (name: string) => void }) {
       ``,
       `Please confirm availability.`,
     ].join('\n')
-    window.open(`https://wa.me/254740659172?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+    window.open(`https://wa.me/254706134921?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
     onDone(form.firstName)
   }
 
@@ -540,7 +540,7 @@ function ReserveClient() {
                 strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1.1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.96a16 16 0 0 0 6.02 6.02l1.32-1.26a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 15.92z"/>
               </svg>
-              <span>+254 740 659 172</span>
+              <span>+254 706 134 921</span>
             </div>
             <div className={styles.infoItem}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
