@@ -356,12 +356,12 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
           </div>
 
           <div style={{ background: '#e8ddc7', borderLeft: '3px solid #c9a24d', padding: '10px 14px', marginTop: '4px' }}>
-            <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '11px', color: '#082f2c', display: 'block', letterSpacing: '0.02em', lineHeight: 1.6 }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '15px', color: '#082f2c', display: 'block', letterSpacing: '0.02em', lineHeight: 1.6 }}>
               Special opening rate — available for a limited time.
             </span>
           </div>
 
-          <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '10px', color: '#857f77', margin: '0', lineHeight: 1.7, letterSpacing: '0.01em' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '14px', color: '#857f77', margin: '0', lineHeight: 1.7, letterSpacing: '0.01em' }}>
             Buffet meals available on arrangement — KES 2,500 per head, includes one soft drink.
           </p>
         </div>

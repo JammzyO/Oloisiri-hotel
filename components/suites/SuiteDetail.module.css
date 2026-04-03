@@ -117,11 +117,11 @@
 .infoCategory {
   display: block;
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-teal-dark);
   margin-bottom: 14px;
 }
 
@@ -145,7 +145,7 @@
 
 .infoDesc {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: var(--color-stone);
@@ -165,17 +165,17 @@
   align-items: center;
   gap: 5px;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: 0.3px;
   color: var(--color-teal);
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .infoMetaDot {
   color: var(--color-stone);
   opacity: 0.4;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 /* ─── Body (content below two-column section) ────────────── */
@@ -194,7 +194,7 @@
 .blockTitle {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 26px;
+  font-size: 32px;
   color: var(--color-teal-dark);
   letter-spacing: -0.2px;
   margin-bottom: 28px;
@@ -233,7 +233,7 @@
 
 .amenityLabel {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--color-teal-dark);
   letter-spacing: 0.3px;
@@ -258,7 +258,7 @@
   align-items: flex-start;
   gap: 12px;
   font-family: var(--font-body);
-  font-size: 13.5px;
+  font-size: 17px;
   font-weight: 300;
   color: var(--color-stone);
   line-height: 1.6;
@@ -305,11 +305,12 @@
 
 .timeLabel {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-teal-dark);
+  opacity: 0.55;
 }
 
 .timeValue {
@@ -374,7 +375,7 @@
 
 .calMonthName {
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 300;
   color: var(--color-teal-dark);
   letter-spacing: -0.1px;
@@ -388,7 +389,7 @@
 
 .calDow {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -403,7 +404,7 @@
 .calDayRange,
 .calEmpty {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
   text-align: center;
   padding: 7px 0;
@@ -445,7 +446,7 @@
   border-top: 1px solid rgba(8, 47, 44, 0.08);
   margin-top: 16px;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 15px;
   color: var(--color-stone);
   font-weight: 300;
 }
@@ -542,7 +543,7 @@
 
 .reserveCategory {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -565,7 +566,7 @@
 
 .reservePriceNight {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 300;
   color: rgba(232, 221, 199, 0.5);
   font-style: italic;
@@ -591,7 +592,7 @@
 
 .reserveLabel {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -692,7 +693,7 @@
 
 .reserveNote {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 300;
   color: rgba(232, 221, 199, 0.35);
   text-align: center;
@@ -729,7 +730,7 @@
   border: none;
   border-right: 1px solid rgba(232, 221, 199, 0.15);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
   letter-spacing: 2.5px;
   text-transform: uppercase;
