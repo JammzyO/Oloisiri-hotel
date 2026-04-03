@@ -594,11 +594,11 @@
 .eyebrow {
   display: block;
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-teal-dark);
   margin-bottom: 24px;
 }
 
@@ -765,9 +765,9 @@
 .eyebrowLight {
   display: block;
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--color-gold);
   margin-bottom: 24px;
