@@ -171,7 +171,7 @@
 
 .locationBody {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: rgba(232, 221, 199, 0.65);
@@ -193,7 +193,7 @@
 
 .sectionBody {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: var(--color-stone);
@@ -298,7 +298,7 @@
 
 .rooftopBody {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: rgba(232, 221, 199, 0.65);
@@ -380,7 +380,7 @@
 
 .meetingsBody {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: rgba(232, 221, 199, 0.65);
@@ -465,7 +465,7 @@
 
 .lookingAheadItem {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: var(--color-stone);
@@ -514,7 +514,7 @@
 
 .whyIntro {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 300;
   color: rgba(232, 221, 199, 0.5);
   line-height: 1.8;
@@ -532,7 +532,7 @@
 
 .whyItem {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 300;
   color: var(--color-cream);
   line-height: 1;
@@ -614,7 +614,7 @@
 
 .storyBody {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.85;
   color: var(--color-stone);
@@ -728,7 +728,7 @@
 
 .practicalBody {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 300;
   color: #5a5a52;
   line-height: 1.85;
@@ -834,7 +834,7 @@
 
 .pillarBody {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: rgba(232, 221, 199, 0.6);
@@ -882,7 +882,7 @@
 /* Left-border accent on body text */
 .detailBody {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.9;
   color: var(--color-stone);

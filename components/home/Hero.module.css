@@ -108,7 +108,7 @@
 /* ─── Subheadline ────────────────────────────────────────── */
 .sub {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 300;
   color: rgba(232, 221, 199, 0.80);
   line-height: 1.7;

@@ -177,7 +177,7 @@
 .dineBody {
   font-family: var(--font-body), sans-serif;
   font-weight: 300;
-  font-size: 0.9rem;
+  font-size: 17px;
   line-height: 1.85;
   color: rgba(232, 221, 199, 0.65);
   margin: 0;
@@ -293,7 +293,7 @@
 .venueDesc {
   font-family: var(--font-body), sans-serif;
   font-weight: 300;
-  font-size: 0.82rem;
+  font-size: 17px;
   line-height: 1.75;
   color: rgba(232, 221, 199, 0.6);
   margin: 0;
@@ -379,7 +379,7 @@
 .numUnit {
   font-family: var(--font-body), sans-serif;
   font-weight: 300;
-  font-size: 0.78rem;
+  font-size: 17px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #857f77;
@@ -443,7 +443,7 @@
 .stripDesc {
   font-family: var(--font-body), sans-serif;
   font-weight: 300;
-  font-size: 0.88rem;
+  font-size: 17px;
   line-height: 1.75;
   color: #5a5a52;
 }
@@ -544,7 +544,7 @@
 .gatherBody {
   font-family: var(--font-body), sans-serif;
   font-weight: 300;
-  font-size: 0.9rem;
+  font-size: 17px;
   line-height: 1.85;
   color: rgba(232, 221, 199, 0.65);
   margin: 0 0 18px;
