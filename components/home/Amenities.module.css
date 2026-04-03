@@ -103,14 +103,14 @@
 .tileTitle {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 22px;
+  font-size: 26px;
   color: var(--color-teal);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .tileDesc {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
   color: #3d3a36;
   line-height: 1.75;
