@@ -480,7 +480,7 @@
 
 .reserveCategory {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -529,7 +529,7 @@
 
 .reserveLabel {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -542,7 +542,7 @@
   border: 1px solid rgba(232, 221, 199, 0.15);
   color: var(--color-cream);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 300;
   padding: 10px 12px;
   outline: none;
@@ -602,7 +602,7 @@
   width: 100%;
   text-align: center;
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -630,7 +630,7 @@
 
 .reserveNote {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 300;
   color: rgba(232, 221, 199, 0.35);
   text-align: center;
@@ -667,7 +667,7 @@
   border: none;
   border-right: 1px solid rgba(232, 221, 199, 0.15);
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 300;
   letter-spacing: 2.5px;
   text-transform: uppercase;
@@ -794,10 +794,10 @@
 /* Eyebrow, divider, heading */
 .modalEyebrow {
   font-family: var(--font-body);
-  font-size: 9px; font-weight: 400;
+  font-size: 13px; font-weight: 400;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-teal-dark);
   line-height: 1.9;
   margin-bottom: 14px;
 }
@@ -845,7 +845,7 @@
   border-bottom: 1px solid rgba(8, 47, 44, 0.18);
   padding: 20px 0 8px;
   font-family: var(--font-body);
-  font-size: 13px; font-weight: 300;
+  font-size: 17px; font-weight: 300;
   color: #082f2c;
   outline: none;
   width: 100%;
@@ -857,7 +857,7 @@
   position: absolute;
   left: 0; top: 20px;
   font-family: var(--font-body);
-  font-size: 12px; font-weight: 300;
+  font-size: 16px; font-weight: 300;
   color: rgba(8, 47, 44, 0.4);
   transform-origin: left center;
   pointer-events: none;
@@ -905,10 +905,10 @@
 
 .mfPhoneLabel {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 300;
   letter-spacing: 0.5px;
-  color: rgba(8, 47, 44, 0.4);
+  color: rgba(8, 47, 44, 0.55);
   margin-bottom: 2px;
 }
 
@@ -941,7 +941,7 @@
 
 .mfPhonePrefix {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 300;
   color: #082f2c;
   padding: 20px 8px 8px 0;
@@ -956,7 +956,7 @@
   border: none;
   padding: 20px 0 8px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 300;
   color: #082f2c;
   outline: none;
@@ -976,10 +976,10 @@
 .mfTextareaLabel {
   display: block;
   font-family: var(--font-body);
-  font-size: 9px; font-weight: 400;
+  font-size: 13px; font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: rgba(8, 47, 44, 0.32);
+  color: rgba(8, 47, 44, 0.55);
   margin-bottom: 8px;
 }
 
@@ -989,7 +989,7 @@
   border: 1px solid rgba(8, 47, 44, 0.14);
   padding: 11px 13px;
   font-family: var(--font-body);
-  font-size: 13px; font-weight: 300;
+  font-size: 17px; font-weight: 300;
   color: #082f2c;
   outline: none; resize: none;
   transition: border-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -1010,7 +1010,7 @@
   border: none;
   cursor: pointer;
   font-family: var(--font-body);
-  font-size: 10px; font-weight: 400;
+  font-size: 11px; font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--color-teal-dark);
@@ -1061,8 +1061,8 @@
 
 .modalSubmitPrompt {
   font-family: var(--font-body);
-  font-size: 10px; font-weight: 300;
-  color: rgba(8, 47, 44, 0.5);
+  font-size: 13px; font-weight: 300;
+  color: rgba(8, 47, 44, 0.6);
   letter-spacing: 0.3px;
   margin-bottom: 14px;
 }
@@ -1088,7 +1088,7 @@
   border: none;
   cursor: pointer;
   font-family: var(--font-body);
-  font-size: 10px; font-weight: 400;
+  font-size: 11px; font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: #fff;
@@ -1102,8 +1102,8 @@
   border: none;
   cursor: pointer;
   font-family: var(--font-body);
-  font-size: 10px; font-weight: 300;
-  color: rgba(8, 47, 44, 0.4);
+  font-size: 13px; font-weight: 300;
+  color: rgba(8, 47, 44, 0.5);
   letter-spacing: 0.3px;
   margin-top: 14px;
   padding: 0;
@@ -1115,8 +1115,8 @@
 
 .modalNote {
   font-family: var(--font-body);
-  font-size: 10px; font-weight: 300;
-  color: rgba(8, 47, 44, 0.38);
+  font-size: 13px; font-weight: 300;
+  color: rgba(8, 47, 44, 0.5);
   text-align: center;
   margin-top: 12px;
   letter-spacing: 0.2px;
