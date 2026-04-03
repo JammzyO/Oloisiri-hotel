@@ -903,17 +903,33 @@ export default function SuiteDetail({ suite }: { suite: Suite }) {
             </div>
           </div>
 
-          {/* Booking box */}
-          <ReserveBox
-            suite={suite}
-            checkin={checkin}
-            checkout={checkout}
-            onCheckinChange={d => {
-              setCheckin(d)
-              if (d && checkout && d >= checkout) setCheckout(null)
-            }}
-            onCheckoutChange={setCheckout}
-          />
+          {/* Booking box — or Coming Soon */}
+          {suite.available === false ? (
+            <div className={styles.comingSoonBox}>
+              <span className={styles.comingSoonLabel}>Coming Soon</span>
+              <div className={styles.comingSoonRule} />
+              <p className={styles.comingSoonText}>
+                This room is not yet available for reservation. We are putting the finishing touches in place and will open it shortly.
+              </p>
+              <Link href="/contact" className={styles.comingSoonCta}>
+                Register Interest
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </Link>
+            </div>
+          ) : (
+            <ReserveBox
+              suite={suite}
+              checkin={checkin}
+              checkout={checkout}
+              onCheckinChange={d => {
+                setCheckin(d)
+                if (d && checkout && d >= checkout) setCheckout(null)
+              }}
+              onCheckoutChange={setCheckout}
+            />
+          )}
 
         </div>
       </div>

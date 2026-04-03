@@ -462,6 +462,68 @@
   align-self: start;
 }
 
+/* ─── Coming Soon block (replaces ReserveBox when unavailable) ── */
+.comingSoonBox {
+  background: var(--color-teal-dark);
+  padding: 48px 36px 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.comingSoonLabel {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  color: var(--color-gold);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.comingSoonRule {
+  width: 44px;
+  height: 1px;
+  background: var(--color-gold);
+  opacity: 0.45;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.comingSoonText {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 16px;
+  color: rgba(232, 221, 199, 0.7);
+  line-height: 1.75;
+  margin: 0 0 32px;
+  max-width: 320px;
+}
+
+.comingSoonCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 162, 77, 0.35);
+  padding-bottom: 2px;
+  transition:
+    border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.comingSoonCta:hover {
+  color: var(--color-cream);
+  border-color: rgba(232, 221, 199, 0.4);
+}
+
 .reserveBox {
   background: var(--color-teal-dark);
   padding: 40px 36px;

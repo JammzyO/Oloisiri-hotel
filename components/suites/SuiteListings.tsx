@@ -44,6 +44,11 @@ function DetailPanel({ suite, index }: { suite: Suite; index: number }) {
             sizes="(max-width: 768px) 100vw, 55vw"
             style={{ objectFit: 'cover', objectPosition: suite.images[0].position }}
           />
+          {suite.available === false && (
+            <div className={styles.comingSoonOverlay}>
+              <span className={styles.comingSoonOverlayText}>Coming Soon</span>
+            </div>
+          )}
         </Link>
       </div>
 
