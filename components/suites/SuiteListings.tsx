@@ -95,9 +95,11 @@ export default function SuiteListings() {
         </p>
       </div>
       <section className={styles.detailsSection} aria-label="Room details">
-        {allSuites.map((suite, i) => (
-          <DetailPanel key={suite.slug} suite={suite} index={i} />
-        ))}
+        {[...allSuites]
+          .sort((a, b) => (a.available === false ? 1 : 0) - (b.available === false ? 1 : 0))
+          .map((suite, i) => (
+            <DetailPanel key={suite.slug} suite={suite} index={i} />
+          ))}
       </section>
     </>
   )
