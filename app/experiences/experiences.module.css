@@ -203,7 +203,6 @@
 .venueCard {
   position: relative;
   background: rgba(232, 221, 199, 0.04);
-  cursor: none;
   overflow: hidden;
 }
 

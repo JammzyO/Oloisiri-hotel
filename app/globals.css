@@ -75,12 +75,6 @@ body {
   transform: translateY(0);
 }
 
-/* ─── Custom cursor — hide OS cursor on pointer devices ──── */
-@media (pointer: fine) {
-  *, *::before, *::after {
-    cursor: none !important;
-  }
-}
 
 /* ─── Mobile layout ──────────────────────────────────────── */
 @media (max-width: 768px) {
