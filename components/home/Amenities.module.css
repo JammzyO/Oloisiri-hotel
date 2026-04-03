@@ -30,11 +30,11 @@
 
 .eyebrow {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 400;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-teal-dark);
   display: block;
   margin-bottom: 20px;
 }
@@ -42,7 +42,7 @@
 .heading {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 36px;
+  font-size: 48px;
   line-height: 1.2;
   color: var(--color-teal);
 }
@@ -103,17 +103,17 @@
 .tileTitle {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 18px;
+  font-size: 22px;
   color: var(--color-teal);
   margin-bottom: 12px;
 }
 
 .tileDesc {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 300;
-  color: var(--color-stone);
-  line-height: 1.7;
+  color: #3d3a36;
+  line-height: 1.75;
 }
 
 /* ─── Mobile ─────────────────────────────────────────────── */
@@ -142,6 +142,6 @@
   }
 
   .heading {
-    font-size: 28px;
+    font-size: 36px;
   }
 }

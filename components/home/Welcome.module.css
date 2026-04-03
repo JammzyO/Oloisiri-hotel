@@ -81,11 +81,11 @@
 
 .eyebrow {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 400;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-teal-dark);
   display: block;
   margin-bottom: 28px;
 }
@@ -136,9 +136,9 @@
 /* ─── Body ───────────────────────────────────────────────── */
 .body {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
-  color: var(--color-stone);
+  color: #3d3a36;
   line-height: 1.85;
   max-width: 460px;
 }
