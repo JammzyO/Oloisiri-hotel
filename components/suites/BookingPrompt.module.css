@@ -54,24 +54,21 @@
 .ctaBtn {
   display: inline-block;
   font-family: var(--font-jost), sans-serif;
-  font-weight: 300;
-  font-size: 0.68rem;
-  letter-spacing: 0.24em;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-gold);
-  border: 1px solid var(--color-gold);
-  padding: 14px 40px;
+  color: #082f2c;
+  border: none;
+  padding: 18px 52px;
   text-decoration: none;
-  background: transparent;
+  background: var(--color-gold);
   white-space: nowrap;
-  transition:
-    background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-    color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .ctaBtn:hover {
-  background: var(--color-gold);
-  color: #082f2c;
+  opacity: 0.88;
 }
 
 /* ── Mobile ──────────────────────────────────────────────────── */
