@@ -61,16 +61,22 @@ function DetailPanel({ suite, index }: { suite: Suite; index: number }) {
           <span>{suite.bed}</span>
         </div>
         <div className={styles.detailFooter}>
-          <span className={styles.detailRate}>
-            {suite.rateDisplay}
-            <span className={styles.rateNight}> / night</span>
-          </span>
-          <Link href={`/suites/${suite.slug}`} className={styles.detailCta}>
-            Reserve Suite
-            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
+          {suite.available === false ? (
+            <span className={styles.comingSoonBadge}>Coming Soon</span>
+          ) : (
+            <>
+              <span className={styles.detailRate}>
+                {suite.rateDisplay}
+                <span className={styles.rateNight}> / night</span>
+              </span>
+              <Link href={`/suites/${suite.slug}`} className={styles.detailCta}>
+                Reserve Suite
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

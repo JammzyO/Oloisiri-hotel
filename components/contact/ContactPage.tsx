@@ -497,8 +497,10 @@ function ContactClient() {
             <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '9px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: '4px' }}>
               Resident Rates
             </span>
-            <RateRow label="Single occupancy" rate="KES 7,500 — B&B" />
-            <RateRow label="Double occupancy" rate="KES 9,500 — B&B" />
+            <RateRow label="Standard Queen — Single" rate="KES 6,500 — B&B" />
+            <RateRow label="Standard Queen — Double" rate="KES 7,500 — B&B" />
+            <RateRow label="Twin Room" rate="KES 8,000 — B&B" />
+            <RateRow label="Deluxe King" rate="KES 8,500 — B&B" />
           </div>
 
           <div style={{ marginBottom: '36px' }}>

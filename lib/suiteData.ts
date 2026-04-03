@@ -13,6 +13,7 @@ export type Suite = {
   connecting: boolean
   rate: number
   rateDisplay: string
+  available?: boolean   // false = Coming Soon, unlisted for booking
   description: string
   amenities: SuiteAmenity[]
   features: { label: string; detail: string }[]
@@ -31,7 +32,8 @@ export const allSuites: Suite[] = [
     bed: '1 King Bed',
     connecting: false,
     rate: 38000,
-    rateDisplay: 'From KES 7,500',
+    rateDisplay: 'Coming Soon',
+    available: false,
     description:
       'The best room in the house. On clear mornings Kilimanjaro fills the window before you are fully awake. Elevated finishes, the quietest floor, and a balcony that earns its name.',
     amenities: [
@@ -69,14 +71,14 @@ export const allSuites: Suite[] = [
   },
   {
     slug: 'standard-king',
-    name: 'Standard King',
+    name: 'Standard Queen',
     category: 'Garden Level',
     guests: 2,
     size: '32 m²',
-    bed: '1 King Bed (convertible to twin on request)',
+    bed: '1 Queen Bed',
     connecting: false,
-    rate: 18000,
-    rateDisplay: 'KES 18,000',
+    rate: 6500,
+    rateDisplay: 'From KES 6,500',
     description:
       'Clean, well-finished, and exactly what a good hotel room should be. A proper bed, a proper shower, a balcony with views of the Namanga Hills. Nothing missing.',
     amenities: [
@@ -119,8 +121,8 @@ export const allSuites: Suite[] = [
     size: '30 m²',
     bed: '2 Single Beds (King convertible on request)',
     connecting: false,
-    rate: 16000,
-    rateDisplay: 'KES 16,000',
+    rate: 8000,
+    rateDisplay: 'KES 8,000',
     description:
       'The same standard as our King — two beds instead of one. Ideal for colleagues travelling together or friends who value their own space.',
     amenities: [
@@ -163,7 +165,8 @@ export const allSuites: Suite[] = [
     bed: '1 King + 2 Singles (King convertible on request)',
     connecting: false,
     rate: 28000,
-    rateDisplay: 'KES 28,000',
+    rateDisplay: 'Coming Soon',
+    available: false,
     description:
       'Generous space for families. A layout that keeps everyone together without crowding anyone. Balcony, garden views, and enough room to actually unpack.',
     amenities: [
@@ -200,14 +203,14 @@ export const allSuites: Suite[] = [
   },
   {
     slug: 'interleading-suite',
-    name: 'Interleading Suite',
+    name: 'Deluxe King',
     category: 'Garden Level',
-    guests: 6,
+    guests: 2,
     size: '72 m²',
-    bed: '2 King Beds (each convertible to twin on request)',
+    bed: '1 King Bed',
     connecting: true,
-    rate: 42000,
-    rateDisplay: 'KES 42,000',
+    rate: 8500,
+    rateDisplay: 'KES 8,500',
     description:
       'Two rooms that connect. For families or groups who want space without separation — each room is fully self-contained, with a shared connecting door that can open or close as needed.',
     amenities: [

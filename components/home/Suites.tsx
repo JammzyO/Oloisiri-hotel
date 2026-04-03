@@ -11,19 +11,20 @@ const SUITES = [
     category: 'Top Floor',
     guests: '2 Guests',
     size: '45 m²',
-    rate: 'From KES 7,500',
+    rate: 'Coming Soon',
     src: '/images/rooms/luxury-view-1.jpeg',
     alt: 'Luxury Room — bedroom view',
     slug: 'luxury-room',
+    available: false,
   },
   {
-    name: 'Standard King',
+    name: 'Standard Queen',
     category: 'Garden Level',
     guests: '2 Guests',
     size: '32 m²',
-    rate: 'From KES 18,000',
+    rate: 'From KES 6,500',
     src: '/images/rooms/standard-king-view-1.jpeg',
-    alt: 'Standard King — bedroom view',
+    alt: 'Standard Queen — bedroom view',
     slug: 'standard-king',
   },
   {
@@ -31,7 +32,7 @@ const SUITES = [
     category: 'Garden Level',
     guests: '2 Guests',
     size: '30 m²',
-    rate: 'From KES 16,000',
+    rate: 'KES 8,000',
     src: '/images/rooms/twin-room-view-1.jpeg',
     alt: 'Twin Room — bedroom view',
     slug: 'twin-room',
@@ -41,19 +42,20 @@ const SUITES = [
     category: 'Garden Level',
     guests: '4 Guests',
     size: '55 m²',
-    rate: 'From KES 28,000',
+    rate: 'Coming Soon',
     src: '/images/rooms/family-room-view-1.jpeg',
     alt: 'Family Room — bedroom view',
     slug: 'family-room',
+    available: false,
   },
   {
-    name: 'Interleading Suite',
+    name: 'Deluxe King',
     category: 'Garden Level',
-    guests: '4–6 Guests',
+    guests: '2 Guests',
     size: '72 m²',
-    rate: 'From KES 42,000',
+    rate: 'KES 8,500',
     src: '/images/rooms/interleading-view-1.jpeg',
-    alt: 'Interleading Suite — bedroom view',
+    alt: 'Deluxe King — bedroom view',
     slug: 'interleading-suite',
   },
 ]
@@ -199,7 +201,7 @@ export default function Suites() {
                           <span className={styles.suiteMetaDot}>·</span>
                           <span className={styles.suiteMetaItem}>{suite.size}</span>
                         </div>
-                        <span className={styles.suiteRate}>{suite.rate}</span>
+                        <span className={`${styles.suiteRate} ${suite.available === false ? styles.suiteRateSoon : ''}`}>{suite.rate}</span>
                       </div>
                     </Link>
                   ) : (

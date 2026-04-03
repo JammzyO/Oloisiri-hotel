@@ -311,15 +311,27 @@ function ReserveBox({ suite, checkin, checkout, onCheckinChange, onCheckoutChang
             <span className={styles.reserveCategory} style={{ display: 'block', marginBottom: '10px' }}>Resident Rates</span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span className={styles.reservePriceNight}>Single occupancy</span>
+                <span className={styles.reservePriceNight}>Standard Queen — Single</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                  KES 6,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span className={styles.reservePriceNight}>Standard Queen — Double</span>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
                   KES 7,500 <span className={styles.reservePriceNight}>B&amp;B</span>
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span className={styles.reservePriceNight}>Double occupancy</span>
+                <span className={styles.reservePriceNight}>Twin Room</span>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
-                  KES 9,500 <span className={styles.reservePriceNight}>B&amp;B</span>
+                  KES 8,000 <span className={styles.reservePriceNight}>B&amp;B</span>
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span className={styles.reservePriceNight}>Deluxe King</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 300, color: 'var(--color-white)', letterSpacing: '-0.2px' }}>
+                  KES 8,500 <span className={styles.reservePriceNight}>B&amp;B</span>
                 </span>
               </div>
             </div>
