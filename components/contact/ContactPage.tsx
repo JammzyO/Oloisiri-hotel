@@ -368,24 +368,6 @@ function GeneralForm({ onDone }: { onDone: (name: string) => void }) {
   )
 }
 
-// ── Rate row ──────────────────────────────────────────────────────────────────
-
-function RateRow({ label, rate }: { label: string; rate: string }) {
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-      padding: '10px 0', borderBottom: '1px solid rgba(201,162,77,0.15)',
-    }}>
-      <span style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '13px', color: '#5a5a52', letterSpacing: '0.02em' }}>
-        {label}
-      </span>
-      <span style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: '18px', color: '#082f2c', letterSpacing: '-0.2px' }}>
-        {rate}
-      </span>
-    </div>
-  )
-}
-
 // ── Contact client ────────────────────────────────────────────────────────────
 
 function ContactClient() {
@@ -465,7 +447,7 @@ function ContactClient() {
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                   <polyline points="22,6 12,13 2,6"/>
                 </svg>
-                <span>reservations@oloisiri.com</span>
+                <span>info@oloisirihotel.com</span>
               </div>
             </div>
           </div>
@@ -483,45 +465,6 @@ function ContactClient() {
         </div>
       </div>
 
-      {/* ── Rates section ── */}
-      <section className={styles.ratesSection}>
-        <div style={{ maxWidth: '640px' }}>
-          <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '9px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: '18px' }}>
-            Current Rates
-          </span>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#082f2c', lineHeight: 1.05, letterSpacing: '-0.01em', margin: '0 0 40px' }}>
-            Simple, transparent pricing.
-          </h2>
-
-          <div style={{ marginBottom: '32px' }}>
-            <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '9px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: '4px' }}>
-              Resident Rates
-            </span>
-            <RateRow label="Standard Queen — Single" rate="KES 6,500 — B&B" />
-            <RateRow label="Standard Queen — Double" rate="KES 7,500 — B&B" />
-            <RateRow label="Twin Room" rate="KES 8,000 — B&B" />
-            <RateRow label="Deluxe King" rate="KES 8,500 — B&B" />
-          </div>
-
-          <div style={{ marginBottom: '36px' }}>
-            <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '9px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: '4px' }}>
-              Non-Resident Rates
-            </span>
-            <RateRow label="Single occupancy" rate="KES 9,500 — B&B" />
-            <RateRow label="Double occupancy" rate="KES 11,000 — B&B" />
-          </div>
-
-          <div style={{ borderLeft: '3px solid #c9a24d', paddingLeft: '16px', marginBottom: '24px' }}>
-            <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '12px', color: '#082f2c', margin: '0', lineHeight: 1.75, letterSpacing: '0.01em' }}>
-              These are special opening rates, available for a limited period. All rates are per room per night, bed and breakfast basis. Pre-prepared buffet meals available on arrangement at KES 2,500 per head — one soft drink included.
-            </p>
-          </div>
-
-          <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '12px', color: '#857f77', margin: '0', lineHeight: 1.75, letterSpacing: '0.01em' }}>
-            For group bookings or extended stays, contact us directly.
-          </p>
-        </div>
-      </section>
     </>
   )
 }

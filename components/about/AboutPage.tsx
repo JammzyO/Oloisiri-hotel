@@ -113,9 +113,12 @@ export default function AboutPage() {
       >
         <div className={styles.introInner}>
           <p className={styles.introText}>
-            The name Oloisiri comes from the Maa language, meaning &lsquo;Blessings.&rsquo; True to its name,
-            Oloisiri Hotel Namanga is where comfort, elegance, and warm African hospitality come
-            together to create unforgettable experiences.
+            In the Maa language of the Maasai people, <em>Oloisiri</em> means Blessings — a word
+            that carries the weight of the land, of gathering, of good fortune bestowed on those
+            who pass through. It is not a name chosen lightly. At Oloisiri Hotel Namanga, that
+            spirit is the foundation of everything we do: the warmth of our welcome, the
+            intention behind each space, and the belief that a place at the edge of two
+            nations should feel like a blessing to everyone who arrives.
           </p>
         </div>
       </section>

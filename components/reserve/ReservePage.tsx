@@ -386,7 +386,7 @@ function ReservationForm({ onDone }: { onDone: (name: string) => void }) {
               <option key={s.value} value={s.value}>{s.label}</option>
             ))}
           </select>
-          <label htmlFor="rv-suite" className={styles.floatLabel}>Suite Preference</label>
+          <label htmlFor="rv-suite" className={styles.floatLabel}>Room Type</label>
         </div>
         <Link href="/suites" className={styles.suiteLink}>
           Not sure? View all rooms →
@@ -548,7 +548,7 @@ function ReserveClient() {
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                 <polyline points="22,6 12,13 2,6"/>
               </svg>
-              <span>reservations@oloisiri.com</span>
+              <span>info@oloisirihotel.com</span>
             </div>
           </div>
         </div>

@@ -17,8 +17,8 @@ const amenities = [
     ),
   },
   {
-    title: 'Olakira Sky Bar',
-    description: 'Sundowners above the plains. Cold drinks, warm light, Kilimanjaro on the horizon.',
+    title: 'Ormarrei Lounge',
+    description: 'Casual drinks, good company, and the kind of easy conversation the borderland encourages.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <path d="M8 6l2 8h8l2-8" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -26,16 +26,6 @@ const amenities = [
         <path d="M18 14v8" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
         <path d="M8 22h12" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
         <path d="M6 6h16" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
-  {
-    title: 'Madiba Sky Lounge',
-    description: 'Our rooftop centrepiece. The highest point at Oloisiri and worth every step.',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M4 22h20M5 22V12l9-8 9 8v10" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M11 22v-6h6v6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
   },

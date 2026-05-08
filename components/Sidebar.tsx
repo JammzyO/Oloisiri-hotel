@@ -7,12 +7,14 @@ import Image from 'next/image'
 import styles from './Sidebar.module.css'
 
 const NAV_LINKS = [
-  { label: 'Home',         href: '/'            },
-  { label: 'Suites',       href: '/suites'      },
-  { label: 'Discover',     href: '/experiences' },
-  { label: 'About',        href: '/about'       },
-  { label: 'Contact',      href: '/contact'     },
-  { label: 'Policies',     href: '/policies'    },
+  { label: 'Home',          href: '/'            },
+  { label: 'Accommodation', href: '/suites'      },
+  { label: 'Discover',      href: '/experiences' },
+  { label: 'Gallery',       href: '/gallery'     },
+  { label: 'Updates',       href: '/updates'     },
+  { label: 'About',         href: '/about'       },
+  { label: 'Contact',       href: '/contact'     },
+  { label: 'Policies',      href: '/policies'    },
 ]
 
 export default function Sidebar() {

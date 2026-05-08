@@ -10,22 +10,12 @@ import styles from './experiences.module.css'
 const VENUES = [
   {
     name: 'Ormarrei Family Restaurant',
-    desc: 'Warm and unhurried. East African produce, cooked well, served without fuss. Open all day.',
+    desc: 'Warm and unhurried. East African produce, cooked well, served without fuss. Open all day for breakfast, lunch, and dinner.',
     label: 'Ormarrei Restaurant',
   },
   {
-    name: 'Olakira Sky Bar',
-    desc: 'The border stretches south, the sky does the rest. Come for sundowners. Stay longer than you planned.',
-    label: 'Olakira Sky Bar',
-  },
-  {
-    name: 'Madiba Sky Lounge',
-    desc: 'The highest seat in the house. A rooftop built for the kind of evening you will describe to people for years.',
-    label: 'Madiba Sky Lounge',
-  },
-  {
     name: 'Ormarrei Lounge',
-    desc: 'Casual drinks. Good company. No dress code. No agenda.',
+    desc: 'Casual drinks, good company, and the kind of easy conversation the borderland seems to encourage. No dress code. No agenda.',
     label: 'Ormarrei Lounge',
   },
 ]
@@ -128,18 +118,18 @@ function DineSection() {
         <div className={styles.dineLeftContent}>
           <span className={styles.dineEyebrow}>Food &amp; Drink</span>
           <h2 className={styles.dineHeading}>
-            <span className={styles.headLineLeft}>Four Reasons</span>
+            <span className={styles.headLineLeft}>Two Reasons</span>
             <span className={styles.headLineRight}>to Linger.</span>
           </h2>
           <p className={`${styles.dineBody} ${styles.bodyReveal}`}>
-            From an all-day family restaurant to a rooftop bar where the border stretches to the
-            horizon — every outlet at Oloisiri is built around the same idea: good food, unhurried
-            service, and the right view.
+            From an all-day family restaurant to a relaxed lounge — every outlet at Oloisiri is
+            built around the same idea: good food, unhurried service, and the right setting.
           </p>
           <p className={`${styles.dineBody} ${styles.bodyReveal}`}>
-            Our Food &amp; Beverage offerings bring you the true taste of Namanga delicacies. With bars
-            that boast majestic views, an elegant restaurant, outdoor deck, and tranquil gardens,
-            every meal is crafted to be an experience in itself — casual, celebratory, or simply indulgent.
+            Our Food &amp; Beverage offerings bring you the true taste of Namanga. With a warm
+            restaurant, tranquil gardens, and an outdoor deck, every meal is crafted to be an
+            experience in itself — casual, celebratory, or simply indulgent. A rooftop bar
+            is part of our story still to come.
           </p>
         </div>
       </div>
@@ -233,6 +223,14 @@ function LocationSection() {
       aria-label="Location"
     >
       <span className={styles.locationEyebrow}>Where We Are</span>
+
+      <p className={styles.locationIntro}>
+        Namanga occupies a singular position in East Africa. Sitting precisely on the
+        Kenya–Tanzania border, it serves as a natural meeting point between three distinct
+        worlds: Nairobi's corridor to the north, Arusha's highland gateway to the south,
+        and the vast Amboseli–Maasai ecosystem stretching across both nations to the east.
+        At Oloisiri, you are not in any one of them — you are at the point where all three converge.
+      </p>
 
       <div className={styles.locationHeadline} aria-hidden="true">
         {NUMBERS.map(({ suffix }, i) => (
@@ -358,7 +356,7 @@ export default function DiscoverClient() {
       <div className={styles.teaser}>
         <span className={styles.teaserEyebrow}>Discover Oloisiri</span>
         <p className={styles.teaserText}>
-          Four dining outlets. Two event spaces. A location three countries cannot ignore.
+          Two dining outlets. Two event spaces. A location three countries cannot ignore.
         </p>
         <Link href="/suites" className={styles.teaserLink}>
           View Accommodation →

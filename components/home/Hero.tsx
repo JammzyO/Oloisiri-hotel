@@ -26,7 +26,7 @@ const slides = [
     bg: 'transparent',
     headline1: 'A Sanctuary',
     headline2: 'Above the Plains.',
-    sub: 'Forty rooms where stillness is the greatest indulgence.',
+    sub: 'Accommodation crafted for stillness — every detail, intentional.',
   },
   {
     id: 2,

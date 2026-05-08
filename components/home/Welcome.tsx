@@ -57,7 +57,7 @@ export default function Welcome() {
           <p className={styles.body}>
             Oloisiri sits 2km from the Kenya–Tanzania border, 50km from Amboseli National
             Park, and 163km from Nairobi on the traffic-free A104. The name comes from the
-            Maa language — it means Blessings. Forty rooms, each with a private balcony,
+            Maa language — it means Blessings. A curated collection of accommodation, each with a private balcony,
             views of Kilimanjaro or the surrounding hills, and linen we spent too long choosing.
           </p>
         </div>
