@@ -20,6 +20,7 @@ const jost = Jost({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.oloisirihotel.com'),
   title: {
     default: 'Oloisiri Namanga Hotel',
     template: '%s — Oloisiri Namanga Hotel',
