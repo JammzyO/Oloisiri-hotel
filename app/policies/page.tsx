@@ -10,7 +10,7 @@ const sections = [
   },
   {
     title: 'Payment',
-    body: 'Oloisiri is a cashless establishment. We accept Visa, Mastercard, and M-Pesa. In exceptional circumstances, cash payments may be approved by a senior manager.',
+    body: 'We accept Visa, Mastercard, mobile money (including M-Pesa and Airtel Money), and cash. Our team is happy to advise on the most convenient payment method for your stay.',
   },
   {
     title: 'Reservations & Cancellations',
